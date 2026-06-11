@@ -470,9 +470,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   var contact = document.getElementById("f-contact").value;
   var message = document.getElementById("f-message").value;
   var subject = encodeURIComponent("Новая заявка с сайта — Елена Мишарина");
-  var body = encodeURIComponent("Имя: " + name + "
-Контакт: " + contact + "
-Сообщение: " + message);
+  var body = encodeURIComponent("Имя: " + name + "\nКонтакт: " + contact + "\nСообщение: " + message);
   window.location.href = "mailto:740-200@mail.ru?subject=" + subject + "&body=" + body;
 });
 </script>
