@@ -435,12 +435,10 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
   <div class="cta-title">Получить сайт под заявки</div>
   <p class="cta-sub">Оставьте заявку — обсудим задачу и я скажу, подойдёт ли моё решение</p>
   <div class="cta-form">
-    <div id="form-success" style="display:none; background:#1A1030; border:1px solid #3D2A6E; border-radius:12px; padding:20px; margin-bottom:16px; color:#A78BFA; font-size:15px; line-height:1.6;">✅ Заявка отправлена! Напишу вам в течение 2 часов.</div>
-    <form id="contact-form" action="https://formspree.io/f/ТВОЙ_ID" method="POST">
-      <input class="cta-input" type="text" name="name" placeholder="Ваше имя" required>
-      <input class="cta-input" type="text" name="contact" placeholder="Telegram / email / телефон" required>
-      <input class="cta-input" type="text" name="message" placeholder="Расскажите о задаче (необязательно)">
-      <input type="hidden" name="_subject" value="Новая заявка с сайта — Елена Мишарина">
+    <form id="contact-form">
+      <input class="cta-input" type="text" id="f-name" placeholder="Ваше имя" required>
+      <input class="cta-input" type="text" id="f-contact" placeholder="Telegram / email / телефон" required>
+      <input class="cta-input" type="text" id="f-message" placeholder="Расскажите о задаче (необязательно)">
       <button class="cta-btn" type="submit">Получить сайт под заявки</button>
     </form>
   </div>
@@ -458,41 +456,26 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
 </footer>
 
 <script>
-document.querySelectorAll('.faq-item').forEach(function(item) {
-  item.querySelector('.faq-q').addEventListener('click', function() {
-    var isOpen = item.classList.contains('open');
-    document.querySelectorAll('.faq-item').forEach(function(i) { i.classList.remove('open'); });
-    if (!isOpen) item.classList.add('open');
+document.querySelectorAll(".faq-item").forEach(function(item) {
+  item.querySelector(".faq-q").addEventListener("click", function() {
+    var isOpen = item.classList.contains("open");
+    document.querySelectorAll(".faq-item").forEach(function(i) { i.classList.remove("open"); });
+    if (!isOpen) item.classList.add("open");
   });
+});
+
+document.getElementById("contact-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  var name = document.getElementById("f-name").value;
+  var contact = document.getElementById("f-contact").value;
+  var message = document.getElementById("f-message").value;
+  var subject = encodeURIComponent("Новая заявка с сайта — Елена Мишарина");
+  var body = encodeURIComponent("Имя: " + name + "
+Контакт: " + contact + "
+Сообщение: " + message);
+  window.location.href = "mailto:740-200@mail.ru?subject=" + subject + "&body=" + body;
 });
 </script>
 
 </body>
 </html>
-<script>
-var form = document.getElementById('contact-form');
-if (form) {
-  form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    var btn = form.querySelector('button[type="submit"]');
-    btn.textContent = 'Отправляем...';
-    btn.disabled = true;
-    fetch(form.action, {
-      method: 'POST',
-      body: new FormData(form),
-      headers: { 'Accept': 'application/json' }
-    }).then(function(res) {
-      if (res.ok) {
-        form.style.display = 'none';
-        document.getElementById('form-success').style.display = 'block';
-      } else {
-        btn.textContent = 'Ошибка — попробуйте ещё раз';
-        btn.disabled = false;
-      }
-    }).catch(function() {
-      btn.textContent = 'Ошибка — попробуйте ещё раз';
-      btn.disabled = false;
-    });
-  });
-}
-</script>
