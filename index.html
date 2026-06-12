@@ -382,7 +382,7 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
         <div class="price-feature"><span class="price-check">✦</span> Мобильная адаптация</div>
         <div class="price-feature"><span class="price-check">✦</span> Форма заявки + Telegram</div>
         <div class="price-feature"><span class="price-check">✦</span> Базовое SEO</div>
-        <a class="price-btn" href="#contact">Выбрать</a>
+        <a class="price-btn" href="#contact" onclick="selectTariff('Лендинг — 19 000 ₽')">Выбрать</a>
       </div>
       <div class="price-card featured">
         <div class="price-badge">Популярный</div>
@@ -395,7 +395,7 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
         <div class="price-feature"><span class="price-check">✦</span> Несколько страниц</div>
         <div class="price-feature"><span class="price-check">✦</span> Анализ конкурентов</div>
         <div class="price-feature"><span class="price-check">✦</span> Расширенные интеграции</div>
-        <a class="price-btn featured-btn" href="#contact">Выбрать</a>
+        <a class="price-btn featured-btn" href="#contact" onclick="selectTariff('Корпоративный сайт — 29 000 ₽')">Выбрать</a>
       </div>
       <div class="price-card">
         <div class="price-name">Сайт + нейросистема</div>
@@ -407,7 +407,7 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
         <div class="price-feature"><span class="price-check">✦</span> Нейропродавец 24/7</div>
         <div class="price-feature"><span class="price-check">✦</span> Квалификация лидов</div>
         <div class="price-feature"><span class="price-check">✦</span> Все каналы связи</div>
-        <a class="price-btn" href="#contact">Выбрать</a>
+        <a class="price-btn" href="#contact" onclick="selectTariff('Сайт + нейросистема — 69 000 ₽')">Выбрать</a>
       </div>
     </div>
     <p class="price-promo">Акция запуска · Набираю первых 5 клиентов · <span>Осталось 5 мест</span></p>
@@ -436,10 +436,17 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
   <p class="cta-sub">Оставьте заявку — обсудим задачу и я скажу, подойдёт ли моё решение</p>
   <div class="cta-form">
     <div id="form-success" style="display:none; background:#1A1030; border:1px solid #3D2A6E; border-radius:12px; padding:20px; margin-bottom:16px; color:#A78BFA; font-size:15px; line-height:1.6;">✅ Заявка отправлена! Напишу вам в течение 2 часов.</div>
+    <div id="selected-tariff" style="display:none; background:#1A1030; border:1px solid #7C3AED; border-radius:12px; padding:14px 18px; margin-bottom:12px; color:#A78BFA; font-size:14px; text-align:left;">
+      <span style="color:#8B8B9E; font-size:12px;">Выбранный тариф:</span><br>
+      <strong id="tariff-name"></strong>
+      <span onclick="clearTariff()" style="float:right; cursor:pointer; color:#8B8B9E; font-size:18px; line-height:1;">×</span>
+    </div>
     <form id="contact-form" action="https://formspree.io/f/mjgdaryr" method="POST">
       <input class="cta-input" type="text" name="name" placeholder="Ваше имя" required>
-      <input class="cta-input" type="text" name="contact" placeholder="Telegram / email / телефон" required>
+      <input class="cta-input" type="text" name="contact" id="f-contact" placeholder="Telegram / email / телефон" required>
+      <div id="contact-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:-6px 0 10px 4px;">Укажите телефон, email или Telegram (например: @username, +7 900 123-45-67 или mail@mail.ru)</div>
       <input class="cta-input" type="text" name="message" placeholder="Расскажите о задаче (необязательно)">
+      <input type="hidden" name="tariff" id="f-tariff" value="Не выбран">
       <input type="hidden" name="_subject" value="Новая заявка с сайта — Елена Мишарина">
       <button class="cta-btn" type="submit">Получить сайт под заявки</button>
     </form>
@@ -466,9 +473,40 @@ document.querySelectorAll(".faq-item").forEach(function(item) {
   });
 });
 
+function selectTariff(name) {
+  document.getElementById("f-tariff").value = name;
+  document.getElementById("tariff-name").textContent = name;
+  document.getElementById("selected-tariff").style.display = "block";
+}
+
+function clearTariff() {
+  document.getElementById("f-tariff").value = "Не выбран";
+  document.getElementById("selected-tariff").style.display = "none";
+}
+
+function isValidContact(value) {
+  value = value.trim();
+  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var phoneDigits = value.replace(/[^0-9]/g, "");
+  var phoneRe = phoneDigits.length >= 10 && phoneDigits.length <= 15 && /^[+0-9()\s\-]+$/.test(value);
+  var tgRe = /^@[a-zA-Z0-9_]{5,32}$/;
+  var tgLinkRe = /^(https?:\/\/)?(t\.me|telegram\.me)\/[a-zA-Z0-9_]{5,32}$/;
+  return emailRe.test(value) || phoneRe || tgRe.test(value) || tgLinkRe.test(value);
+}
+
 document.getElementById("contact-form").addEventListener("submit", function(e) {
   e.preventDefault();
   var form = e.target;
+  var contactInput = document.getElementById("f-contact");
+  var errorDiv = document.getElementById("contact-error");
+  if (!isValidContact(contactInput.value)) {
+    errorDiv.style.display = "block";
+    contactInput.style.borderColor = "#F87171";
+    contactInput.focus();
+    return;
+  }
+  errorDiv.style.display = "none";
+  contactInput.style.borderColor = "#1E1E2E";
   var btn = form.querySelector('button[type="submit"]');
   btn.textContent = "Отправляем...";
   btn.disabled = true;
