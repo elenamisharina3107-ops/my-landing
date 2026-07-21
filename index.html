@@ -228,7 +228,9 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
 #alyona-send { width: 38px; height: 38px; flex-shrink: 0; border: none; border-radius: 10px; background: linear-gradient(135deg, #7C3AED, #A855F7); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
 #alyona-send:hover { opacity: 0.9; }
 #alyona-send:disabled { opacity: 0.5; cursor: not-allowed; }
-@media (max-width: 480px) {
+.alyona-teaser { position: absolute; bottom: 76px; right: 0; max-width: 230px; background: #1A1030; border: 1px solid #3D2A6E; border-radius: 14px; border-bottom-right-radius: 4px; padding: 12px 16px; font-size: 13.5px; line-height: 1.5; color: #F0F0F5; box-shadow: 0 12px 32px rgba(0,0,0,0.4); opacity: 0; transform: translateY(8px) scale(0.96); pointer-events: none; transition: opacity 0.25s ease, transform 0.25s ease; cursor: pointer; }
+.alyona-teaser.show { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.alyona-teaser-close { position: absolute; top: -6px; right: -6px; width: 20px; height: 20px; background: #2A1F4E; border: 1px solid #3D2A6E; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 11px; color: #A78BFA; cursor: pointer; } @media (max-width: 480px) {
   .alyona-chat { width: calc(100vw - 24px); right: -12px; height: 65vh; }
   #alyona-widget { bottom: 16px; right: 16px; }
 }
@@ -630,7 +632,10 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
       </button>
     </div>
   </div>
-  <button id="alyona-toggle" aria-label="Открыть чат с Алёной">
+  <div class="alyona-teaser" id="alyona-teaser">
+  Здесь можно спросить всё, что интересует — отвечаю быстро 👋
+  <div class="alyona-teaser-close" id="alyona-teaser-close">✕</div>
+</div> <button id="alyona-toggle" aria-label="Открыть чат с Алёной">
     <svg class="alyona-icon-chat" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
     <svg class="alyona-icon-close" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
     <span class="alyona-badge-dot"></span>
@@ -649,6 +654,32 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   var sessionId = null;
   var started = false;
   var sending = false;
+  var teaser = document.getElementById("alyona-teaser");
+  var teaserClose = document.getElementById("alyona-teaser-close");
+  var teaserTimeout;
+
+  function showTeaser() {
+    if (widget.classList.contains("open")) return;
+    teaser.classList.add("show");
+    teaserTimeout = setTimeout(function() { teaser.classList.remove("show"); }, 10000);
+  }
+
+  function hideTeaser() {
+    teaser.classList.remove("show");
+    clearTimeout(teaserTimeout);
+  }
+
+  setTimeout(showTeaser, 4000);
+
+  teaser.addEventListener("click", function() {
+    hideTeaser();
+    toggleBtn.click();
+  });
+
+  teaserClose.addEventListener("click", function(e) {
+    e.stopPropagation();
+    hideTeaser();
+  });
 
   function addMessage(text, role) {
     var el = document.createElement("div");
@@ -723,7 +754,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
     });
   }
 
-  toggleBtn.addEventListener("click", function() {
+  toggleBtn.addEventListener(hideTeaser(); "click", function() {
     var isOpen = widget.classList.toggle("open");
     if (isOpen) {
       startChat();
