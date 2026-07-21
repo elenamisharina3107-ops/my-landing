@@ -174,14 +174,6 @@ section { padding: 72px 40px; }
 .social-link { display: flex; align-items: center; gap: 8px; font-size: 14px; color: #A78BFA; background: #1A1030; border: 1px solid #3D2A6E; border-radius: 10px; padding: 11px 20px; text-decoration: none; transition: background 0.2s; }
 .social-link:hover { background: #231545; }
 
-/* CONSENT CHECKBOXES */
-.consent-row { display: flex; align-items: flex-start; gap: 10px; margin-bottom: 12px; text-align: left; }
-.consent-row input[type="checkbox"] { margin-top: 3px; width: 16px; height: 16px; flex-shrink: 0; cursor: pointer; accent-color: #7C3AED; }
-.consent-row label { font-size: 13px; color: #8B8B9E; line-height: 1.5; cursor: pointer; }
-.consent-row label a { color: #A78BFA; text-decoration: underline; }
-.cta-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-.cta-btn:disabled:hover { transform: none; }
-
 /* FOOTER */
 footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justify-content: space-between; align-items: center; }
 .footer-copy { font-size: 13px; color: #8B8B9E; }
@@ -201,6 +193,44 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
   .section-title { font-size: 26px; }
   .cta-title { font-size: 28px; }
   footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+/* ALYONA CHAT WIDGET */
+#alyona-widget { position: fixed; bottom: 24px; right: 24px; z-index: 9999; font-family: 'Inter', sans-serif; }
+#alyona-toggle { width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, #7C3AED, #A855F7); border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(124,58,237,0.45); display: flex; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s; }
+#alyona-toggle:hover { transform: translateY(-2px); box-shadow: 0 10px 28px rgba(124,58,237,0.6); }
+#alyona-toggle svg { width: 26px; height: 26px; }
+#alyona-toggle .alyona-icon-close { display: none; }
+#alyona-widget.open #alyona-toggle .alyona-icon-chat { display: none; }
+#alyona-widget.open #alyona-toggle .alyona-icon-close { display: block; }
+.alyona-badge-dot { position: absolute; top: 2px; right: 2px; width: 12px; height: 12px; background: #34D399; border: 2px solid #0D0D14; border-radius: 50%; }
+.alyona-chat { position: absolute; bottom: 76px; right: 0; width: 360px; max-width: calc(100vw - 32px); height: 500px; max-height: 70vh; background: #13131E; border: 1px solid #1E1E2E; border-radius: 16px; box-shadow: 0 16px 48px rgba(0,0,0,0.5); display: flex; flex-direction: column; overflow: hidden; opacity: 0; transform: translateY(12px) scale(0.98); pointer-events: none; transition: opacity 0.2s ease, transform 0.2s ease; }
+#alyona-widget.open .alyona-chat { opacity: 1; transform: translateY(0) scale(1); pointer-events: auto; }
+.alyona-header { background: linear-gradient(135deg, #7C3AED, #A855F7); padding: 16px 18px; display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+.alyona-avatar { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,0.2); display: flex; align-items: center; justify-content: center; font-size: 16px; flex-shrink: 0; }
+.alyona-header-text { line-height: 1.3; }
+.alyona-header-name { font-size: 14px; font-weight: 700; color: #fff; }
+.alyona-header-status { font-size: 11px; color: rgba(255,255,255,0.85); display: flex; align-items: center; gap: 5px; }
+.alyona-header-status::before { content: ""; width: 6px; height: 6px; background: #34D399; border-radius: 50%; display: inline-block; }
+.alyona-messages { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: column; gap: 10px; background: #0D0D14; }
+.alyona-msg { max-width: 82%; padding: 10px 13px; border-radius: 14px; font-size: 13.5px; line-height: 1.5; word-wrap: break-word; white-space: pre-wrap; }
+.alyona-msg.bot { align-self: flex-start; background: #1A1030; border: 1px solid #2A1F4E; color: #F0F0F5; border-bottom-left-radius: 4px; }
+.alyona-msg.user { align-self: flex-end; background: linear-gradient(135deg, #7C3AED, #A855F7); color: #fff; border-bottom-right-radius: 4px; }
+.alyona-msg.error { align-self: center; background: transparent; color: #F87171; font-size: 12px; text-align: center; }
+.alyona-typing { align-self: flex-start; display: flex; gap: 4px; padding: 12px 14px; background: #1A1030; border: 1px solid #2A1F4E; border-radius: 14px; border-bottom-left-radius: 4px; }
+.alyona-typing span { width: 6px; height: 6px; background: #8B8B9E; border-radius: 50%; animation: alyona-blink 1.2s infinite; }
+.alyona-typing span:nth-child(2) { animation-delay: 0.2s; }
+.alyona-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes alyona-blink { 0%, 80%, 100% { opacity: 0.3; } 40% { opacity: 1; } }
+.alyona-input-row { display: flex; gap: 8px; padding: 12px; border-top: 1px solid #1E1E2E; background: #13131E; flex-shrink: 0; }
+#alyona-input { flex: 1; background: #0D0D14; border: 1px solid #1E1E2E; border-radius: 10px; padding: 10px 12px; color: #F0F0F5; font-size: 13.5px; font-family: 'Inter', sans-serif; resize: none; }
+#alyona-input:focus { outline: none; border-color: #3D2A6E; }
+#alyona-send { width: 38px; height: 38px; flex-shrink: 0; border: none; border-radius: 10px; background: linear-gradient(135deg, #7C3AED, #A855F7); color: #fff; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: opacity 0.2s; }
+#alyona-send:hover { opacity: 0.9; }
+#alyona-send:disabled { opacity: 0.5; cursor: not-allowed; }
+@media (max-width: 480px) {
+  .alyona-chat { width: calc(100vw - 24px); right: -12px; height: 65vh; }
+  #alyona-widget { bottom: 16px; right: 16px; }
 }
 </style>
 </head>
@@ -465,21 +495,9 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
       <input class="cta-input" type="text" name="contact" id="f-contact" placeholder="Telegram / email / телефон" required>
       <div id="contact-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:-6px 0 10px 4px;">Укажите телефон, email или Telegram (например: @username, +7 900 123-45-67 или mail@mail.ru)</div>
       <input class="cta-input" type="text" name="message" placeholder="Расскажите о задаче (необязательно)">
-      <div class="consent-row">
-        <input type="checkbox" id="consent-pdn" required>
-        <label for="consent-pdn">Согласен(-на) на <a href="privacy-policy.html" target="_blank">обработку персональных данных</a> в соответствии с Политикой конфиденциальности</label>
-      </div>
-      <div class="consent-row">
-        <input type="checkbox" id="consent-marketing">
-        <label for="consent-marketing">Хочу получать рекламные рассылки и предложения (необязательно, можно отписаться в любой момент)</label>
-      </div>
       <input type="hidden" name="tariff" id="f-tariff" value="Не выбран">
       <input type="hidden" name="_subject" value="Новая заявка с сайта — Елена Мишарина">
-      <input type="hidden" name="consent_pdn" id="f-consent-pdn" value="нет">
-      <input type="hidden" name="consent_pdn_time" id="f-consent-pdn-time" value="">
-      <input type="hidden" name="consent_marketing" id="f-consent-marketing" value="нет">
-      <input type="hidden" name="consent_marketing_time" id="f-consent-marketing-time" value="">
-      <button class="cta-btn" type="submit" id="submit-btn" disabled>Получить сайт под заявки</button>
+      <button class="cta-btn" type="submit">Получить сайт под заявки</button>
     </form>
   </div>
   <div class="cta-divider"><div class="cta-divider-line"></div><span class="cta-divider-text">или напишите напрямую</span><div class="cta-divider-line"></div></div>
@@ -492,7 +510,7 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
 
 <footer>
   <span class="footer-copy">© 2025 Елена Мишарина. Все права защищены.</span>
-  <a class="footer-link" href="privacy-policy.html">Политика конфиденциальности</a>
+  <a class="footer-link" href="#">Политика конфиденциальности</a>
 </footer>
 
 <script>
@@ -525,21 +543,11 @@ function isValidContact(value) {
   return emailRe.test(value) || phoneRe || tgRe.test(value) || tgLinkRe.test(value);
 }
 
-var pdnCheckbox = document.getElementById("consent-pdn");
-var marketingCheckbox = document.getElementById("consent-marketing");
-var submitBtn = document.getElementById("submit-btn");
-pdnCheckbox.addEventListener("change", function() {
-  submitBtn.disabled = !pdnCheckbox.checked;
-});
-
 document.getElementById("contact-form").addEventListener("submit", function(e) {
   e.preventDefault();
   var form = e.target;
   var contactInput = document.getElementById("f-contact");
   var errorDiv = document.getElementById("contact-error");
-  if (!pdnCheckbox.checked) {
-    return;
-  }
   if (!isValidContact(contactInput.value)) {
     errorDiv.style.display = "block";
     contactInput.style.borderColor = "#F87171";
@@ -548,10 +556,6 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   }
   errorDiv.style.display = "none";
   contactInput.style.borderColor = "#1E1E2E";
-  document.getElementById("f-consent-pdn").value = "да";
-  document.getElementById("f-consent-pdn-time").value = new Date().toISOString();
-  document.getElementById("f-consent-marketing").value = marketingCheckbox.checked ? "да" : "нет";
-  document.getElementById("f-consent-marketing-time").value = marketingCheckbox.checked ? new Date().toISOString() : "";
   var btn = form.querySelector('button[type="submit"]');
   btn.textContent = "Отправляем...";
   btn.disabled = true;
@@ -586,6 +590,135 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/110102290" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+
+<!-- ALYONA CHAT WIDGET -->
+<div id="alyona-widget">
+  <div class="alyona-chat" id="alyona-chat-window">
+    <div class="alyona-header">
+      <div class="alyona-avatar">🤖</div>
+      <div class="alyona-header-text">
+        <div class="alyona-header-name">Алёна, ассистент</div>
+        <div class="alyona-header-status">на связи</div>
+      </div>
+    </div>
+    <div class="alyona-messages" id="alyona-messages"></div>
+    <div class="alyona-input-row">
+      <input id="alyona-input" type="text" placeholder="Напишите сообщение..." autocomplete="off">
+      <button id="alyona-send" aria-label="Отправить">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </div>
+  </div>
+  <button id="alyona-toggle" aria-label="Открыть чат с Алёной">
+    <svg class="alyona-icon-chat" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+    <svg class="alyona-icon-close" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <span class="alyona-badge-dot"></span>
+  </button>
+</div>
+
+<script>
+(function() {
+  var API_BASE = "https://api.vireflow.ru";
+  var widget = document.getElementById("alyona-widget");
+  var toggleBtn = document.getElementById("alyona-toggle");
+  var messagesEl = document.getElementById("alyona-messages");
+  var inputEl = document.getElementById("alyona-input");
+  var sendBtn = document.getElementById("alyona-send");
+
+  var sessionId = null;
+  var started = false;
+  var sending = false;
+
+  function addMessage(text, role) {
+    var el = document.createElement("div");
+    el.className = "alyona-msg " + role;
+    el.textContent = text;
+    messagesEl.appendChild(el);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return el;
+  }
+
+  function showTyping() {
+    var el = document.createElement("div");
+    el.className = "alyona-typing";
+    el.id = "alyona-typing-indicator";
+    el.innerHTML = "<span></span><span></span><span></span>";
+    messagesEl.appendChild(el);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function hideTyping() {
+    var el = document.getElementById("alyona-typing-indicator");
+    if (el) el.remove();
+  }
+
+  function startChat() {
+    if (started) return;
+    started = true;
+    showTyping();
+    fetch(API_BASE + "/api/chat/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    }).then(function(res) {
+      if (!res.ok) throw new Error("bad status");
+      return res.json();
+    }).then(function(data) {
+      hideTyping();
+      sessionId = data.session_id;
+      addMessage(data.greeting || "Здравствуйте! Чем могу помочь?", "bot");
+    }).catch(function() {
+      hideTyping();
+      addMessage("Не получилось подключиться к чату. Попробуйте обновить страницу или напишите нам в Telegram.", "error");
+      started = false;
+    });
+  }
+
+  function sendMessage() {
+    var text = inputEl.value.trim();
+    if (!text || sending || !sessionId) return;
+    sending = true;
+    sendBtn.disabled = true;
+    addMessage(text, "user");
+    inputEl.value = "";
+    showTyping();
+    fetch(API_BASE + "/api/chat/message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: sessionId, text: text })
+    }).then(function(res) {
+      if (!res.ok) throw new Error("bad status");
+      return res.json();
+    }).then(function(data) {
+      hideTyping();
+      addMessage(data.reply || "...", "bot");
+    }).catch(function() {
+      hideTyping();
+      addMessage("Не получилось отправить, попробуйте ещё раз.", "error");
+    }).finally(function() {
+      sending = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
+    });
+  }
+
+  toggleBtn.addEventListener("click", function() {
+    var isOpen = widget.classList.toggle("open");
+    if (isOpen) {
+      startChat();
+      setTimeout(function() { inputEl.focus(); }, 150);
+    }
+  });
+
+  sendBtn.addEventListener("click", sendMessage);
+  inputEl.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+})();
+</script>
 
 </body>
 </html>
