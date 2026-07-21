@@ -754,7 +754,8 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
     });
   }
 
-  toggleBtn.addEventListener(hideTeaser(); "click", function() {
+  toggleBtn.addEventListener("click", function() {
+    hideTeaser();
     var isOpen = widget.classList.toggle("open");
     if (isOpen) {
       startChat();
