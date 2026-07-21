@@ -497,6 +497,19 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
       <input class="cta-input" type="text" name="message" placeholder="Расскажите о задаче (необязательно)">
       <input type="hidden" name="tariff" id="f-tariff" value="Не выбран">
       <input type="hidden" name="_subject" value="Новая заявка с сайта — Елена Мишарина">
+      <input type="hidden" name="consent_given_at" id="f-consent-time">
+
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:13px; color:#8B8B9E; margin:14px 0 4px;">
+        <input type="checkbox" id="f-consent" style="margin-top:3px;">
+        <span>Даю согласие на обработку персональных данных в соответствии с <a href="privacy-policy.html" target="_blank" style="color:#A78BFA;">Политикой конфиденциальности</a></span>
+      </label>
+      <div id="consent-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:0 0 10px 4px;">Нужно подтвердить согласие на обработку данных</div>
+
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:13px; color:#8B8B9E; margin:0 0 14px;">
+        <input type="checkbox" id="f-marketing" name="marketing_consent">
+        <span>Хочу получать полезные материалы и предложения по email/Telegram</span>
+      </label>
+
       <button class="cta-btn" type="submit">Получить сайт под заявки</button>
     </form>
   </div>
@@ -510,7 +523,7 @@ footer { padding: 24px 40px; border-top: 1px solid #1E1E2E; display: flex; justi
 
 <footer>
   <span class="footer-copy">© 2025 Елена Мишарина. Все права защищены.</span>
-  <a class="footer-link" href="#">Политика конфиденциальности</a>
+  <a class="footer-link" href="privacy-policy.html">Политика конфиденциальности</a>
 </footer>
 
 <script>
@@ -548,6 +561,8 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   var form = e.target;
   var contactInput = document.getElementById("f-contact");
   var errorDiv = document.getElementById("contact-error");
+  var consentInput = document.getElementById("f-consent");
+  var consentError = document.getElementById("consent-error");
   if (!isValidContact(contactInput.value)) {
     errorDiv.style.display = "block";
     contactInput.style.borderColor = "#F87171";
@@ -556,6 +571,12 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   }
   errorDiv.style.display = "none";
   contactInput.style.borderColor = "#1E1E2E";
+  if (!consentInput.checked) {
+    consentError.style.display = "block";
+    return;
+  }
+  consentError.style.display = "none";
+  document.getElementById("f-consent-time").value = new Date().toISOString();
   var btn = form.querySelector('button[type="submit"]');
   btn.textContent = "Отправляем...";
   btn.disabled = true;
