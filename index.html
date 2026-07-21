@@ -624,6 +624,16 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   var btn = form.querySelector('button[type="submit"]');
   btn.textContent = "Отправляем...";
   btn.disabled = true;
+  fetch("https://api.vireflow.ru/api/lead-notify", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    name: form.name.value,
+    contact: form.contact.value,
+    tariff: form.tariff.value,
+    message: form.message.value
+  })
+}).catch(function() { /* не критично — заявка всё равно уйдёт через Formspree */ });
   fetch(form.action, {
     method: "POST",
     body: new FormData(form),
