@@ -1,23 +1,11 @@
 {
-  "hero": {
-    "title": "Создаю сайты, которые приводят клиентов",
-    "subtitle": "Посилки и тематические сайты, Telegram Mini Apps, чат-боты и ИИ-агенты для генерации лидов"
-  },
-  "prices": [
-    {
-      "name": "Лендинг",
-      "price": 9000,
-      "oldPrice": 35000
-    },
-    {
-      "name": "Корпоративный сайт",
-      "price": 19000,
-      "oldPrice": 55000
-    },
-    {
-      "name": "Сайт + нейросистема",
-      "price": 49000,
-      "oldPrice": 120000
-    }
-  ]
+  "price_landing": 4000,
+  "price_site": 15000,
+  "price_system": 25000,
+  "old_price_landing": 7000,
+  "old_price_site": 20000,
+  "old_price_system": 35000,
+  "hero_title": "Vireflow",
+  "hero_subtitle": "Лендинги, чат-боты и ИИ-агенты для генерации лидов",
+  "system_prompt": "Ты помощник компании Vireflow..."
 }
