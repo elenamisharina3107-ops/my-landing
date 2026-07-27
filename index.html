@@ -824,6 +824,34 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   });
 })();
 </script>
+  <!-- Загрузка контента из админ-панели -->
+<script>
+document.addEventListener('DOMContentLoaded', async () => {
+  try {
+    const response = await fetch('https://api.vireflow.ru/admin/api/public/content');
+    const data = await response.json();
+    
+    document.querySelectorAll('[data-price="landing"]').forEach(el => {
+      el.textContent = data.price_landing;
+    });
+    document.querySelectorAll('[data-price="site"]').forEach(el => {
+      el.textContent = data.price_site;
+    });
+    document.querySelectorAll('[data-price="system"]').forEach(el => {
+      el.textContent = data.price_system;
+    });
+    
+    document.querySelectorAll('[data-text="hero-title"]').forEach(el => {
+      el.textContent = data.hero_title;
+    });
+    document.querySelectorAll('[data-text="hero-subtitle"]').forEach(el => {
+      el.textContent = data.hero_subtitle;
+    });
+  } catch (error) {
+    console.error('Ошибка загрузки контента:', error);
+  }
+});
+</script>
 
 </body>
 </html>
