@@ -633,24 +633,16 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
     tariff: form.tariff.value,
     message: form.message.value
   })
-}).catch(function() { /* не критично — заявка всё равно уйдёт через Formspree */ });
-  fetch(form.action, {
-    method: "POST",
-    body: new FormData(form),
-    headers: { "Accept": "application/json" }
   }).then(function(res) {
     if (res.ok) {
       form.style.display = "none";
       document.getElementById("form-success").style.display = "block";
-    } else {
-      btn.textContent = "Ошибка — попробуйте ещё раз";
-      btn.disabled = false;
     }
-  }).catch(function() {
-    btn.textContent = "Ошибка — попробуйте ещё раз";
-    btn.disabled = false;
+}).catch(function(err) {
+    console.error("Lead submission failed:", err);
+
   });
-});
+
 </script>
 
 <!-- Yandex.Metrika counter -->
