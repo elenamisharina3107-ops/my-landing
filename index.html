@@ -16,14 +16,14 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Vireflow — Цифровые системы для Вашего бизнеса</title>
   <meta property="og:type" content="website">
-<meta property="og:title" content="Vireflow — Цифровые системы для Вашего бизнеса">
+<meta property="og:title" content="Цифровые системы для масштабирования бизнеса">
 <meta property="og:description" content="Создание лидогенерирующих сайтов, Telegram Mini Apps и AI-агентов для бизнеса.">
 <meta property="og:url" content="https://vireflow.ru/">
 <meta property="og:image" content="https://vireflow.ru/og-image.jpg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ru_RU">
-  <meta name="description" content="Лендинги, сайты и AI-боты для автоматизации лидогенерации. Запуск за 7-14 дней. Три тарифа от 9 000 ₽.">
+  <meta name="description" content="Создание сайтов под заявки, Telegram Mini Apps и AI-агентов для бизнеса. Запуск за 7–14 дней, цены от 9 000 ₽.">
 <link rel="canonical" href="https://vireflow.ru/">
 <meta name="robots" content="index, follow">
 <script type="application/ld+json">
@@ -276,6 +276,91 @@ footer { padding: 24px 40px; border-top: 1px solid #1a2545; display: flex; justi
   .alyona-chat { width: calc(100vw - 24px); right: -12px; height: 65vh; }
   #alyona-widget { bottom: 16px; right: 16px; }
 }
+
+/* WOW EFFECTS */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes riseUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes subtleGlow {
+  0%, 100% {
+    text-shadow: 0 0 10px rgba(74, 158, 255, 0.3);
+  }
+  50% {
+    text-shadow: 0 0 15px rgba(74, 158, 255, 0.5);
+  }
+}
+
+@keyframes borderGlow {
+  0%, 100% {
+    border-color: #1a2545;
+    box-shadow: 0 0 0px rgba(74, 158, 255, 0);
+  }
+  50% {
+    border-color: #4a9eff;
+    box-shadow: 0 0 10px rgba(74, 158, 255, 0.15);
+  }
+}
+
+@keyframes lineReveal {
+  from { width: 0%; }
+  to { width: 100%; }
+}
+
+/* APPLY ANIMATIONS */
+.hero h1 { animation: fadeIn 1.2s ease-out; }
+.hero-sub { animation: fadeIn 1.2s ease-out 0.3s both; }
+.hero-btns { animation: scaleIn 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both; }
+
+.pain-card { animation: riseUp 1.5s ease-out both; }
+.pain-card:nth-child(1) { animation-delay: 0s; }
+.pain-card:nth-child(2) { animation-delay: 0.2s; }
+.pain-card:nth-child(3) { animation-delay: 0.4s; }
+
+.benefit-item { animation: fadeIn 1.2s ease-out both; }
+.benefit-item:nth-child(1) { animation-delay: 0.1s; }
+.benefit-item:nth-child(2) { animation-delay: 0.2s; }
+.benefit-item:nth-child(3) { animation-delay: 0.3s; }
+.benefit-item:nth-child(4) { animation-delay: 0.4s; }
+
+.price-card { animation: scaleIn 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
+.price-card:nth-child(1) { animation-delay: 0s; }
+.price-card:nth-child(2) { animation-delay: 0.2s; }
+.price-card:nth-child(3) { animation-delay: 0.4s; }
+
+.price-card:hover { border-color: #4a9eff; box-shadow: 0 0 10px rgba(74, 158, 255, 0.15); }
+.price-new { animation: subtleGlow 3s ease-in-out infinite; }
+
+.faq-item { animation: fadeIn 1.2s ease-out both; }
+.faq-item:nth-child(1) { animation-delay: 0s; }
+.faq-item:nth-child(2) { animation-delay: 0.1s; }
+.faq-item:nth-child(3) { animation-delay: 0.2s; }
+.faq-item:nth-child(4) { animation-delay: 0.3s; }
+.faq-item:nth-child(5) { animation-delay: 0.4s; }
+.faq-item:nth-child(6) { animation-delay: 0.5s; }
 </style>
 </head>
 <body>
@@ -859,5 +944,30 @@ document.addEventListener('DOMContentLoaded', async () => {
 });
 </script>
 
+
+<script>
+// SCROLL BRIGHTNESS EFFECT
+function updateScrollBrightness() {
+  const blocks = document.querySelectorAll('.pain-card, .benefit-item, .price-card, .faq-item');
+  
+  blocks.forEach(block => {
+    const rect = block.getBoundingClientRect();
+    const elementCenter = rect.top + rect.height / 2;
+    const viewportCenter = window.innerHeight / 2;
+    
+    const distance = Math.abs(elementCenter - viewportCenter);
+    const maxDistance = window.innerHeight / 2;
+    
+    const opacity = Math.max(0.3, 1 - (distance / maxDistance) * 0.7);
+    
+    block.style.opacity = opacity;
+    block.style.transition = 'opacity 0.15s ease-out';
+  });
+}
+
+window.addEventListener('scroll', updateScrollBrightness);
+document.addEventListener('DOMContentLoaded', updateScrollBrightness);
+updateScrollBrightness();
+</script>
 </body>
 </html>
