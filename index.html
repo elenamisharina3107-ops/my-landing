@@ -1002,27 +1002,20 @@ if (document.readyState === 'loading') {
 }
 
 function initFAQ() {
-  var faqQuestions = document.querySelectorAll('.faq-q');
-  console.log('Initializing FAQ with', faqQuestions.length, 'items');
-  
-  for (var i = 0; i < faqQuestions.length; i++) {
-    (function(index) {
-      faqQuestions[index].addEventListener('click', function(e) {
-        console.log('Clicked item', index);
-        var faqItem = this.closest('.faq-item');
-        var isOpen = faqItem.classList.contains('open');
-        
-        var allItems = document.querySelectorAll('.faq-item');
-        for (var j = 0; j < allItems.length; j++) {
-          allItems[j].classList.remove('open');
-        }
-        
-        if (!isOpen) {
-          faqItem.classList.add('open');
-        }
+  document.querySelectorAll('.faq-q').forEach(function(question) {
+    question.addEventListener('click', function() {
+      var faqItem = this.closest('.faq-item');
+      var isOpen = faqItem.classList.contains('open');
+      
+      document.querySelectorAll('.faq-item').forEach(function(item) {
+        item.classList.remove('open');
       });
-    })(i);
-  }
+      
+      if (!isOpen) {
+        faqItem.classList.add('open');
+      }
+    });
+  });
 }
 }
 </script>
