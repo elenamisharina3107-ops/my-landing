@@ -331,34 +331,26 @@ footer { padding: 24px 40px; border-top: 1px solid #1a2545; display: flex; justi
 
 /* APPLY ANIMATIONS */
 .hero h1 { animation: fadeIn 1.2s ease-out; }
+.hero-sub { animation: fadeIn 1.2s ease-out 0.3s both; }
 .hero-btns { animation: scaleIn 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) 0.5s both; }
 
-.pain-card { animation: riseUp 1.5s ease-out both; }
-.pain-card:nth-child(1) { animation-delay: 0s; }
-.pain-card:nth-child(2) { animation-delay: 0.2s; }
-.pain-card:nth-child(3) { animation-delay: 0.4s; }
-
-.benefit-item { animation: fadeIn 1.2s ease-out both; }
-.benefit-item:nth-child(1) { animation-delay: 0.1s; }
-.benefit-item:nth-child(2) { animation-delay: 0.2s; }
-.benefit-item:nth-child(3) { animation-delay: 0.3s; }
-.benefit-item:nth-child(4) { animation-delay: 0.4s; }
-
-.price-card { animation: scaleIn 1.8s cubic-bezier(0.34, 1.56, 0.64, 1) both; }
-.price-card:nth-child(1) { animation-delay: 0s; }
-.price-card:nth-child(2) { animation-delay: 0.2s; }
-.price-card:nth-child(3) { animation-delay: 0.4s; }
+/* Появление при скролле (reveal) */
+.pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 0.15s ease-out, border-color 0.2s;
+}
+.pain-card.visible, .benefit-item.visible, .price-card.visible, .faq-item.visible, .include-item.visible, .process-step.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+/* Каскадные задержки внутри группы */
+.pain-card:nth-child(2), .price-card:nth-child(2), .benefit-item:nth-child(2) { transition-delay: 0.15s; }
+.pain-card:nth-child(3), .price-card:nth-child(3), .benefit-item:nth-child(3) { transition-delay: 0.3s; }
+.benefit-item:nth-child(4) { transition-delay: 0.45s; }
 
 .price-card:hover { border-color: #4a9eff; box-shadow: 0 0 10px rgba(74, 158, 255, 0.15); }
 .price-new { animation: subtleGlow 3s ease-in-out infinite; }
-
-.faq-item { animation: fadeIn 1.2s ease-out both; }
-.faq-item:nth-child(1) { animation-delay: 0s; }
-.faq-item:nth-child(2) { animation-delay: 0.1s; }
-.faq-item:nth-child(3) { animation-delay: 0.2s; }
-.faq-item:nth-child(4) { animation-delay: 0.3s; }
-.faq-item:nth-child(5) { animation-delay: 0.4s; }
-.faq-item:nth-child(6) { animation-delay: 0.5s; }
 </style>
 </head>
 <body>
@@ -967,54 +959,57 @@ document.addEventListener('DOMContentLoaded', async () => {
 
 
 <script>
-// SCROLL BRIGHTNESS EFFECT
-function updateScrollBrightness() {
-  const blocks = document.querySelectorAll('.pain-card, .benefit-item, .price-card, .faq-item');
-  
-  blocks.forEach(block => {
-    const rect = block.getBoundingClientRect();
-    const elementCenter = rect.top + rect.height / 2;
-    const viewportCenter = window.innerHeight / 2;
-    
-    const distance = Math.abs(elementCenter - viewportCenter);
-    const maxDistance = window.innerHeight / 2;
-    
-    const opacity = Math.max(0.3, 1 - (distance / maxDistance) * 0.7);
-    
-    block.style.opacity = opacity;
-    block.style.transition = 'opacity 0.15s ease-out';
-  });
-}
+// REVEAL ON SCROLL + BRIGHTNESS EFFECT
+(function() {
+  var revealSelector = '.pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step';
 
-window.addEventListener('scroll', updateScrollBrightness);
-document.addEventListener('DOMContentLoaded', updateScrollBrightness);
-updateScrollBrightness();
-  </script>
+  // 1) Появление элементов при попадании в экран
+  function initReveal() {
+    var elements = document.querySelectorAll(revealSelector);
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      elements.forEach(function(el) { observer.observe(el); });
+    } else {
+      // Старые браузеры: просто показать всё
+      elements.forEach(function(el) { el.classList.add('visible'); });
+    }
+  }
 
-<script>
- // FAQ TOGGLE
-if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', initFAQ);
-} else {
-  initFAQ();
-}
-
-function initFAQ() {
-  document.querySelectorAll('.faq-q').forEach(function(question) {
-    question.addEventListener('click', function() {
-      var faqItem = this.closest('.faq-item');
-      var isOpen = faqItem.classList.contains('open');
-      
-      document.querySelectorAll('.faq-item').forEach(function(item) {
-        item.classList.remove('open');
-      });
-      
-      if (!isOpen) {
-        faqItem.classList.add('open');
-      }
+  // 2) Яркость: элементы в центре экрана ярче, по краям темнее
+  function updateScrollBrightness() {
+    var blocks = document.querySelectorAll(revealSelector);
+    var viewportCenter = window.innerHeight / 2;
+    blocks.forEach(function(block) {
+      var rect = block.getBoundingClientRect();
+      var elementCenter = rect.top + rect.height / 2;
+      var distance = Math.abs(elementCenter - viewportCenter);
+      var maxDistance = window.innerHeight * 0.75;
+      var brightness = Math.max(0.55, 1 - (distance / maxDistance) * 0.45);
+      block.style.filter = 'brightness(' + brightness + ')';
     });
-  });
-}
+  }
+
+  function init() {
+    initReveal();
+    updateScrollBrightness();
+    window.addEventListener('scroll', updateScrollBrightness, { passive: true });
+    window.addEventListener('resize', updateScrollBrightness);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
 </script>
+
 </body>
 </html>
