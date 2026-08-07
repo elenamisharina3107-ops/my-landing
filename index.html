@@ -990,8 +990,8 @@ document.addEventListener('DOMContentLoaded', async () => {
       var rect = block.getBoundingClientRect();
       var elementCenter = rect.top + rect.height / 2;
       var distance = Math.abs(elementCenter - viewportCenter);
-      var maxDistance = window.innerHeight * 0.75;
-      var brightness = Math.max(0.55, 1 - (distance / maxDistance) * 0.45);
+      var maxDistance = window.innerHeight * 0.6;
+      var brightness = Math.max(0.35, 1 - (distance / maxDistance) * 0.65);
       block.style.filter = 'brightness(' + brightness + ')';
     });
   }
