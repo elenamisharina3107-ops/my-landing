@@ -968,6 +968,23 @@ function updateScrollBrightness() {
 window.addEventListener('scroll', updateScrollBrightness);
 document.addEventListener('DOMContentLoaded', updateScrollBrightness);
 updateScrollBrightness();
+  // FAQ TOGGLE
+document.querySelectorAll('.faq-q').forEach(question => {
+  question.addEventListener('click', function() {
+    const faqItem = this.closest('.faq-item');
+    const isOpen = faqItem.classList.contains('open');
+    
+    // Закрыть все остальные
+    document.querySelectorAll('.faq-item').forEach(item => {
+      item.classList.remove('open');
+    });
+    
+    // Переключить текущий
+    if (!isOpen) {
+      faqItem.classList.add('open');
+    }
+  });
+});
 </script>
 </body>
 </html>
