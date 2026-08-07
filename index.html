@@ -689,15 +689,32 @@ function clearTariff() {
   document.getElementById("selected-tariff").style.display = "none";
 }
 
+var tgRe = /^@[a-zA-Z0-9_]{5,32}$/;
+var tgLinkRe = /^(https?:\/\/)?(t\.me|telegram\.me)\/[a-zA-Z0-9_]{5,32}$/;
+var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+var phoneRe = /^(\+7|8|7)?[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
+
 function isValidContact(value) {
-  value = value.trim();
-  var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-  var phoneDigits = value.replace(/[^0-9]/g, "");
-  var phoneRe = phoneDigits.length >= 10 && phoneDigits.length <= 15 && /^[+0-9()\s\-]+$/.test(value);
-  var tgRe = /^@[a-zA-Z0-9_]{5,32}$/;
-  var tgLinkRe = /^(https?:\/\/)?(t\.me|telegram\.me)\/[a-zA-Z0-9_]{5,32}$/;
-  return emailRe.test(value) || phoneRe || tgRe.test(value) || tgLinkRe.test(value);
+  return emailRe.test(value) || phoneRe.test(value) || tgRe.test(value) || tgLinkRe.test(value);
 }
+
+function updateButtonState() {
+  var btn = document.querySelector('.cta-btn');
+  var consentInput = document.getElementById('f-consent');
+  
+  if (consentInput.checked) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  } else {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+  }
+}
+
+document.getElementById('f-consent').addEventListener('change', updateButtonState);
+document.addEventListener('DOMContentLoaded', updateButtonState);
 
 document.getElementById("contact-form").addEventListener("submit", function(e) {
   e.preventDefault();
@@ -706,6 +723,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   var errorDiv = document.getElementById("contact-error");
   var consentInput = document.getElementById("f-consent");
   var consentError = document.getElementById("consent-error");
+  
   if (!isValidContact(contactInput.value)) {
     errorDiv.style.display = "block";
     contactInput.style.borderColor = "#F87171";
@@ -714,33 +732,38 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   }
   errorDiv.style.display = "none";
   contactInput.style.borderColor = "#1a2545";
+  
   if (!consentInput.checked) {
     consentError.style.display = "block";
     return;
   }
   consentError.style.display = "none";
+  
   document.getElementById("f-consent-time").value = new Date().toISOString();
   var btn = form.querySelector('button[type="submit"]');
   btn.textContent = "Отправляем...";
   btn.disabled = true;
+  
   fetch("https://api.vireflow.ru/api/lead-notify", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    name: form.name.value,
-    contact: form.contact.value,
-    tariff: form.tariff.value,
-    message: form.message.value
-  })
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: form.name.value,
+      contact: form.contact.value,
+      tariff: form.tariff.value,
+      message: form.message.value
+    })
   }).then(function(res) {
     if (res.ok) {
       form.style.display = "none";
       document.getElementById("form-success").style.display = "block";
     }
-}).catch(function(err) {
+  }).catch(function(err) {
     console.error("Lead submission failed:", err);
-
+    btn.textContent = "Получить сайт под заявки";
+    btn.disabled = false;
   });
+});
 
 </script>
 
