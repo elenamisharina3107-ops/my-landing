@@ -738,7 +738,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   btn.textContent = "Отправляем...";
   btn.disabled = true;
   
-AKfycbw1RGev8h4hz14meDm1LZOVbU0LAjaAOGYQRwUFDcm4ap0dH6QYmnNV4EThKYGAkmkejQ
+fetch("https://script.google.com/macros/s/AKfycbw1RGev8h4hz14meDm1LZOVbU0LAjaAOGYQRwUFDcm4ap0dH6QYmnNV4EThKYGAkmkejQ/exec", {
   method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
