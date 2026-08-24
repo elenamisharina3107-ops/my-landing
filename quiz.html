@@ -98,6 +98,15 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
 @media (max-width: 480px) {
   .quiz-nav { flex-direction: column-reverse; align-items: stretch; }
 }
+
+/* RESULT SCREEN */
+.result-scale { margin-bottom: 20px; }
+.result-percent-num { font-size: 44px; font-weight: 800; color: #4a9eff; margin-bottom: 10px; }
+.result-track { height: 8px; background: #13131E; border: 1px solid #1a2545; border-radius: 6px; overflow: hidden; }
+.result-fill { height: 100%; background: #4a9eff; border-radius: 6px; width: 0%; transition: width 0.6s ease-out; }
+.result-crosssell { font-size: 14px; color: #8B8B9E; margin-bottom: 14px; line-height: 1.6; }
+.result-soft { font-size: 14px; color: #4a9eff; background: #0f1428; border: 1px solid #1a2545; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; line-height: 1.6; }
+.result-cta-heading { font-size: 18px; font-weight: 700; margin: 28px 0 16px; }
 </style>
 </head>
 <body>
@@ -154,10 +163,20 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
     </div>
   </div>
 
-  <!-- ЭКРАН РЕЗУЛЬТАТА (заглушка — полная вёрстка появится на шаге 5) -->
+  <!-- ЭКРАН РЕЗУЛЬТАТА -->
   <div class="quiz-screen" id="screen-result">
     <div class="quiz-kicker">Результат</div>
-    <div class="quiz-title" id="result-debug">—</div>
+    <div class="result-scale" id="result-scale">
+      <div class="result-percent-num" id="result-percent-num">0%</div>
+      <div class="result-track"><div class="result-fill" id="result-fill"></div></div>
+    </div>
+    <div class="quiz-title" id="result-title"></div>
+    <p class="quiz-sub" id="result-text"></p>
+    <p class="result-crosssell" id="result-crosssell" style="display:none;"></p>
+    <p class="result-soft" id="result-soft" style="display:none;"></p>
+
+    <div class="result-cta-heading">Оставьте контакт — покажу, как это будет работать у Вас</div>
+    <div id="result-form-slot"><!-- форма появится на шаге 6 --></div>
   </div>
 
 </div>
@@ -615,8 +634,31 @@ var els = {
   qOptions: document.getElementById('q-options'),
   qBack: document.getElementById('q-back'),
   qNext: document.getElementById('q-next'),
-  resultDebug: document.getElementById('result-debug'),
+  resultScale: document.getElementById('result-scale'),
+  resultPercentNum: document.getElementById('result-percent-num'),
+  resultFill: document.getElementById('result-fill'),
+  resultTitle: document.getElementById('result-title'),
+  resultText: document.getElementById('result-text'),
+  resultCrosssell: document.getElementById('result-crosssell'),
+  resultSoft: document.getElementById('result-soft'),
 };
+
+var DEFAULT_CATEGORY_LABELS = { site: 'Сайт', bot: 'Бот', agent: 'Агент', team: 'Команда' };
+
+var CATEGORY_RESULT_TEXT = {
+  site: 'Вам подойдёт сайт под заявки — лендинг от 9 000 ₽ или корпоративный сайт от 19 000 ₽: своя страница с формой, которая принимает заявки 24/7 и не зависит от директа.',
+  bot: 'Вам подойдёт связка сайт + AI-бот — от 49 000 ₽: бот отвечает клиентам мгновенно в любое время суток и не даёт заявкам теряться, пока Вы заняты другим.',
+  agent: 'Вам подойдёт AI-агент — берёт на себя рутину, которая сейчас отнимает время вручную. Решение индивидуальное, обсудим задачу и посчитаем стоимость.',
+  team: 'Вам стоит присмотреться к комплексной автоматизации — несколько связанных AI-инструментов вместо одного точечного решения, чтобы расти без найма новых людей. Решение индивидуальное, обсудим, что именно нужно.',
+};
+
+function categoryLabels() {
+  var branch = BRANCHES[state.branchId];
+  var overrides = (branch && branch.categoryLabelOverrides) || {};
+  var labels = {};
+  CATEGORY_KEYS.forEach(function (k) { labels[k] = overrides[k] || DEFAULT_CATEGORY_LABELS[k]; });
+  return labels;
+}
 
 function showScreen(id) {
   document.querySelectorAll('.quiz-screen').forEach(function (el) {
@@ -806,11 +848,45 @@ function computeResult() {
   };
 }
 
+function renderResultContent(result) {
+  var labels = categoryLabels();
+
+  els.resultCrosssell.style.display = 'none';
+  els.resultSoft.style.display = 'none';
+
+  if (result.aiPartner === true) {
+    els.resultScale.style.display = 'none';
+    els.resultTitle.textContent = 'Вам подойдёт AI-агент';
+    els.resultText.textContent = 'Недорогой цифровой помощник 24/7: советует, берёт часть работы на себя и подкидывает идеи для роста.';
+    return;
+  }
+
+  els.resultScale.style.display = 'block';
+  els.resultPercentNum.textContent = result.percent + '%';
+  els.resultFill.style.width = result.percent + '%';
+
+  if (result.winnerTotal === 0) {
+    els.resultTitle.textContent = 'Похоже, у Вас уже неплохо отлажено';
+    els.resultText.textContent = 'Но, возможно, есть что ещё ускорить — расскажите подробнее, посмотрим вместе.';
+  } else {
+    els.resultTitle.textContent = 'Вам подойдёт: ' + labels[result.winnerKey];
+    els.resultText.textContent = CATEGORY_RESULT_TEXT[result.winnerKey];
+    if (result.runnerUpKey) {
+      els.resultCrosssell.textContent = 'И ещё заметно, что имеет значение направление «' + labels[result.runnerUpKey] + '» — тут тоже есть, чем помочь.';
+      els.resultCrosssell.style.display = 'block';
+    }
+  }
+
+  if (result.aiPartner === 'maybe') {
+    els.resultSoft.textContent = 'Кстати, если позже захотите не разовое решение, а постоянного AI-помощника — это тоже можно обсудить.';
+    els.resultSoft.style.display = 'block';
+  }
+}
+
 function finishQuiz() {
   var result = computeResult();
+  renderResultContent(result);
   showScreen('screen-result');
-  // Заглушка для отладки — полноценный экран результата появится на шаге 5.
-  els.resultDebug.textContent = 'Победитель: ' + result.winnerKey + ' (' + result.percent + '%), aiPartner: ' + result.aiPartner;
 }
 
 renderNiches();
