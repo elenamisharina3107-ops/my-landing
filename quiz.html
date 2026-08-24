@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-844LP3WRP4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-844LP3WRP4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Квиз: какое решение подойдёт Вашему бизнесу — Vireflow</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Квиз: какое решение подойдёт Вашему бизнесу">
+<meta property="og:description" content="Короткий квиз про Ваш бизнес — персональная рекомендация: сайт, AI-бот или AI-агент.">
+<meta property="og:url" content="https://vireflow.ru/quiz.html">
+<meta property="og:image" content="https://vireflow.ru/og-image.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ru_RU">
+<meta name="description" content="Пройдите короткий квиз про Ваш бизнес и получите персональную рекомендацию: сайт, AI-бот, AI-агент или комплексная автоматизация. 2 минуты, без спама.">
+<link rel="canonical" href="https://vireflow.ru/quiz.html">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="favicon.ico?v=2" sizes="any">
+<link rel="icon" href="/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/favicon-96.png?v=2" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: #080d1a; color: #F0F0F5; font-size: 16px; line-height: 1.6; min-height: 100vh; }
+
+/* NAV */
+nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
+.nav-logo { font-size: 16px; font-weight: 700; color: #F0F0F5; text-decoration: none; }
+.nav-back { font-size: 14px; color: #8B8B9E; text-decoration: none; transition: color 0.2s; }
+.nav-back:hover { color: #F0F0F5; }
+
+/* BUTTONS (переиспользованы из index.html) */
+.btn-primary { background: #4a9eff; color: #fff; border: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: opacity 0.2s, transform 0.2s; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-ghost { background: transparent; color: #4a9eff; border: 1px solid #1a2545; border-radius: 12px; padding: 14px 28px; font-size: 15px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+.btn-ghost:hover { background: #0f1428; }
+.cta-input { width: 100%; background: #080d1a; border: 1px solid #1a2545; border-radius: 12px; padding: 14px 18px; color: #F0F0F5; font-size: 15px; margin-bottom: 12px; outline: none; font-family: inherit; transition: border-color 0.2s; }
+.cta-input::placeholder { color: #8B8B9E; }
+.cta-input:focus { border-color: #4a9eff; }
+.cta-btn { width: 100%; background: #4a9eff; color: #fff; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 4px; transition: opacity 0.2s, transform 0.2s; }
+.cta-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+.cta-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* QUIZ SHELL */
+.quiz-shell { max-width: 640px; margin: 0 auto; padding: 56px 20px 80px; min-height: calc(100vh - 65px); display: flex; flex-direction: column; justify-content: center; }
+.quiz-screen { display: none; }
+.quiz-screen.active { display: block; animation: riseUp 0.35s ease-out; }
+@keyframes riseUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.quiz-kicker { font-size: 11px; color: #4a9eff; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+.quiz-title { font-size: 30px; font-weight: 800; line-height: 1.25; margin-bottom: 12px; }
+.quiz-sub { font-size: 15px; color: #8B8B9E; line-height: 1.6; margin-bottom: 32px; }
+
+/* NICHE GRID */
+.niche-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.niche-btn { background: #13131E; border: 1px solid #1a2545; border-radius: 12px; padding: 18px 16px; font-size: 15px; font-weight: 600; color: #F0F0F5; text-align: left; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-family: inherit; }
+.niche-btn:hover { border-color: #4a9eff; background: #0f1428; }
+.niche-custom-row { margin-top: 8px; }
+.niche-custom-input { display: none; margin-top: 12px; }
+.niche-custom-input.open { display: block; }
+
+@media (max-width: 480px) {
+  .niche-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">Vireflow</a>
+  <a class="nav-back" href="/">← на главную</a>
+</nav>
+
+<div class="quiz-shell">
+
+  <!-- ЭКРАН 0: выбор ниши -->
+  <div class="quiz-screen active" id="screen-niche">
+    <div class="quiz-kicker">Бесплатный разбор · 2 минуты</div>
+    <div class="quiz-title">Расскажите о своём деле — подберём решение</div>
+    <p class="quiz-sub">Несколько вопросов про то, как сейчас приходят и обрабатываются заявки. В конце — персональная рекомендация, без воды.</p>
+    <div class="niche-grid" id="niche-grid"></div>
+    <div class="niche-custom-row">
+      <button class="niche-btn" id="niche-custom-btn" style="width:100%; text-align:center;">Своё</button>
+      <div class="niche-custom-input" id="niche-custom-input">
+        <input class="cta-input" type="text" id="niche-custom-text" placeholder="Например: репетитор, автосервис, кофейня">
+        <button class="btn-primary" id="niche-custom-next" style="width:100%;" disabled>Далее</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+var NICHES = [
+  { id: 'entrepreneur', label: 'Предприниматель' },
+  { id: 'beauty', label: 'Салон' },
+  { id: 'dental', label: 'Стоматология' },
+  { id: 'hr', label: 'HR' },
+  { id: 'accountant', label: 'Бухгалтер' },
+  { id: 'appraiser', label: 'Оценщик' },
+  { id: 'lawyer', label: 'Юрист' },
+];
+
+var state = {
+  nicheId: null, customText: '', flow: null, branchId: null,
+  sequence: [], qPos: 0, answers: [],
+  totals: { site: 0, bot: 0, agent: 0, team: 0 },
+  theoreticalMax: { site: 0, bot: 0, agent: 0, team: 0 },
+  aiPartnerVotes: [],
+};
+
+var els = {
+  niceGrid: document.getElementById('niche-grid'),
+  customBtn: document.getElementById('niche-custom-btn'),
+  customInput: document.getElementById('niche-custom-input'),
+  customText: document.getElementById('niche-custom-text'),
+  customNext: document.getElementById('niche-custom-next'),
+};
+
+function showScreen(id) {
+  document.querySelectorAll('.quiz-screen').forEach(function (el) {
+    el.classList.toggle('active', el.id === id);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderNiches() {
+  NICHES.forEach(function (niche) {
+    var btn = document.createElement('button');
+    btn.className = 'niche-btn';
+    btn.type = 'button';
+    btn.textContent = niche.label;
+    btn.addEventListener('click', function () { onNicheChosen(niche.id); });
+    els.niceGrid.appendChild(btn);
+  });
+}
+
+function onNicheChosen(nicheId) {
+  state.nicheId = nicheId;
+  state.customText = '';
+  goAfterNicheChosen();
+}
+
+els.customBtn.addEventListener('click', function () {
+  els.customInput.classList.add('open');
+  els.customText.focus();
+});
+
+els.customText.addEventListener('input', function () {
+  els.customNext.disabled = els.customText.value.trim().length === 0;
+});
+
+els.customNext.addEventListener('click', function () {
+  state.nicheId = 'custom';
+  state.customText = els.customText.value.trim();
+  goAfterNicheChosen();
+});
+
+// Временная заглушка — будет заменена на экран-развилку и вопросы на следующих шагах.
+function goAfterNicheChosen() {
+  console.log('niche chosen:', state.nicheId, state.customText);
+}
+
+renderNiches();
+</script>
+
+</body>
+</html>
