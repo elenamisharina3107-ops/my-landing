@@ -84,6 +84,20 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
 .flow-btn-desc { display: block; font-size: 13px; font-weight: 400; color: #8B8B9E; margin-top: 4px; }
 .quiz-back-link { display: inline-block; font-size: 14px; color: #8B8B9E; text-decoration: none; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; }
 .quiz-back-link:hover { color: #F0F0F5; }
+
+/* QUESTION SCREEN */
+.quiz-progress { font-size: 12px; color: #4a9eff; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 14px; }
+.quiz-hint { font-size: 13px; color: #4a9eff; margin: -20px 0 20px; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.quiz-option { display: flex; align-items: flex-start; gap: 12px; background: #13131E; border: 1px solid #1a2545; border-radius: 12px; padding: 16px 18px; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-size: 14px; line-height: 1.5; }
+.quiz-option:hover { border-color: #4a9eff; }
+.quiz-option input[type="checkbox"] { accent-color: #4a9eff; width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; cursor: pointer; }
+.quiz-nav { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+.quiz-nav-next { flex: 1; }
+
+@media (max-width: 480px) {
+  .quiz-nav { flex-direction: column-reverse; align-items: stretch; }
+}
 </style>
 </head>
 <body>
@@ -128,6 +142,24 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
     <button class="quiz-back-link" type="button" id="flow-back">← назад</button>
   </div>
 
+  <!-- ЭКРАН ВОПРОСА (универсальный, используется для Q1..Q5 любой ветки) -->
+  <div class="quiz-screen" id="screen-question">
+    <div class="quiz-progress" id="q-progress"></div>
+    <div class="quiz-title" id="q-title"></div>
+    <p class="quiz-hint" id="q-hint"></p>
+    <div class="quiz-options" id="q-options"></div>
+    <div class="quiz-nav">
+      <button class="btn-ghost" type="button" id="q-back">← назад</button>
+      <button class="btn-primary quiz-nav-next" type="button" id="q-next" disabled>Далее</button>
+    </div>
+  </div>
+
+  <!-- ЭКРАН РЕЗУЛЬТАТА (заглушка — полная вёрстка появится на шаге 5) -->
+  <div class="quiz-screen" id="screen-result">
+    <div class="quiz-kicker">Результат</div>
+    <div class="quiz-title" id="result-debug">—</div>
+  </div>
+
 </div>
 
 <script>
@@ -140,6 +172,66 @@ var NICHES = [
   { id: 'appraiser', label: 'Оценщик' },
   { id: 'lawyer', label: 'Юрист' },
 ];
+
+var CATEGORY_KEYS = ['site', 'bot', 'agent', 'team'];
+var HINT_TEXT = 'Отметьте всё, что подходит';
+
+var Q5 = {
+  text: 'Представьте: у Вас есть цифровой сотрудник, который заменяет сразу нескольких специалистов — юриста, маркетолога, аналитика — помнит всё о Вашем бизнесе, выполняет поручения и помогает вести и масштабировать его без найма новых людей. Хотели бы такого?',
+  hint: HINT_TEXT,
+  options: [
+    { text: 'Да, хочу такого AI-помощника на постоянной основе', weights: { team: 30 }, aiPartner: true },
+    { text: 'Интересно, но сначала хочу закрыть одну конкретную задачу', weights: { team: 10 }, aiPartner: 'maybe' },
+    { text: 'Нет, нужно решить конкретную проблему разово', weights: {}, aiPartner: false },
+  ],
+};
+
+var BRANCHES = {
+  beauty: {
+    label: 'Салон',
+    questions: [
+      {
+        text: 'Как сейчас клиенты записываются к Вам?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только через директ/звонок — ни сайта, ни приложения для записи', weights: { site: 25 } },
+          { text: 'Есть свой сайт/страница, но без формы или онлайн-записи', weights: { site: 15 } },
+          { text: 'Есть готовое приложение для записи (YCLIENTS, Dikidi и т.п.), но клиенты всё равно пишут в директ с вопросами по цене и услугам', weights: { bot: 15 } },
+          { text: 'Справляюсь — и с записью, и с вопросами клиентов, ничего не теряется', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда клиент пишет вечером или в выходной с вопросом про запись/цену?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам, как только освобожусь — может пройти час-два', weights: { bot: 25 } },
+          { text: 'Клиент часто не дожидается ответа и уходит к конкуренту', weights: { bot: 25, site: 10 } },
+          { text: 'Есть администратор, но не всегда на связи', weights: { bot: 15 } },
+          { text: 'Отвечаю быстро в любое время', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что из этого отнимает больше всего Вашего времени?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Принимать оплату и подтверждать запись вручную', weights: { agent: 20 } },
+          { text: 'Придумывать и выкладывать посты/сторис для соцсетей', weights: { agent: 20 } },
+          { text: 'Напоминать клиентам о записи, чтобы не было пустых окон', weights: { agent: 15, bot: 10 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы открыть второй филиал/взять больше клиентов прямо сейчас, если бы появился спрос?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, и одна/один еле справляюсь с текущей админкой и клиентами', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но пришлось бы нанимать администратора', weights: { team: 20 } },
+          { text: 'Да, у меня уже есть команда/процессы', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+};
 
 var state = {
   nicheId: null, customText: '', flow: null, branchId: null,
@@ -155,6 +247,13 @@ var els = {
   customInput: document.getElementById('niche-custom-input'),
   customText: document.getElementById('niche-custom-text'),
   customNext: document.getElementById('niche-custom-next'),
+  qProgress: document.getElementById('q-progress'),
+  qTitle: document.getElementById('q-title'),
+  qHint: document.getElementById('q-hint'),
+  qOptions: document.getElementById('q-options'),
+  qBack: document.getElementById('q-back'),
+  qNext: document.getElementById('q-next'),
+  resultDebug: document.getElementById('result-debug'),
 };
 
 function showScreen(id) {
@@ -219,15 +318,137 @@ document.getElementById('flow-outbound').addEventListener('click', function () {
   startBranch('outbound');
 });
 
-// Временная заглушка на нишевые ветки без развилки — реальный старт ветки появится на шаге 3.
 function startBranchForNiche(nicheId) {
   startBranch(nicheId);
 }
 
-// Временная заглушка — реальная логика вопросов появится на шаге 3.
 function startBranch(branchId) {
+  var branch = BRANCHES[branchId];
   state.branchId = branchId;
-  console.log('branch started:', branchId);
+  state.sequence = branch.questions.concat([Q5]);
+  state.qPos = 0;
+  state.answers = state.sequence.map(function () { return []; });
+  state.aiPartnerVotes = [];
+  state.totals = { site: 0, bot: 0, agent: 0, team: 0 };
+  state.theoreticalMax = computeTheoreticalMax(state.sequence);
+  showScreen('screen-question');
+  renderQuestion(state.qPos);
+}
+
+function computeTheoreticalMax(sequence) {
+  var max = { site: 0, bot: 0, agent: 0, team: 0 };
+  sequence.forEach(function (question) {
+    question.options.forEach(function (opt) {
+      CATEGORY_KEYS.forEach(function (cat) {
+        max[cat] += opt.weights[cat] || 0;
+      });
+    });
+  });
+  return max;
+}
+
+function renderQuestion(pos) {
+  var question = state.sequence[pos];
+  els.qProgress.textContent = 'Вопрос ' + (pos + 1) + ' из ' + state.sequence.length;
+  els.qTitle.textContent = question.text;
+  els.qHint.textContent = question.hint;
+  els.qOptions.innerHTML = '';
+  question.options.forEach(function (opt, i) {
+    var row = document.createElement('label');
+    row.className = 'quiz-option';
+    row.innerHTML = '<input type="checkbox" data-idx="' + i + '"> <span>' + opt.text + '</span>';
+    var checkbox = row.querySelector('input');
+    if (state.answers[pos].indexOf(i) !== -1) checkbox.checked = true;
+    checkbox.addEventListener('change', function () { onOptionToggle(question, i, checkbox); });
+    els.qOptions.appendChild(row);
+  });
+  els.qBack.textContent = pos === 0 ? '← назад' : '← предыдущий вопрос';
+  refreshNextButton();
+}
+
+function onOptionToggle(question, idx, checkbox) {
+  var boxes = Array.prototype.slice.call(els.qOptions.querySelectorAll('input[type=checkbox]'));
+  if (checkbox.checked && question.options[idx].exclusive) {
+    boxes.forEach(function (b, i) { if (i !== idx) b.checked = false; });
+  } else if (checkbox.checked) {
+    question.options.forEach(function (o, i) { if (o.exclusive) boxes[i].checked = false; });
+  }
+  refreshNextButton();
+}
+
+function refreshNextButton() {
+  var anyChecked = els.qOptions.querySelector('input[type=checkbox]:checked') !== null;
+  els.qNext.disabled = !anyChecked;
+}
+
+els.qNext.addEventListener('click', function () {
+  var boxes = Array.prototype.slice.call(els.qOptions.querySelectorAll('input[type=checkbox]'));
+  state.answers[state.qPos] = boxes.reduce(function (acc, b, i) {
+    if (b.checked) acc.push(i);
+    return acc;
+  }, []);
+
+  if (state.qPos < state.sequence.length - 1) {
+    state.qPos += 1;
+    renderQuestion(state.qPos);
+  } else {
+    finishQuiz();
+  }
+});
+
+els.qBack.addEventListener('click', function () {
+  if (state.qPos === 0) {
+    if (state.nicheId === 'entrepreneur' || state.nicheId === 'custom') {
+      showScreen('screen-flow');
+    } else {
+      showScreen('screen-niche');
+    }
+    return;
+  }
+  state.qPos -= 1;
+  renderQuestion(state.qPos);
+});
+
+function computeResult() {
+  var totals = { site: 0, bot: 0, agent: 0, team: 0 };
+  var aiPartnerVotes = [];
+  state.sequence.forEach(function (question, qi) {
+    state.answers[qi].forEach(function (optIdx) {
+      var opt = question.options[optIdx];
+      CATEGORY_KEYS.forEach(function (cat) { totals[cat] += opt.weights[cat] || 0; });
+      if (opt.aiPartner !== undefined) aiPartnerVotes.push(opt.aiPartner);
+    });
+  });
+  state.totals = totals;
+  state.aiPartnerVotes = aiPartnerVotes;
+
+  var ranked = CATEGORY_KEYS
+    .map(function (k) { return { key: k, total: totals[k] }; })
+    .sort(function (a, b) {
+      if (b.total !== a.total) return b.total - a.total;
+      return CATEGORY_KEYS.indexOf(a.key) - CATEGORY_KEYS.indexOf(b.key);
+    });
+  var winner = ranked[0];
+  var runnerUp = ranked[1].total > 0 ? ranked[1] : null;
+  var max = state.theoreticalMax[winner.key];
+  var percent = max > 0 ? Math.round((winner.total / max) * 100) : 0;
+  var aiPartner = aiPartnerVotes.indexOf(true) !== -1 ? true
+    : aiPartnerVotes.indexOf('maybe') !== -1 ? 'maybe' : false;
+
+  return {
+    winnerKey: winner.key,
+    winnerTotal: winner.total,
+    percent: percent,
+    runnerUpKey: runnerUp ? runnerUp.key : null,
+    aiPartner: aiPartner,
+  };
+}
+
+function finishQuiz() {
+  var result = computeResult();
+  showScreen('screen-result');
+  // Заглушка для отладки — полноценный экран результата появится на шаге 5.
+  els.resultDebug.textContent = 'Победитель: ' + result.winnerKey + ' (' + result.percent + '%), aiPartner: ' + result.aiPartner;
 }
 
 renderNiches();
