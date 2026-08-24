@@ -176,7 +176,35 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
     <p class="result-soft" id="result-soft" style="display:none;"></p>
 
     <div class="result-cta-heading">Оставьте контакт — покажу, как это будет работать у Вас</div>
-    <div id="result-form-slot"><!-- форма появится на шаге 6 --></div>
+    <div id="form-success" style="display:none; background:#0f1428; border:1px solid #1a2545; border-radius:12px; padding:20px; margin-bottom:16px; color:#4a9eff; font-size:15px; line-height:1.6;">✅ Заявка отправлена! Свяжусь с Вами в ближайшее время.</div>
+    <form id="contact-form" action="https://formspree.io/f/mjgdaryr" method="POST">
+      <input class="cta-input" type="text" name="name" placeholder="Ваше имя" required>
+      <input class="cta-input" type="text" name="contact" id="f-contact" placeholder="Telegram / email / телефон" required>
+      <div id="contact-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:-6px 0 10px 4px;">Укажите телефон, email или Telegram (например: @username, +7 900 123-45-67 или mail@mail.ru)</div>
+      <input class="cta-input" type="text" name="message" placeholder="Расскажите о задаче (необязательно)">
+      <input type="hidden" name="_subject" value="Новая заявка с квиза — Елена Мишарина">
+      <input type="hidden" name="consent_given_at" id="f-consent-time">
+
+      <input type="hidden" name="niche" id="f-niche">
+      <input type="hidden" name="flow" id="f-flow">
+      <input type="hidden" name="quiz_answers" id="f-quiz-answers">
+      <input type="hidden" name="result_category" id="f-result-category">
+      <input type="hidden" name="result_percent" id="f-result-percent">
+      <input type="hidden" name="ai_partner" id="f-ai-partner">
+
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:13px; color:#8B8B9E; margin:14px 0 4px;">
+        <input type="checkbox" id="f-consent" style="margin-top:3px;">
+        <span>Даю согласие на обработку персональных данных в соответствии с <a href="privacy-policy.html" target="_blank" style="color:#4a9eff;">Политикой конфиденциальности</a></span>
+      </label>
+      <div id="consent-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:0 0 10px 4px;">Нужно подтвердить согласие на обработку данных</div>
+
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:13px; color:#8B8B9E; margin:0 0 14px;">
+        <input type="checkbox" id="f-marketing" name="marketing_consent">
+        <span>Хочу получать полезные материалы и предложения по email/Telegram</span>
+      </label>
+
+      <button class="cta-btn" type="submit">Оставить заявку</button>
+    </form>
   </div>
 
 </div>
@@ -883,11 +911,111 @@ function renderResultContent(result) {
   }
 }
 
+function nicheLabel(nicheId) {
+  var found = NICHES.filter(function (n) { return n.id === nicheId; })[0];
+  return found ? found.label : nicheId;
+}
+
+function populateFormFromQuizState(result) {
+  var labels = categoryLabels();
+  document.getElementById('f-niche').value = state.nicheId === 'custom' ? state.customText : nicheLabel(state.nicheId);
+  document.getElementById('f-flow').value = state.flow === 'inbound' ? 'входящие' : state.flow === 'outbound' ? 'исходящие' : '';
+  document.getElementById('f-quiz-answers').value = state.sequence.map(function (q, i) {
+    var picked = state.answers[i].map(function (idx) { return q.options[idx].text; }).join('; ');
+    return q.text + ' — ' + picked;
+  }).join('\n');
+  document.getElementById('f-result-category').value = result.aiPartner === true ? 'AI-агент (партнёр)' : labels[result.winnerKey];
+  document.getElementById('f-result-percent').value = String(result.percent);
+  document.getElementById('f-ai-partner').value = result.aiPartner === true ? 'да' : result.aiPartner === 'maybe' ? 'может быть' : 'нет';
+}
+
 function finishQuiz() {
   var result = computeResult();
   renderResultContent(result);
+  populateFormFromQuizState(result);
   showScreen('screen-result');
 }
+
+var tgRe = /^@[a-zA-Z0-9_]{5,32}$/;
+var tgLinkRe = /^(https?:\/\/)?(t\.me|telegram\.me)\/[a-zA-Z0-9_]{5,32}$/;
+var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+var phoneRe = /^(\+7|8|7)?[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
+
+function isValidContact(value) {
+  return emailRe.test(value) || phoneRe.test(value) || tgRe.test(value) || tgLinkRe.test(value);
+}
+
+function updateButtonState() {
+  var btn = document.querySelector('#contact-form .cta-btn');
+  var consentInput = document.getElementById('f-consent');
+  if (!btn || !consentInput) return;
+  if (consentInput.checked) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  } else {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+  }
+}
+
+document.getElementById('f-consent').addEventListener('change', updateButtonState);
+document.addEventListener('DOMContentLoaded', updateButtonState);
+
+document.getElementById('contact-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var form = e.target;
+  var contactInput = document.getElementById('f-contact');
+  var errorDiv = document.getElementById('contact-error');
+  var consentInput = document.getElementById('f-consent');
+  var consentError = document.getElementById('consent-error');
+
+  if (!isValidContact(contactInput.value)) {
+    errorDiv.style.display = 'block';
+    contactInput.style.borderColor = '#F87171';
+    contactInput.focus();
+    return;
+  }
+  errorDiv.style.display = 'none';
+  contactInput.style.borderColor = '#1a2545';
+
+  if (!consentInput.checked) {
+    consentError.style.display = 'block';
+    return;
+  }
+  consentError.style.display = 'none';
+
+  document.getElementById('f-consent-time').value = new Date().toISOString();
+  var btn = form.querySelector('button[type="submit"]');
+  btn.textContent = 'Отправляем...';
+  btn.disabled = true;
+
+  fetch('https://script.google.com/macros/s/AKfycbwuaWa3x0EywWH3_WSDOVT-rvRJktaUTIzvIWv2_YqD_vY8S5od4X7qdMuKK3YDU-tV5A/exec', {
+    method: 'POST',
+    body: JSON.stringify({
+      name: form.name.value,
+      contact: form.contact.value,
+      tariff: 'Не выбран',
+      message: form.message.value,
+      niche: form.niche.value,
+      flow: form.flow.value,
+      quiz_answers: form.quiz_answers.value,
+      result_category: form.result_category.value,
+      result_percent: form.result_percent.value,
+      ai_partner: form.ai_partner.value,
+    }),
+  }).then(function (res) {
+    if (res.ok) {
+      form.style.display = 'none';
+      document.getElementById('form-success').style.display = 'block';
+    }
+  }).catch(function (err) {
+    console.error('Lead submission failed:', err);
+    btn.textContent = 'Оставить заявку';
+    btn.disabled = false;
+  });
+});
 
 renderNiches();
 </script>
