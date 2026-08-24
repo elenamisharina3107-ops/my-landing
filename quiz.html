@@ -76,6 +76,14 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
 @media (max-width: 480px) {
   .niche-grid { grid-template-columns: 1fr; }
 }
+
+/* FLOW FORK */
+.flow-choices { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.flow-btn { background: #13131E; border: 1px solid #1a2545; border-radius: 14px; padding: 22px 20px; font-size: 16px; font-weight: 600; color: #F0F0F5; text-align: left; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-family: inherit; }
+.flow-btn:hover { border-color: #4a9eff; background: #0f1428; }
+.flow-btn-desc { display: block; font-size: 13px; font-weight: 400; color: #8B8B9E; margin-top: 4px; }
+.quiz-back-link { display: inline-block; font-size: 14px; color: #8B8B9E; text-decoration: none; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; }
+.quiz-back-link:hover { color: #F0F0F5; }
 </style>
 </head>
 <body>
@@ -100,6 +108,24 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
         <button class="btn-primary" id="niche-custom-next" style="width:100%;" disabled>Далее</button>
       </div>
     </div>
+  </div>
+
+  <!-- ЭКРАН-РАЗВИЛКА: входящие / исходящие (только Предприниматель / Своё) -->
+  <div class="quiz-screen" id="screen-flow">
+    <div class="quiz-kicker">Ещё один вопрос</div>
+    <div class="quiz-title">У Вас обычно есть готовый поток обращений от клиентов, или чаще Вы сами ищете и предлагаете себя?</div>
+    <p class="quiz-sub">Холодные продажи, B2B, тендеры — это про «исходящие».</p>
+    <div class="flow-choices">
+      <button class="flow-btn" type="button" id="flow-inbound">
+        Входящие
+        <span class="flow-btn-desc">клиенты сами находят и пишут мне</span>
+      </button>
+      <button class="flow-btn" type="button" id="flow-outbound">
+        Исходящие
+        <span class="flow-btn-desc">сама/сам ищу и предлагаю себя</span>
+      </button>
+    </div>
+    <button class="quiz-back-link" type="button" id="flow-back">← назад</button>
   </div>
 
 </div>
@@ -170,9 +196,38 @@ els.customNext.addEventListener('click', function () {
   goAfterNicheChosen();
 });
 
-// Временная заглушка — будет заменена на экран-развилку и вопросы на следующих шагах.
 function goAfterNicheChosen() {
-  console.log('niche chosen:', state.nicheId, state.customText);
+  if (state.nicheId === 'entrepreneur' || state.nicheId === 'custom') {
+    showScreen('screen-flow');
+  } else {
+    startBranchForNiche(state.nicheId);
+  }
+}
+
+document.getElementById('flow-back').addEventListener('click', function () {
+  showScreen('screen-niche');
+});
+
+document.getElementById('flow-inbound').addEventListener('click', function () {
+  state.flow = 'inbound';
+  var branchId = state.nicheId === 'custom' ? 'customInbound' : 'entrepreneurInbound';
+  startBranch(branchId);
+});
+
+document.getElementById('flow-outbound').addEventListener('click', function () {
+  state.flow = 'outbound';
+  startBranch('outbound');
+});
+
+// Временная заглушка на нишевые ветки без развилки — реальный старт ветки появится на шаге 3.
+function startBranchForNiche(nicheId) {
+  startBranch(nicheId);
+}
+
+// Временная заглушка — реальная логика вопросов появится на шаге 3.
+function startBranch(branchId) {
+  state.branchId = branchId;
+  console.log('branch started:', branchId);
 }
 
 renderNiches();
