@@ -1005,6 +1005,8 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
       result_category: form.result_category.value,
       result_percent: form.result_percent.value,
       ai_partner: form.ai_partner.value,
+      consent_given_at: form.consent_given_at.value,
+      marketing_consent: form.marketing_consent.checked,
     }),
   }).then(function (res) {
     if (res.ok) {
