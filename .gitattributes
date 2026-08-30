@@ -1,0 +1,13 @@
+# Единый конец строки в репозитории — LF, независимо от ОС и настроек машины.
+# Без этого автосейв с Windows (core.autocrlf=true) коммитит CRLF и рождает
+# «фантомные» изменения во всех файлах.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.ico binary
+*.pdf binary
+*.woff binary
+*.woff2 binary
