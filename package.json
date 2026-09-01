@@ -1,0 +1,17 @@
+{
+  "name": "admin-panel-template",
+  "version": "1.0.0",
+  "description": "Переиспользуемый шаблон сайта на Eleventy со встроенной панелью Sveltia CMS",
+  "license": "UNLICENSED",
+  "private": true,
+  "scripts": {
+    "build": "eleventy",
+    "dev": "eleventy --serve",
+    "clean": "rm -rf _site"
+  },
+  "keywords": [],
+  "author": "Vireflow",
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.6"
+  }
+}
