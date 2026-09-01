@@ -7,12 +7,14 @@
   "scripts": {
     "build": "eleventy",
     "dev": "eleventy --serve",
-    "clean": "rm -rf _site"
+    "clean": "rm -rf _site",
+    "check:config": "node scripts/check-config.mjs"
   },
   "keywords": [],
   "author": "Vireflow",
   "devDependencies": {
     "@11ty/eleventy": "^3.1.6",
-    "@11ty/eleventy-img": "^6.0.4"
+    "@11ty/eleventy-img": "^6.0.4",
+    "js-yaml": "^5.4.1"
   }
 }

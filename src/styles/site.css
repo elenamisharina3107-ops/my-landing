@@ -9,6 +9,16 @@
   --accent-ink: #1f5049;
 }
 
+/* Акцентный цвет из общих настроек панели (settings.theme) */
+html[data-accent="terracotta"] {
+  --accent: #a54c2b;
+  --accent-ink: #8a3f24;
+}
+html[data-accent="blue"] {
+  --accent: #2b5fa5;
+  --accent-ink: #204a82;
+}
+
 * { box-sizing: border-box; }
 
 body {
@@ -94,6 +104,24 @@ h3 { font-size: 1.15rem; margin: 0 0 .5rem; }
 .contacts__list dd { margin: 0; }
 .contacts a { color: var(--accent-ink); }
 .contacts__socials { list-style: none; padding: 0; display: flex; gap: 1rem; margin-top: 1.5rem; }
+
+/* prices */
+.price-list { list-style: none; padding: 0; margin: 0; max-width: 560px; }
+.price-list li {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: .6rem 0;
+  border-bottom: 1px dashed var(--border);
+}
+.price-list__price { font-weight: 600; white-space: nowrap; }
+
+/* faq */
+.faq-list { margin: 0; }
+.faq-item { border-bottom: 1px solid var(--border); padding: 1.1rem 0; }
+.faq-item:first-child { border-top: 1px solid var(--border); }
+.faq-item dt { font-weight: 600; margin-bottom: .3rem; }
+.faq-item dd { margin: 0; color: var(--ink-soft); }
 
 /* footer */
 .site-footer {

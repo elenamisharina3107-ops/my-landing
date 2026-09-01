@@ -39,6 +39,13 @@ module.exports = function (eleventyConfig) {
       .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
   });
 
+  // Коллекция «Вопросы и ответы» — src/content/faq/*.md, сортировка по order.
+  eleventyConfig.addCollection("faq", (collectionApi) => {
+    return collectionApi
+      .getFilteredByTag("faq")
+      .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+  });
+
   // Шорткод {% image src, alt, sizes %}
   // Любая картинка при сборке → webp + jpeg-фолбэк, ширины 640/1280/2000.
   // Результат — тег <picture> с srcset. Файлы кладутся в _site/img/.

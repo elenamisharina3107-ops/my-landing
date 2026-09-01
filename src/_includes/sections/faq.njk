@@ -1,0 +1,11 @@
+<section class="faq">
+  <h2>Вопросы и ответы</h2>
+  <dl class="faq-list">
+    {% for item in collections.faq %}
+      <div class="faq-item">
+        <dt>{{ item.data.question }}</dt>
+        <dd>{{ item.content | safe }}</dd>
+      </div>
+    {% endfor %}
+  </dl>
+</section>
