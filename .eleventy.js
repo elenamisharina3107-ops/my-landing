@@ -27,6 +27,10 @@ module.exports = function (eleventyConfig) {
   // Копировать без обработки
   eleventyConfig.addPassthroughCopy({ "src/styles": "styles" });
 
+  // Панель Sveltia CMS — статические файлы, Eleventy их не трогает.
+  eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
+  eleventyConfig.ignores.add("src/admin/**");
+
   // Коллекция «Услуги» — карточки из src/content/services/*.md,
   // отсортированы по полю order (затем по имени файла).
   eleventyConfig.addCollection("services", (collectionApi) => {
