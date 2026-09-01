@@ -8,6 +8,12 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // на боевом сервере, вне веб-корня. Путь можно переопределить переменной
 // окружения — так на Beget можно вынести файл ещё выше по дереву папок.
 const DEFAULT_PATH = path.join(__dirname, "store", "config.json");
+const DEFAULT_USERS_PATH = path.join(__dirname, "store", "users.json");
+
+/** Путь к users.json — тоже вне git, тоже можно переопределить переменной окружения. */
+export function usersFilePath() {
+  return process.env.PANEL_USERS_PATH || DEFAULT_USERS_PATH;
+}
 
 /**
  * Читает и проверяет конфиг панели.

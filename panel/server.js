@@ -2,6 +2,7 @@ import { createServer } from "node:http";
 import { loadConfig } from "./config.js";
 import { sendJson } from "./http-utils.js";
 import { stubPage } from "./views/stub.js";
+import * as auth from "./auth.js";
 
 const BASE = "/admin/_panel";
 const PORT = process.env.PORT || 3000;
@@ -12,7 +13,7 @@ const PORT = process.env.PORT || 3000;
  */
 export function createApp(config) {
   const routes = {
-    "/auth": stubPage("Вход"),
+    "/auth": auth.handle,
     "/account": stubPage("Смена пароля"),
     "/users": stubPage("Пользователи"),
     "/history": stubPage("История"),
