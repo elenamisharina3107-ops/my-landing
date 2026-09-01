@@ -1,0 +1,6 @@
+{
+  "repo": "OWNER/REPO",
+  "botToken": "github_pat_вставить_fine-grained-токен_бота",
+  "sessionSecret": "заменить-на-случайную-строку-минимум-32-символа",
+  "supportUrl": "https://t.me/vireflow_support"
+}
