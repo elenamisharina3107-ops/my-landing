@@ -7,6 +7,8 @@
     {% endif %}
   </div>
   {% if hero.image %}
-    <img class="hero__image" src="{{ hero.image }}" alt="{{ hero.imageAlt }}">
+    <div class="hero__image">
+      {% image hero.image, hero.imageAlt, "(min-width: 720px) 45vw, 100vw" %}
+    </div>
   {% endif %}
 </section>

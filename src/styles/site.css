@@ -40,7 +40,7 @@ h3 { font-size: 1.15rem; margin: 0 0 .5rem; }
   .hero { grid-template-columns: 1.1fr 1fr; }
 }
 .hero__subtitle { font-size: 1.15rem; color: var(--ink-soft); }
-.hero__image { width: 100%; height: auto; border-radius: 14px; }
+.hero__image img { width: 100%; height: auto; border-radius: 14px; display: block; }
 
 .button {
   display: inline-block;
