@@ -9,6 +9,23 @@ import { renderTemplate } from "./views/render.js";
 // чтобы по времени ответа нельзя было угадать, зарегистрирован ли email.
 const DUMMY_HASH = "$2a$10$K0vElKMKNaLUbRDxRXENOeQ7RFnUqQdCALCi3kXWk1AC461Bi8RDW";
 
+export const LOGIN_PATH = "/admin/_panel/auth";
+
+// Прямой заход на /account, /users, /history (не из попапа Sveltia) после
+// входа возвращает сюда через ?redirect=... — открытый список путей,
+// чтобы нельзя было увести на произвольный внешний адрес.
+const SAFE_REDIRECTS = new Set([
+  "/admin/_panel/account",
+  "/admin/_panel/users",
+  "/admin/_panel/history",
+  "/admin/",
+]);
+
+/** Ссылка на вход с возвратом на нужную страницу панели (используют account.js и т.д.). */
+export function loginUrlWithRedirect(path) {
+  return `${LOGIN_PATH}?redirect=${encodeURIComponent(path)}`;
+}
+
 /**
  * Sveltia (протокол Decap) открывает эту страницу во всплывающем окне как
  * `${base_url}${auth_endpoint}?provider=github&scope=repo&site_id=...`
@@ -63,11 +80,22 @@ export async function handle(req, res, ctx) {
   setSessionCookie(res, token);
 
   if (user.mustChangePassword) {
-    sendHtml(res, 200, renderMustChangePassword());
+    redirect(res, "/admin/_panel/account");
+    return;
+  }
+
+  const redirectTo = ctx.url.searchParams.get("redirect");
+  if (redirectTo && SAFE_REDIRECTS.has(redirectTo)) {
+    redirect(res, redirectTo);
     return;
   }
 
   sendHtml(res, 200, renderHandshakeSuccess({ provider, token: ctx.config.botToken }));
+}
+
+function redirect(res, location) {
+  res.writeHead(302, { Location: location });
+  res.end();
 }
 
 function renderLoginForm({ action, email, error }) {
@@ -85,18 +113,6 @@ function renderLoginForm({ action, email, error }) {
 function escapeForRaw(text) {
   // ERROR_BLOCK подставляется как raw HTML — текст внутри него экранируем сами.
   return String(text).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
-}
-
-function renderMustChangePassword() {
-  return (
-    `<!doctype html><html lang="ru"><meta charset="utf-8">` +
-    `<title>Нужно сменить пароль</title>` +
-    `<body style="font:16px sans-serif;padding:2rem;max-width:32rem">` +
-    `<p>Это ваш первый вход — сначала нужно задать новый пароль.</p>` +
-    `<p><a href="/admin/_panel/account">Перейти к смене пароля →</a></p>` +
-    `<script>location.href = "/admin/_panel/account";</script>` +
-    `</body></html>`
-  );
 }
 
 /** JS-строковый литерал без риска вырваться из <script> — на случай странных символов в токене. */

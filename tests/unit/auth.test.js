@@ -107,10 +107,34 @@ describe("вход по email/паролю (маскировка GitHub)", () =>
       email: "new@example.ru",
       password: tempPassword,
     });
-    const html = await res.text();
+
+    expect(res.status).toBe(302);
+    expect(res.headers.get("location")).toBe("/admin/_panel/account");
+  });
+
+  it("после входа со ?redirect= на известную страницу — уходит туда, а не в хендшейк CMS", async () => {
+    await createUser(usersPath, { email: "owner@example.ru", role: "owner" });
+    await setPassword(usersPath, "owner@example.ru", "верныйпароль123");
+
+    const res = await postForm(
+      `${baseUrl}/admin/_panel/auth?redirect=${encodeURIComponent("/admin/_panel/account")}`,
+      { email: "owner@example.ru", password: "верныйпароль123" },
+    );
+
+    expect(res.status).toBe(302);
+    expect(res.headers.get("location")).toBe("/admin/_panel/account");
+  });
+
+  it("игнорирует посторонний ?redirect= (не открытый редирект)", async () => {
+    await createUser(usersPath, { email: "owner@example.ru", role: "owner" });
+    await setPassword(usersPath, "owner@example.ru", "верныйпароль123");
+
+    const res = await postForm(
+      `${baseUrl}/admin/_panel/auth?provider=github&redirect=${encodeURIComponent("https://evil.example/")}`,
+      { email: "owner@example.ru", password: "верныйпароль123" },
+    );
 
     expect(res.status).toBe(200);
-    expect(html).toContain("сменить пароль");
-    expect(html).not.toContain("authorization:github:success:");
+    expect(await res.text()).toContain("authorization:github:success:");
   });
 });
