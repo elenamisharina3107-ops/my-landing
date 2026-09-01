@@ -11,6 +11,14 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy({ "src/styles": "styles" });
   eleventyConfig.addPassthroughCopy({ "src/uploads": "uploads" });
 
+  // Коллекция «Услуги» — карточки из src/content/services/*.md,
+  // отсортированы по полю order (затем по имени файла).
+  eleventyConfig.addCollection("services", (collectionApi) => {
+    return collectionApi
+      .getFilteredByTag("services")
+      .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+  });
+
   return {
     dir: {
       input: "src",

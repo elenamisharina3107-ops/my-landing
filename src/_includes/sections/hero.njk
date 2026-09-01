@@ -1,0 +1,12 @@
+<section class="hero">
+  <div class="hero__text">
+    <h1>{{ hero.title }}</h1>
+    <p class="hero__subtitle">{{ hero.subtitle }}</p>
+    {% if hero.showButton %}
+      <a class="button" href="#contacts">{{ hero.buttonText }}</a>
+    {% endif %}
+  </div>
+  {% if hero.image %}
+    <img class="hero__image" src="{{ hero.image }}" alt="{{ hero.imageAlt }}">
+  {% endif %}
+</section>

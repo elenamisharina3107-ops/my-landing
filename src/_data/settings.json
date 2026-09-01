@@ -1,0 +1,11 @@
+{
+  "phone": "+7 900 000-00-00",
+  "email": "hello@example.ru",
+  "address": "Москва, ул. Примерная, 1",
+  "hours": "Пн–Пт 10:00–19:00",
+  "socials": [
+    { "label": "Telegram", "url": "https://t.me/example" },
+    { "label": "ВКонтакте", "url": "https://vk.com/example" }
+  ],
+  "footer": "© Мастерская натуральной косметики. Все права защищены."
+}
