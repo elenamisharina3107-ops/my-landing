@@ -54,17 +54,34 @@ export function listCommitsForPath(config, { branch, path, perPage = 20 }) {
   return request(config, "GET", `/repos/${config.repo}/commits?${params}`);
 }
 
-/** Архив main.zip репозитория (для экспорта, Задача 4.2) — редирект на codeload.github.com. */
+const ZIP_HEADERS = (config) => ({
+  Authorization: `Bearer ${config.botToken}`,
+  Accept: "application/vnd.github+json",
+  "X-GitHub-Api-Version": "2022-11-28",
+});
+
+/**
+ * Архив ветки репозитория (для экспорта, Задача 4.2). GitHub отвечает
+ * редиректом на codeload.github.com — а fetch по умолчанию снимает
+ * заголовок Authorization при редиректе на другой хост (это поведение
+ * самого fetch, не наша дыра). Поэтому редирект не доверяем автоследованию:
+ * читаем Location вручную и повторяем запрос со своим токеном — так архив
+ * скачивается и для приватных репозиториев тоже.
+ */
 export async function downloadRepoZip(config, branch) {
-  const res = await fetch(`${API}/repos/${config.repo}/zipball/${branch}`, {
-    headers: {
-      Authorization: `Bearer ${config.botToken}`,
-      Accept: "application/vnd.github+json",
-      "X-GitHub-Api-Version": "2022-11-28",
-    },
+  const first = await fetch(`${API}/repos/${config.repo}/zipball/${branch}`, {
+    headers: ZIP_HEADERS(config),
+    redirect: "manual",
   });
-  if (!res.ok) {
-    throw new Error(`GitHub API GET /zipball/${branch} → ${res.status}`);
+
+  if (first.status >= 300 && first.status < 400 && first.headers.get("location")) {
+    const res = await fetch(first.headers.get("location"), { headers: ZIP_HEADERS(config) });
+    if (!res.ok) throw new Error(`GitHub API GET /zipball/${branch} (redirect) → ${res.status}`);
+    return res;
   }
-  return res;
+
+  if (!first.ok) {
+    throw new Error(`GitHub API GET /zipball/${branch} → ${first.status}`);
+  }
+  return first;
 }

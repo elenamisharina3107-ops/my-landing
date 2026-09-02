@@ -5,6 +5,7 @@ import { stubPage } from "./views/stub.js";
 import * as auth from "./auth.js";
 import * as account from "./account.js";
 import * as history from "./history.js";
+import * as exportRoute from "./export.js";
 
 const BASE = "/admin/_panel";
 const PORT = process.env.PORT || 3000;
@@ -19,7 +20,7 @@ export function createApp(config) {
     "/account": account.handle,
     "/users": stubPage("Пользователи"),
     "/history": history.handle,
-    "/export": stubPage("Экспорт"),
+    "/export": exportRoute.handle,
   };
 
   return async function handleRequest(req, res) {
