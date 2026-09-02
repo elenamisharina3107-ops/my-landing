@@ -48,6 +48,13 @@ describe("хранилище пользователей (файл)", () => {
     await expect(createUser(usersPath, { email: "a@example.ru", role: "admin" })).rejects.toThrow();
   });
 
+  it("отклоняет почту без похожего на email формата", async () => {
+    await expect(createUser(usersPath, { email: "не почта", role: "editor" })).rejects.toThrow(
+      "неверную почту",
+    );
+    expect(listUsers(usersPath)).toHaveLength(0);
+  });
+
   it("listUsers не отдаёт passwordHash", async () => {
     await createUser(usersPath, { email: "a@example.ru", role: "editor" });
     const [user] = listUsers(usersPath);

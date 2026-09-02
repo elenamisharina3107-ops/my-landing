@@ -61,5 +61,17 @@
     </select>
     <button type="submit">Добавить</button>
   </form>
+
+  <script>
+    // data-confirm вместо onsubmit="confirm('...')" — так текст подтверждения
+    // остаётся данными, а не встраивается в исполняемый JS (см. escapeHtml
+    // в panel/http-utils.js: экранирование HTML не защищает значение,
+    // которое браузер потом скомпилирует как код инлайнового обработчика).
+    document.querySelectorAll("form[data-confirm]").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
+        if (!confirm(form.dataset.confirm)) event.preventDefault();
+      });
+    });
+  </script>
 </body>
 </html>

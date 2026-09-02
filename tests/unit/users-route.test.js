@@ -95,6 +95,23 @@ describe("/admin/_panel/users (только владелец)", () => {
     expect(listUsers(usersPath)).toHaveLength(2);
   });
 
+  it("почта с кавычками не ломает атрибуты/JS в таблице пользователей", async () => {
+    await createUser(usersPath, { email: "owner@example.ru", role: "owner" });
+    await setPassword(usersPath, "owner@example.ru", "нормальныйпароль1");
+    const cookie = await loginAndGetCookie("owner@example.ru", "нормальныйпароль1");
+
+    // Проходит наш простой EMAIL_PATTERN (есть @ и точка), но содержит " и ' —
+    // именно такой случай раньше пробивал onsubmit="confirm('...')".
+    await postForm(cookie, { action: "create", email: `x"y'z@example.com`, role: "editor" });
+
+    const res = await fetch(`${baseUrl}/admin/_panel/users`, { headers: { cookie } });
+    const html = await res.text();
+
+    expect(html).not.toContain(`x"y'z@example.com`); // должно быть только в экранированном виде
+    expect(html).toContain("x&quot;y&#39;z@example.com");
+    expect(html).toContain('data-confirm="Удалить x&quot;y&#39;z@example.com?"');
+  });
+
   it("не даёт удалить последнего владельца", async () => {
     await createUser(usersPath, { email: "owner@example.ru", role: "owner" });
     await setPassword(usersPath, "owner@example.ru", "нормальныйпароль1");

@@ -1,16 +1,9 @@
 import { readFileSync } from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { escapeHtml } from "../http-utils.js";
 
 const VIEWS_DIR = path.dirname(fileURLToPath(import.meta.url));
-
-function escapeHtml(value) {
-  return String(value)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;");
-}
 
 /**
  * Простая подстановка {{ключ}} в HTML-шаблон.

@@ -88,4 +88,19 @@ describe("страница «История» (роут)", () => {
 
     vi.unstubAllGlobals();
   });
+
+  it("откат отклоняет sha не в виде git-хэша (не даёт подставить путь в URL GitHub API)", async () => {
+    const { tempPassword } = await createUser(usersPath, { email: "owner2@example.ru", role: "owner" });
+    await setPassword(usersPath, "owner2@example.ru", "нормальныйпароль1");
+    const cookie = await loginAndGetCookie("owner2@example.ru", "нормальныйпароль1");
+
+    const res = await fetch(`${baseUrl}/admin/_panel/history`, {
+      method: "POST",
+      headers: { "content-type": "application/x-www-form-urlencoded", cookie },
+      body: new URLSearchParams({ sha: "../../../../user/repos" }),
+    });
+
+    expect(res.status).toBe(400);
+    expect(await res.text()).toContain("Не указана версия для отката");
+  });
 });

@@ -2,7 +2,7 @@ import { usersFilePath } from "./config.js";
 import { findUserByEmail, setPassword as setUserPassword } from "./users.js";
 import { verifyPassword } from "./password.js";
 import { createSessionToken, setSessionCookie } from "./session.js";
-import { readBody, sendHtml } from "./http-utils.js";
+import { readBody, sendHtml, escapeHtml } from "./http-utils.js";
 import { renderTemplate } from "./views/render.js";
 
 // Хэш несуществующего пароля — сравниваем с ним, когда почта не найдена,
@@ -106,15 +106,10 @@ function renderLoginForm({ action, email, error }) {
     {
       ACTION: action,
       EMAIL: email,
-      ERROR_BLOCK: error ? `<p class="error">${escapeForRaw(error)}</p>` : "",
+      ERROR_BLOCK: error ? `<p class="error">${escapeHtml(error)}</p>` : "",
     },
     ["ERROR_BLOCK"], // остальные значения экранируются render.js как обычно
   );
-}
-
-function escapeForRaw(text) {
-  // ERROR_BLOCK подставляется как raw HTML — текст внутри него экранируем сами.
-  return String(text).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 /** JS-строковый литерал без риска вырваться из <script> — на случай странных символов в токене. */

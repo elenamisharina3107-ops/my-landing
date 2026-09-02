@@ -1,7 +1,7 @@
 import { usersFilePath } from "./config.js";
 import { setPassword as setUserPassword } from "./users.js";
 import { getSession } from "./session.js";
-import { readBody, sendHtml } from "./http-utils.js";
+import { readBody, sendHtml, escapeHtml } from "./http-utils.js";
 import { renderTemplate } from "./views/render.js";
 import { loginUrlWithRedirect } from "./auth.js";
 
@@ -56,14 +56,10 @@ function renderForm({ email, error }) {
     {
       ACTION: SELF_PATH,
       EMAIL: email,
-      MESSAGE_BLOCK: error ? `<p class="error">${escapeForRaw(error)}</p>` : "",
+      MESSAGE_BLOCK: error ? `<p class="error">${escapeHtml(error)}</p>` : "",
     },
     ["MESSAGE_BLOCK"],
   );
-}
-
-function escapeForRaw(text) {
-  return String(text).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 function renderSuccess() {

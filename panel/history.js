@@ -9,12 +9,13 @@ import {
   updateRef,
 } from "./github.js";
 import { getSession } from "./session.js";
-import { readBody, sendHtml } from "./http-utils.js";
+import { readBody, sendHtml, escapeHtml } from "./http-utils.js";
 import { renderTemplate } from "./views/render.js";
 import { loginUrlWithRedirect } from "./auth.js";
 
 const DEFAULT_BRANCH = "main";
 const SELF_PATH = "/admin/_panel/history";
+const SHA_PATTERN = /^[0-9a-f]{7,40}$/i;
 
 /**
  * Версии контента — коммиты в branch, затронувшие src/_data, src/content
@@ -109,7 +110,11 @@ export async function handle(req, res, ctx) {
 
   if (req.method === "POST") {
     const body = await readBody(req);
-    if (!body.sha) {
+    // Строгий формат — sha всегда приходит из value="" нашей же таблицы версий
+    // (это git-хэш, не то, что человек вводит руками); заодно не даём этому
+    // полю превратиться в путь ("../...") при подстановке в URL GitHub API
+    // (panel/github.js собирает путь строкой, а не через безопасный конструктор).
+    if (!SHA_PATTERN.test(body.sha ?? "")) {
       sendHtml(res, 400, await renderPage({ error: "Не указана версия для отката." }));
       return;
     }
@@ -169,8 +174,8 @@ function versionsTable(versions) {
         <td>${escapeHtml(v.author)}</td>
         <td>${escapeHtml(v.message)} <code>${v.shortSha}</code></td>
         <td>
-          <form method="post" action="${SELF_PATH}" onsubmit="return confirm('Вернуть версию от ${formatDate(v.date)}?');">
-            <input type="hidden" name="sha" value="${v.sha}">
+          <form method="post" action="${SELF_PATH}" data-confirm="Вернуть версию от ${formatDate(v.date)}?">
+            <input type="hidden" name="sha" value="${escapeHtml(v.sha)}">
             <button type="submit">Вернуть эту версию</button>
           </form>
         </td>
@@ -187,10 +192,6 @@ function versionsTable(versions) {
 function formatDate(iso) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("ru-RU", { dateStyle: "medium", timeStyle: "short" });
-}
-
-function escapeHtml(value) {
-  return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 function redirect(res, location) {

@@ -3,12 +3,15 @@ import { randomBytes } from "node:crypto";
 import { hashPassword, generateTempPassword } from "./password.js";
 import { usersFilePath } from "./config.js";
 import { getSession } from "./session.js";
-import { readBody, sendHtml } from "./http-utils.js";
+import { readBody, sendHtml, escapeHtml } from "./http-utils.js";
 import { renderTemplate } from "./views/render.js";
 import { loginUrlWithRedirect } from "./auth.js";
 
 const ROLES = ["owner", "editor"];
 const SELF_PATH = "/admin/_panel/users";
+// Не строгая проверка почты по RFC, а простая защита от мусора/спецсимволов
+// в поле, которое потом выводится в HTML (см. escapeHtml в http-utils.js).
+const EMAIL_PATTERN = /^\S+@\S+\.\S+$/;
 
 function readUsers(filePath) {
   const raw = readFileSync(filePath, "utf8");
@@ -50,6 +53,9 @@ export function findUserByEmail(filePath, email) {
 export async function createUser(filePath, { email, role }) {
   if (!ROLES.includes(role)) {
     throw new Error(`Неизвестная роль "${role}", допустимо: ${ROLES.join(", ")}`);
+  }
+  if (!EMAIL_PATTERN.test(email ?? "")) {
+    throw new Error(`Похоже на неверную почту: "${email}"`);
   }
   const users = readUsers(filePath);
   if (findIndexByEmail(users, email) !== -1) {
@@ -219,7 +225,7 @@ function usersTable(users) {
             <input type="hidden" name="email" value="${escapeHtml(u.email)}">
             <button type="submit">Сбросить пароль</button>
           </form>
-          <form class="inline" method="post" action="${SELF_PATH}" onsubmit="return confirm('Удалить ${escapeHtml(u.email)}?');">
+          <form class="inline" method="post" action="${SELF_PATH}" data-confirm="Удалить ${escapeHtml(u.email)}?">
             <input type="hidden" name="action" value="delete">
             <input type="hidden" name="email" value="${escapeHtml(u.email)}">
             <button type="submit" class="danger">Удалить</button>
@@ -233,10 +239,6 @@ function usersTable(users) {
     <thead><tr><th>Почта</th><th>Роль</th><th>Статус</th><th></th></tr></thead>
     <tbody>${rows}</tbody>
   </table>`;
-}
-
-function escapeHtml(value) {
-  return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 function redirect(res, location) {

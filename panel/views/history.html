@@ -41,5 +41,14 @@
   <h1>История изменений</h1>
   {{MESSAGE_BLOCK}}
   {{ROWS}}
+
+  <script>
+    // data-confirm вместо onsubmit="confirm('...')" — см. пояснение в users.html.
+    document.querySelectorAll("form[data-confirm]").forEach(function (form) {
+      form.addEventListener("submit", function (event) {
+        if (!confirm(form.dataset.confirm)) event.preventDefault();
+      });
+    });
+  </script>
 </body>
 </html>

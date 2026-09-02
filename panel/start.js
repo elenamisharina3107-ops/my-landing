@@ -1,7 +1,7 @@
 import { listVersions } from "./history.js";
 import { getSession } from "./session.js";
 import { loginUrlWithRedirect } from "./auth.js";
-import { sendHtml } from "./http-utils.js";
+import { sendHtml, escapeHtml } from "./http-utils.js";
 import { renderTemplate } from "./views/render.js";
 
 export const SELF_PATH = "/admin/_panel/";
@@ -66,10 +66,6 @@ function usersCard() {
 function formatDate(iso) {
   if (!iso) return "—";
   return new Date(iso).toLocaleString("ru-RU", { dateStyle: "medium", timeStyle: "short" });
-}
-
-function escapeHtml(value) {
-  return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 function redirect(res, location) {
