@@ -1,8 +1,14 @@
 import { readFileSync, writeFileSync, renameSync } from "node:fs";
 import { randomBytes } from "node:crypto";
 import { hashPassword, generateTempPassword } from "./password.js";
+import { usersFilePath } from "./config.js";
+import { getSession } from "./session.js";
+import { readBody, sendHtml } from "./http-utils.js";
+import { renderTemplate } from "./views/render.js";
+import { loginUrlWithRedirect } from "./auth.js";
 
 const ROLES = ["owner", "editor"];
+const SELF_PATH = "/admin/_panel/users";
 
 function readUsers(filePath) {
   const raw = readFileSync(filePath, "utf8");
@@ -103,4 +109,137 @@ export function deleteUser(filePath, email) {
 
   users.splice(index, 1);
   writeUsersAtomic(filePath, users);
+}
+
+/**
+ * Экран /admin/_panel/users — только владелец (owner). Редактора сюда не
+ * пускаем вообще: роли отличаются именно доступом к управлению людьми,
+ * весь остальной контент редактор правит наравне с владельцем.
+ */
+export async function handle(req, res, ctx) {
+  const session = getSession(req, ctx.config.sessionSecret);
+  if (!session) {
+    redirect(res, loginUrlWithRedirect(SELF_PATH));
+    return;
+  }
+  if (session.role !== "owner") {
+    redirect(res, "/admin/");
+    return;
+  }
+
+  const path = usersFilePath();
+
+  if (req.method === "GET") {
+    sendHtml(res, 200, renderPage(path, {}));
+    return;
+  }
+
+  if (req.method !== "POST") {
+    sendHtml(res, 405, "Метод не поддерживается");
+    return;
+  }
+
+  const body = await readBody(req);
+  try {
+    if (body.action === "create") {
+      const created = await createUser(path, { email: body.email, role: body.role });
+      sendHtml(
+        res,
+        200,
+        renderPage(path, {
+          message:
+            `Пользователь ${created.email} (${roleLabel(created.role)}) создан. ` +
+            `Временный пароль: ${created.tempPassword} — сообщите его отдельно, ` +
+            `здесь он показывается только один раз.`,
+        }),
+      );
+      return;
+    }
+
+    if (body.action === "reset") {
+      const result = await resetPassword(path, body.email);
+      sendHtml(
+        res,
+        200,
+        renderPage(path, {
+          message: `Новый временный пароль для ${result.email}: ${result.tempPassword}`,
+        }),
+      );
+      return;
+    }
+
+    if (body.action === "delete") {
+      deleteUser(path, body.email);
+      redirect(res, SELF_PATH);
+      return;
+    }
+
+    sendHtml(res, 400, renderPage(path, { error: "Неизвестное действие." }));
+  } catch (err) {
+    sendHtml(res, 400, renderPage(path, { error: err.message }));
+  }
+}
+
+function roleLabel(role) {
+  return role === "owner" ? "Владелец" : "Редактор";
+}
+
+function renderPage(path, { message, error }) {
+  let users;
+  try {
+    users = listUsers(path);
+  } catch {
+    users = [];
+  }
+
+  const messageBlock = error
+    ? `<p class="error">${escapeHtml(error)}</p>`
+    : message
+      ? `<p class="message">${escapeHtml(message)}</p>`
+      : "";
+
+  const rows = users.length === 0 ? `<p class="empty">Пользователей нет.</p>` : usersTable(users);
+
+  return renderTemplate("users.html", { MESSAGE_BLOCK: messageBlock, ROWS: rows }, [
+    "MESSAGE_BLOCK",
+    "ROWS",
+  ]);
+}
+
+function usersTable(users) {
+  const rows = users
+    .map(
+      (u) => `<tr>
+        <td>${escapeHtml(u.email)}</td>
+        <td>${roleLabel(u.role)}</td>
+        <td>${u.mustChangePassword ? "Требуется смена пароля" : "Активен"}</td>
+        <td>
+          <form class="inline" method="post" action="${SELF_PATH}">
+            <input type="hidden" name="action" value="reset">
+            <input type="hidden" name="email" value="${escapeHtml(u.email)}">
+            <button type="submit">Сбросить пароль</button>
+          </form>
+          <form class="inline" method="post" action="${SELF_PATH}" onsubmit="return confirm('Удалить ${escapeHtml(u.email)}?');">
+            <input type="hidden" name="action" value="delete">
+            <input type="hidden" name="email" value="${escapeHtml(u.email)}">
+            <button type="submit" class="danger">Удалить</button>
+          </form>
+        </td>
+      </tr>`,
+    )
+    .join("");
+
+  return `<table>
+    <thead><tr><th>Почта</th><th>Роль</th><th>Статус</th><th></th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+
+function escapeHtml(value) {
+  return String(value).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
+}
+
+function redirect(res, location) {
+  res.writeHead(302, { Location: location });
+  res.end();
 }

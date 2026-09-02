@@ -31,15 +31,8 @@ describe("каркас приложения панели", () => {
     expect(body).toEqual({ status: "ok", repo: "owner/test-repo" });
   });
 
-  // /auth, /account, /history, /export теперь настоящие — тесты в соответствующих *.test.js.
-  it.each(["/users"])(
-    "отдаёт заглушку для %s",
-    async (route) => {
-      const res = await fetch(`${baseUrl}/admin/_panel${route}`);
-      expect(res.status).toBe(200);
-      expect(await res.text()).toContain("в разработке");
-    },
-  );
+  // Все 5 роутов теперь настоящие — заглушек больше нет, тесты на каждый
+  // в своём файле (auth/account/users/history/export.test.js).
 
   it("отвечает 404 вне известных путей", async () => {
     const res = await fetch(`${baseUrl}/admin/_panel/несуществующий`);

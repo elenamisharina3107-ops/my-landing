@@ -1,9 +1,9 @@
 import { createServer } from "node:http";
 import { loadConfig } from "./config.js";
 import { sendJson } from "./http-utils.js";
-import { stubPage } from "./views/stub.js";
 import * as auth from "./auth.js";
 import * as account from "./account.js";
+import * as users from "./users.js";
 import * as history from "./history.js";
 import * as exportRoute from "./export.js";
 
@@ -18,7 +18,7 @@ export function createApp(config) {
   const routes = {
     "/auth": auth.handle,
     "/account": account.handle,
-    "/users": stubPage("Пользователи"),
+    "/users": users.handle,
     "/history": history.handle,
     "/export": exportRoute.handle,
   };

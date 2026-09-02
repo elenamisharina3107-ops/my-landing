@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex">
+  <title>Пользователи</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem clamp(1rem, 4vw, 3rem);
+      background: #f6f7f8;
+      font: 16px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      color: #1b2530;
+    }
+    h1 { font-size: 1.4rem; margin: 0 0 1.2rem; }
+    h2 { font-size: 1.05rem; margin: 2rem 0 .8rem; }
+    .nav { margin-bottom: 1.4rem; font-size: .9rem; }
+    .nav a { color: #1f5049; margin-right: 1rem; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border: 1px solid #e0e4e8; border-radius: 12px; overflow: hidden; }
+    th, td { text-align: left; padding: .7em 1em; border-bottom: 1px solid #e0e4e8; font-size: .92rem; vertical-align: middle; }
+    thead th { background: #eef1f3; font-size: .78rem; text-transform: uppercase; letter-spacing: .05em; color: #6a7783; }
+    tbody tr:last-child td { border-bottom: 0; }
+    form.inline { display: inline; margin-right: .5rem; }
+    button {
+      padding: .4em .9em;
+      background: #2c6e64;
+      color: #fff;
+      border: 0;
+      border-radius: 6px;
+      font-size: .82rem;
+      cursor: pointer;
+    }
+    button.danger { background: #8f5d13; }
+    .add-form { background: #fff; border: 1px solid #e0e4e8; border-radius: 12px; padding: 1.2rem 1.4rem; max-width: 420px; }
+    .add-form label { display: block; font-size: .85rem; color: #41505d; margin: 0 0 .3rem; }
+    .add-form input, .add-form select {
+      width: 100%; padding: .5em .6em; border: 1px solid #c9d0d7; border-radius: 8px; font-size: .95rem; margin-bottom: .9rem;
+    }
+    .message { background: #e6f0ee; border: 1px solid #2c6e64; color: #1f5049; border-radius: 8px; padding: .6em .9em; margin-bottom: 1rem; font-size: .9rem; }
+    .error { background: #f5ebda; border: 1px solid #8f5d13; color: #714a0f; border-radius: 8px; padding: .6em .9em; margin-bottom: 1rem; font-size: .9rem; }
+    code { font-family: ui-monospace, monospace; }
+  </style>
+</head>
+<body>
+  <p class="nav"><a href="/admin/">← Панель</a><a href="/admin/_panel/history">История</a><a href="/admin/_panel/account">Сменить пароль</a></p>
+  <h1>Пользователи</h1>
+  {{MESSAGE_BLOCK}}
+  {{ROWS}}
+
+  <h2>Добавить редактора</h2>
+  <form class="add-form" method="post" action="/admin/_panel/users">
+    <input type="hidden" name="action" value="create">
+    <label for="email">Почта</label>
+    <input id="email" name="email" type="email" required>
+    <label for="role">Роль</label>
+    <select id="role" name="role">
+      <option value="editor">Редактор</option>
+      <option value="owner">Владелец</option>
+    </select>
+    <button type="submit">Добавить</button>
+  </form>
+</body>
+</html>
