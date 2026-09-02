@@ -31,8 +31,8 @@ describe("каркас приложения панели", () => {
     expect(body).toEqual({ status: "ok", repo: "owner/test-repo" });
   });
 
-  // /auth и /account теперь настоящие — тесты для них в auth.test.js и account.test.js.
-  it.each(["/users", "/history", "/export"])(
+  // /auth, /account, /history теперь настоящие — тесты в соответствующих *.test.js.
+  it.each(["/users", "/export"])(
     "отдаёт заглушку для %s",
     async (route) => {
       const res = await fetch(`${baseUrl}/admin/_panel${route}`);

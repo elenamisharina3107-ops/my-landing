@@ -4,6 +4,7 @@ import { sendJson } from "./http-utils.js";
 import { stubPage } from "./views/stub.js";
 import * as auth from "./auth.js";
 import * as account from "./account.js";
+import * as history from "./history.js";
 
 const BASE = "/admin/_panel";
 const PORT = process.env.PORT || 3000;
@@ -17,7 +18,7 @@ export function createApp(config) {
     "/auth": auth.handle,
     "/account": account.handle,
     "/users": stubPage("Пользователи"),
-    "/history": stubPage("История"),
+    "/history": history.handle,
     "/export": stubPage("Экспорт"),
   };
 
