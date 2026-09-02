@@ -6,6 +6,7 @@ import * as account from "./account.js";
 import * as users from "./users.js";
 import * as history from "./history.js";
 import * as exportRoute from "./export.js";
+import * as start from "./start.js";
 
 const BASE = "/admin/_panel";
 const PORT = process.env.PORT || 3000;
@@ -16,6 +17,8 @@ const PORT = process.env.PORT || 3000;
  */
 export function createApp(config) {
   const routes = {
+    "": start.handle, // /admin/_panel — «с чего начать»
+    "/": start.handle, // /admin/_panel/ — то же самое, со слэшем
     "/auth": auth.handle,
     "/account": account.handle,
     "/users": users.handle,
@@ -33,7 +36,9 @@ export function createApp(config) {
     }
 
     const routePath = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : null;
-    const handler = routePath && routes[routePath];
+    // routePath может быть "" (запрос точно на /admin/_panel) — сравниваем
+    // с null явно, иначе пустая строка (falsy) ложно считалась бы «нет пути».
+    const handler = routePath !== null ? routes[routePath] : undefined;
 
     if (!handler) {
       sendJson(res, 404, { error: "Страница не найдена" });

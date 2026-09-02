@@ -11,13 +11,15 @@ const DUMMY_HASH = "$2a$10$K0vElKMKNaLUbRDxRXENOeQ7RFnUqQdCALCi3kXWk1AC461Bi8RDW
 
 export const LOGIN_PATH = "/admin/_panel/auth";
 
-// Прямой заход на /account, /users, /history (не из попапа Sveltia) после
+// Прямой заход на /, /account, /users, /history (не из попапа Sveltia) после
 // входа возвращает сюда через ?redirect=... — открытый список путей,
 // чтобы нельзя было увести на произвольный внешний адрес.
 const SAFE_REDIRECTS = new Set([
+  "/admin/_panel/",
   "/admin/_panel/account",
   "/admin/_panel/users",
   "/admin/_panel/history",
+  "/admin/_panel/export",
   "/admin/",
 ]);
 
