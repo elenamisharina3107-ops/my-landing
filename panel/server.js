@@ -7,6 +7,7 @@ import * as users from "./users.js";
 import * as history from "./history.js";
 import * as exportRoute from "./export.js";
 import * as start from "./start.js";
+import * as logout from "./logout.js";
 
 const BASE = "/admin/_panel";
 const PORT = process.env.PORT || 3000;
@@ -24,6 +25,7 @@ export function createApp(config) {
     "/users": users.handle,
     "/history": history.handle,
     "/export": exportRoute.handle,
+    "/logout": logout.handle,
   };
 
   return async function handleRequest(req, res) {

@@ -15,8 +15,18 @@
       color: #1b2530;
       max-width: 760px;
     }
+    .top { display: flex; align-items: baseline; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
     h1 { font-size: 1.5rem; margin: 0 0 .3rem; }
     .hint { color: #6a7783; margin: 0 0 2rem; }
+    .logout {
+      background: none;
+      border: 1px solid #c9d0d7;
+      color: #41505d;
+      border-radius: 8px;
+      padding: .4em .9em;
+      font-size: .85rem;
+      cursor: pointer;
+    }
     h2 { font-size: 1rem; text-transform: uppercase; letter-spacing: .05em; color: #6a7783; margin: 2rem 0 .8rem; }
     .cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: .8rem; }
     .card {
@@ -48,7 +58,12 @@
   </style>
 </head>
 <body>
-  <h1>С чего начать</h1>
+  <div class="top">
+    <h1>С чего начать</h1>
+    <form method="post" action="/admin/_panel/logout">
+      <button type="submit" class="logout">Выйти</button>
+    </form>
+  </div>
   <p class="hint">Вы вошли как {{EMAIL}}.</p>
 
   <div class="cards">
