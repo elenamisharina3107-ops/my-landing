@@ -737,9 +737,22 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   var btn = form.querySelector('button[type="submit"]');
   btn.textContent = "Отправляем...";
   btn.disabled = true;
-  
-fetch("https://script.google.com/macros/s/AKfycbwuaWa3x0EywWH3_WSDOVT-rvRJktaUTIzvIWv2_YqD_vY8S5od4X7qdMuKK3YDU-tV5A/exec", {
-  method: "POST",
+
+  // Дубль на Formspree — оттуда приходит письмо о заявке (CORS у него настроен).
+  fetch("https://formspree.io/f/mjgdaryr", {
+    method: "POST",
+    headers: { "Accept": "application/json" },
+    body: new FormData(form)
+  }).catch(function () {});
+
+  // Основной канал — Google Таблица через Apps Script.
+  // mode:"no-cors" обязателен: ответ Apps Script идёт через редирект без CORS-заголовков,
+  // поэтому прочитать res нельзя. Запрос при этом доходит и пишется в таблицу,
+  // так что резолв промиса считаем успехом.
+  fetch("https://script.google.com/macros/s/AKfycbwuaWa3x0EywWH3_WSDOVT-rvRJktaUTIzvIWv2_YqD_vY8S5od4X7qdMuKK3YDU-tV5A/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=UTF-8" },
     body: JSON.stringify({
       name: form.name.value,
       contact: form.contact.value,
@@ -748,12 +761,10 @@ fetch("https://script.google.com/macros/s/AKfycbwuaWa3x0EywWH3_WSDOVT-rvRJktaUTI
       consent_given_at: form.consent_given_at.value,
       marketing_consent: form.marketing_consent.checked
     })
-  }).then(function(res) {
-    if (res.ok) {
-      form.style.display = "none";
-      document.getElementById("form-success").style.display = "block";
-    }
-  }).catch(function(err) {
+  }).then(function () {
+    form.style.display = "none";
+    document.getElementById("form-success").style.display = "block";
+  }).catch(function (err) {
     console.error("Lead submission failed:", err);
     btn.textContent = "Получить сайт под заявки";
     btn.disabled = false;

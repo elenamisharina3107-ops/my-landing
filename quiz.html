@@ -992,8 +992,20 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
   btn.textContent = 'Отправляем...';
   btn.disabled = true;
 
+  // Дубль на Formspree — оттуда приходит письмо о заявке (CORS у него настроен).
+  fetch('https://formspree.io/f/mjgdaryr', {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+    body: new FormData(form),
+  }).catch(function () {});
+
+  // Основной канал — Google Таблица через Apps Script.
+  // mode:"no-cors" обязателен: ответ идёт через редирект без CORS-заголовков,
+  // прочитать res нельзя, но запрос доходит и пишется в таблицу — резолв считаем успехом.
   fetch('https://script.google.com/macros/s/AKfycbwuaWa3x0EywWH3_WSDOVT-rvRJktaUTIzvIWv2_YqD_vY8S5od4X7qdMuKK3YDU-tV5A/exec', {
     method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
     body: JSON.stringify({
       name: form.name.value,
       contact: form.contact.value,
@@ -1008,11 +1020,9 @@ document.getElementById('contact-form').addEventListener('submit', function (e) 
       consent_given_at: form.consent_given_at.value,
       marketing_consent: form.marketing_consent.checked,
     }),
-  }).then(function (res) {
-    if (res.ok) {
-      form.style.display = 'none';
-      document.getElementById('form-success').style.display = 'block';
-    }
+  }).then(function () {
+    form.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
   }).catch(function (err) {
     console.error('Lead submission failed:', err);
     btn.textContent = 'Оставить заявку';
