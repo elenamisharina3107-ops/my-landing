@@ -1,5 +1,3 @@
-import { createServer } from "node:http";
-import { loadConfig } from "./config.js";
 import { sendJson } from "./http-utils.js";
 import * as auth from "./auth.js";
 import * as account from "./account.js";
@@ -10,7 +8,6 @@ import * as start from "./start.js";
 import * as logout from "./logout.js";
 
 const BASE = "/admin/_panel";
-const PORT = process.env.PORT || 3000;
 
 /**
  * Роутер приложения панели. Не зависит от того, поднят ли сервер
@@ -54,14 +51,4 @@ export function createApp(config) {
       sendJson(res, 500, { error: "Внутренняя ошибка сервера" });
     }
   };
-}
-
-// Запуск только когда файл выполняется напрямую (node server.js),
-// а не когда его импортирует тест.
-if (import.meta.url === `file://${process.argv[1]}`) {
-  const config = loadConfig();
-  const app = createApp(config);
-  createServer(app).listen(PORT, () => {
-    console.log(`Панель слушает http://localhost:${PORT}${BASE}/health`);
-  });
 }
