@@ -27,6 +27,15 @@ module.exports = function (eleventyConfig) {
   // Копировать без обработки
   eleventyConfig.addPassthroughCopy({ "src/styles": "styles" });
 
+  // Оригиналы картинок — как есть (favicon, og-image, фото и т.п.,
+  // на которые ссылаются напрямую, не через шорткод {% image %}).
+  eleventyConfig.addPassthroughCopy({ "src/uploads": "uploads" });
+
+  // robots.txt / sitemap.xml — не .njk/.md/.html, Eleventy их не подхватит
+  // сам, нужно явно указать.
+  eleventyConfig.addPassthroughCopy("src/robots.txt");
+  eleventyConfig.addPassthroughCopy("src/sitemap.xml");
+
   // Панель Sveltia CMS — статические файлы, Eleventy их не трогает.
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
   eleventyConfig.ignores.add("src/admin/**");

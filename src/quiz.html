@@ -1,0 +1,1053 @@
+---
+permalink: /quiz.html
+---
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-844LP3WRP4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-844LP3WRP4');
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Квиз: какое решение подойдёт Вашему бизнесу — Vireflow</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Квиз: какое решение подойдёт Вашему бизнесу">
+<meta property="og:description" content="Короткий квиз про Ваш бизнес — персональная рекомендация: сайт, AI-бот или AI-агент.">
+<meta property="og:url" content="https://vireflow.ru/quiz.html">
+<meta property="og:image" content="https://vireflow.ru/uploads/og-image-quiz.jpg">
+<meta property="og:image:width" content="2400">
+<meta property="og:image:height" content="1260">
+<meta property="og:locale" content="ru_RU">
+<meta name="description" content="Пройдите короткий квиз про Ваш бизнес и получите персональную рекомендацию: сайт, AI-бот, AI-агент или комплексная автоматизация. 2 минуты, без спама.">
+<link rel="canonical" href="https://vireflow.ru/quiz.html">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="/uploads/favicon.ico?v=2" sizes="any">
+<link rel="icon" href="/uploads/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/uploads/favicon-96.png?v=2" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/uploads/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'Inter', sans-serif; background: #080d1a; color: #F0F0F5; font-size: 16px; line-height: 1.6; min-height: 100vh; }
+
+/* NAV */
+nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; }
+.nav-logo { font-size: 16px; font-weight: 700; color: #F0F0F5; text-decoration: none; }
+.nav-back { font-size: 14px; color: #8B8B9E; text-decoration: none; transition: color 0.2s; }
+.nav-back:hover { color: #F0F0F5; }
+
+/* BUTTONS (переиспользованы из index.html) */
+.btn-primary { background: #4a9eff; color: #fff; border: none; border-radius: 12px; padding: 14px 28px; font-size: 15px; font-weight: 600; cursor: pointer; text-decoration: none; display: inline-block; transition: opacity 0.2s, transform 0.2s; }
+.btn-primary:hover { opacity: 0.9; transform: translateY(-2px); }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+.btn-ghost { background: transparent; color: #4a9eff; border: 1px solid #1a2545; border-radius: 12px; padding: 14px 28px; font-size: 15px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
+.btn-ghost:hover { background: #0f1428; }
+.cta-input { width: 100%; background: #080d1a; border: 1px solid #1a2545; border-radius: 12px; padding: 14px 18px; color: #F0F0F5; font-size: 15px; margin-bottom: 12px; outline: none; font-family: inherit; transition: border-color 0.2s; }
+.cta-input::placeholder { color: #8B8B9E; }
+.cta-input:focus { border-color: #4a9eff; }
+.cta-btn { width: 100%; background: #4a9eff; color: #fff; border: none; border-radius: 12px; padding: 16px; font-size: 16px; font-weight: 700; cursor: pointer; font-family: inherit; margin-top: 4px; transition: opacity 0.2s, transform 0.2s; }
+.cta-btn:hover { opacity: 0.9; transform: translateY(-2px); }
+.cta-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+
+/* QUIZ SHELL */
+.quiz-shell { max-width: 640px; margin: 0 auto; padding: 56px 20px 80px; min-height: calc(100vh - 65px); display: flex; flex-direction: column; justify-content: center; }
+.quiz-screen { display: none; }
+.quiz-screen.active { display: block; animation: riseUp 0.35s ease-out; }
+@keyframes riseUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+.quiz-kicker { font-size: 11px; color: #4a9eff; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
+.quiz-title { font-size: 30px; font-weight: 800; line-height: 1.25; margin-bottom: 12px; }
+.quiz-sub { font-size: 15px; color: #8B8B9E; line-height: 1.6; margin-bottom: 32px; }
+
+/* NICHE GRID */
+.niche-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 12px; }
+.niche-btn { background: #13131E; border: 1px solid #1a2545; border-radius: 12px; padding: 18px 16px; font-size: 15px; font-weight: 600; color: #F0F0F5; text-align: left; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-family: inherit; }
+.niche-btn:hover { border-color: #4a9eff; background: #0f1428; }
+.niche-custom-row { margin-top: 8px; }
+.niche-custom-input { display: none; margin-top: 12px; }
+.niche-custom-input.open { display: block; }
+
+/* FLOW FORK */
+.flow-choices { display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px; }
+.flow-btn { background: #13131E; border: 1px solid #1a2545; border-radius: 14px; padding: 22px 20px; font-size: 16px; font-weight: 600; color: #F0F0F5; text-align: left; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-family: inherit; }
+.flow-btn:hover { border-color: #4a9eff; background: #0f1428; }
+.flow-btn-desc { display: block; font-size: 13px; font-weight: 400; color: #8B8B9E; margin-top: 4px; }
+.quiz-back-link { display: inline-block; font-size: 14px; color: #8B8B9E; text-decoration: none; cursor: pointer; background: none; border: none; font-family: inherit; padding: 0; }
+.quiz-back-link:hover { color: #F0F0F5; }
+
+/* QUESTION SCREEN */
+.quiz-progress { font-size: 12px; color: #4a9eff; font-weight: 700; letter-spacing: 0.5px; margin-bottom: 14px; }
+.quiz-hint { font-size: 13px; color: #4a9eff; margin: -20px 0 20px; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; margin-bottom: 24px; }
+.quiz-option { display: flex; align-items: flex-start; gap: 12px; background: #13131E; border: 1px solid #1a2545; border-radius: 12px; padding: 16px 18px; cursor: pointer; transition: border-color 0.2s, background 0.2s; font-size: 14px; line-height: 1.5; }
+.quiz-option:hover { border-color: #4a9eff; }
+.quiz-option input[type="checkbox"] { accent-color: #4a9eff; width: 18px; height: 18px; flex-shrink: 0; margin-top: 1px; cursor: pointer; }
+.quiz-nav { display: flex; gap: 12px; align-items: center; justify-content: space-between; }
+.quiz-nav-next { flex: 1; }
+
+/* RESULT SCREEN */
+.result-scale { margin-bottom: 20px; }
+.result-percent-num { font-size: 44px; font-weight: 800; color: #4a9eff; margin-bottom: 10px; }
+.result-track { height: 8px; background: #13131E; border: 1px solid #1a2545; border-radius: 6px; overflow: hidden; }
+.result-fill { height: 100%; background: #4a9eff; border-radius: 6px; width: 0%; transition: width 0.6s ease-out; }
+.result-crosssell { font-size: 14px; color: #8B8B9E; margin-bottom: 14px; line-height: 1.6; }
+.result-soft { font-size: 14px; color: #4a9eff; background: #0f1428; border: 1px solid #1a2545; border-radius: 12px; padding: 14px 16px; margin-bottom: 20px; line-height: 1.6; }
+.result-cta-heading { font-size: 18px; font-weight: 700; margin: 28px 0 16px; }
+
+/* RESPONSIVE */
+@media (max-width: 768px) {
+  nav { padding: 14px 20px; }
+  .quiz-shell { padding: 40px 20px 56px; }
+  .quiz-title { font-size: 24px; }
+  .niche-grid { grid-template-columns: 1fr; }
+  .quiz-nav { flex-direction: column-reverse; align-items: stretch; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="/">Vireflow</a>
+  <a class="nav-back" href="/">← на главную</a>
+</nav>
+
+<div class="quiz-shell">
+
+  <!-- ЭКРАН 0: выбор ниши -->
+  <div class="quiz-screen active" id="screen-niche">
+    <div class="quiz-kicker">Бесплатный разбор · 2 минуты</div>
+    <div class="quiz-title">Расскажите о своём деле — подберём решение</div>
+    <p class="quiz-sub">Несколько вопросов про то, как сейчас приходят и обрабатываются заявки. В конце — персональная рекомендация, без воды.</p>
+    <div class="niche-grid" id="niche-grid"></div>
+    <div class="niche-custom-row">
+      <button class="niche-btn" id="niche-custom-btn" style="width:100%; text-align:center;">Своё</button>
+      <div class="niche-custom-input" id="niche-custom-input">
+        <input class="cta-input" type="text" id="niche-custom-text" placeholder="Например: репетитор, автосервис, кофейня">
+        <button class="btn-primary" id="niche-custom-next" style="width:100%;" disabled>Далее</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ЭКРАН-РАЗВИЛКА: входящие / исходящие (только Предприниматель / Своё) -->
+  <div class="quiz-screen" id="screen-flow">
+    <div class="quiz-kicker">Ещё один вопрос</div>
+    <div class="quiz-title">У Вас обычно есть готовый поток обращений от клиентов, или чаще Вы сами ищете и предлагаете себя?</div>
+    <p class="quiz-sub">Холодные продажи, B2B, тендеры — это про «исходящие».</p>
+    <div class="flow-choices">
+      <button class="flow-btn" type="button" id="flow-inbound">
+        Входящие
+        <span class="flow-btn-desc">клиенты сами находят и пишут мне</span>
+      </button>
+      <button class="flow-btn" type="button" id="flow-outbound">
+        Исходящие
+        <span class="flow-btn-desc">сама/сам ищу и предлагаю себя</span>
+      </button>
+    </div>
+    <button class="quiz-back-link" type="button" id="flow-back">← назад</button>
+  </div>
+
+  <!-- ЭКРАН ВОПРОСА (универсальный, используется для Q1..Q5 любой ветки) -->
+  <div class="quiz-screen" id="screen-question">
+    <div class="quiz-progress" id="q-progress"></div>
+    <div class="quiz-title" id="q-title"></div>
+    <p class="quiz-hint" id="q-hint"></p>
+    <div class="quiz-options" id="q-options"></div>
+    <div class="quiz-nav">
+      <button class="btn-ghost" type="button" id="q-back">← назад</button>
+      <button class="btn-primary quiz-nav-next" type="button" id="q-next" disabled>Далее</button>
+    </div>
+  </div>
+
+  <!-- ЭКРАН РЕЗУЛЬТАТА -->
+  <div class="quiz-screen" id="screen-result">
+    <div class="quiz-kicker">Результат</div>
+    <div class="result-scale" id="result-scale">
+      <div class="result-percent-num" id="result-percent-num">0%</div>
+      <div class="result-track"><div class="result-fill" id="result-fill"></div></div>
+    </div>
+    <div class="quiz-title" id="result-title"></div>
+    <p class="quiz-sub" id="result-text"></p>
+    <p class="result-crosssell" id="result-crosssell" style="display:none;"></p>
+    <p class="result-soft" id="result-soft" style="display:none;"></p>
+
+    <div class="result-cta-heading">Оставьте контакт — покажу, как это будет работать у Вас</div>
+    <div id="form-success" style="display:none; background:#0f1428; border:1px solid #1a2545; border-radius:12px; padding:20px; margin-bottom:16px; color:#4a9eff; font-size:15px; line-height:1.6;">✅ Заявка отправлена! Свяжусь с Вами в ближайшее время.</div>
+    <form id="contact-form" action="https://formspree.io/f/mjgdaryr" method="POST">
+      <input class="cta-input" type="text" name="name" placeholder="Ваше имя" required>
+      <input class="cta-input" type="text" name="contact" id="f-contact" placeholder="Telegram / email / телефон" required>
+      <div id="contact-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:-6px 0 10px 4px;">Укажите телефон, email или Telegram (например: @username, +7 900 123-45-67 или mail@mail.ru)</div>
+      <input class="cta-input" type="text" name="message" placeholder="Расскажите о задаче (необязательно)">
+      <input type="hidden" name="_subject" value="Новая заявка с квиза — Елена Мишарина">
+      <input type="hidden" name="consent_given_at" id="f-consent-time">
+
+      <input type="hidden" name="niche" id="f-niche">
+      <input type="hidden" name="flow" id="f-flow">
+      <input type="hidden" name="quiz_answers" id="f-quiz-answers">
+      <input type="hidden" name="result_category" id="f-result-category">
+      <input type="hidden" name="result_percent" id="f-result-percent">
+      <input type="hidden" name="ai_partner" id="f-ai-partner">
+
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:13px; color:#8B8B9E; margin:14px 0 4px;">
+        <input type="checkbox" id="f-consent" style="margin-top:3px;">
+        <span>Даю согласие на обработку персональных данных в соответствии с <a href="privacy-policy.html" target="_blank" style="color:#4a9eff;">Политикой конфиденциальности</a></span>
+      </label>
+      <div id="consent-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:0 0 10px 4px;">Нужно подтвердить согласие на обработку данных</div>
+
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:13px; color:#8B8B9E; margin:0 0 14px;">
+        <input type="checkbox" id="f-marketing" name="marketing_consent">
+        <span>Хочу получать полезные материалы и предложения</span>
+      </label>
+
+      <button class="cta-btn" type="submit">Оставить заявку</button>
+    </form>
+  </div>
+
+</div>
+
+<script>
+var NICHES = [
+  { id: 'entrepreneur', label: 'Предприниматель' },
+  { id: 'beauty', label: 'Бьюти' },
+  { id: 'dental', label: 'Стоматология' },
+  { id: 'hr', label: 'HR' },
+  { id: 'accountant', label: 'Бухгалтер' },
+  { id: 'appraiser', label: 'Оценщик' },
+  { id: 'lawyer', label: 'Юрист' },
+];
+
+var CATEGORY_KEYS = ['site', 'bot', 'agent', 'team'];
+var HINT_TEXT = 'Отметьте всё, что подходит';
+
+var Q5 = {
+  text: 'Представьте: у Вас есть цифровой сотрудник, который заменяет сразу нескольких специалистов — юриста, маркетолога, аналитика — помнит всё о Вашем бизнесе, выполняет поручения и помогает вести и масштабировать его без найма новых людей. Хотели бы такого?',
+  hint: HINT_TEXT,
+  options: [
+    { text: 'Да, хочу такого AI-помощника на постоянной основе', weights: { team: 30 }, aiPartner: true },
+    { text: 'Интересно, но сначала хочу закрыть одну конкретную задачу', weights: { team: 10 }, aiPartner: 'maybe' },
+    { text: 'Нет, нужно решить конкретную проблему разово', weights: {}, aiPartner: false },
+  ],
+};
+
+var BRANCHES = {
+  beauty: {
+    label: 'Бьюти',
+    questions: [
+      {
+        text: 'Как сейчас клиенты записываются к Вам?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только через директ/звонок — ни сайта, ни приложения для записи', weights: { site: 25 } },
+          { text: 'Есть свой сайт/страница, но без формы или онлайн-записи', weights: { site: 15 } },
+          { text: 'Есть готовое приложение для записи (YCLIENTS, Dikidi и т.п.), но клиенты всё равно пишут в директ с вопросами по цене и услугам', weights: { bot: 15 } },
+          { text: 'Справляюсь — и с записью, и с вопросами клиентов, ничего не теряется', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда клиент пишет вечером или в выходной с вопросом про запись/цену?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам, как только освобожусь — может пройти час-два', weights: { bot: 25 } },
+          { text: 'Клиент часто не дожидается ответа и уходит к конкуренту', weights: { bot: 25, site: 10 } },
+          { text: 'Есть администратор, но не всегда на связи', weights: { bot: 15 } },
+          { text: 'Отвечаю быстро в любое время', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что из этого отнимает больше всего Вашего времени?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Принимать оплату и подтверждать запись вручную', weights: { agent: 20 } },
+          { text: 'Придумывать и выкладывать посты/сторис для соцсетей', weights: { agent: 20 } },
+          { text: 'Напоминать клиентам о записи, чтобы не было пустых окон', weights: { agent: 15, bot: 10 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы открыть второй филиал/взять больше клиентов прямо сейчас, если бы появился спрос?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, и одна/один еле справляюсь с текущей админкой и клиентами', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но пришлось бы нанимать администратора', weights: { team: 20 } },
+          { text: 'Да, у меня уже есть команда/процессы', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+
+  dental: {
+    label: 'Стоматология',
+    questions: [
+      {
+        text: 'Как пациент записывается к Вам на приём?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только по телефону, сайта или формы записи нет', weights: { site: 25 } },
+          { text: 'Есть сайт, но без онлайн-записи', weights: { site: 15 } },
+          { text: 'Есть запись через стороннее приложение/агрегатор, но пациенты всё равно звонят уточнить', weights: { bot: 15 } },
+          { text: 'Всё работает, пациенты записываются без проблем', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда пациент пишет вечером с острой болью или срочным вопросом?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам при первой возможности', weights: { bot: 25 } },
+          { text: 'Пациент может уйти к другой клинике, если не дозвонился сразу', weights: { bot: 25, site: 10 } },
+          { text: 'Есть администратор, но не круглосуточно', weights: { bot: 15 } },
+          { text: 'Отвечаем быстро в любое время', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что отнимает время из этого?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Обзванивать/писать пациентам с напоминанием о визите', weights: { agent: 20 } },
+          { text: 'Заполнять и вести карты пациентов, историю приёмов вручную', weights: { agent: 20 } },
+          { text: 'Переносить и перестраивать график вручную', weights: { agent: 15 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы принимать больше пациентов прямо сейчас, если бы был спрос?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, график и так плотный, а админка отнимает время', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но нужен ещё администратор', weights: { team: 20 } },
+          { text: 'Да, всё отлажено', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+
+  hr: {
+    label: 'HR агентство',
+    questions: [
+      {
+        text: 'Как кандидаты сейчас откликаются на вакансии?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только через личные сообщения в соцсетях, отдельной страницы вакансий нет', weights: { site: 25 } },
+          { text: 'Есть страница, но без формы отклика', weights: { site: 15 } },
+          { text: 'Отклики идут через job-сайты (hh.ru и т.п.), но переписка вручную', weights: { bot: 15 } },
+          { text: 'Всё организовано, откликов хватает', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда кандидат пишет вечером или сразу приходит много откликов?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам по очереди, кандидаты ждут', weights: { bot: 25 } },
+          { text: 'Часть кандидатов не дожидается ответа и уходит к другому работодателю', weights: { bot: 25, site: 10 } },
+          { text: 'Есть рекрутер, но не успевает всех', weights: { bot: 15 } },
+          { text: 'Отвечаем быстро всем', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что отнимает время из этого?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Задавать одни и те же вопросы каждому кандидату (опыт, зарплата, готовность)', weights: { agent: 20 } },
+          { text: 'Отсеивать неподходящих кандидатов вручную', weights: { agent: 20 } },
+          { text: 'Вести переговоры об условиях с каждым отдельно', weights: { agent: 15 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы взять в работу больше вакансий одновременно прямо сейчас?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, и с текущими еле успеваю', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но нужны ещё рекрутеры', weights: { team: 20 } },
+          { text: 'Да, процесс отлажен', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+
+  accountant: {
+    label: 'Бухгалтер',
+    questions: [
+      {
+        text: 'Как к Вам приходят новые клиенты?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только по рекомендациям/личным контактам, сайта нет', weights: { site: 25 } },
+          { text: 'Есть сайт, но без формы заявки', weights: { site: 15 } },
+          { text: 'Сайт есть, но клиенты всё равно сначала пишут с общими вопросами в директ', weights: { bot: 10 } },
+          { text: 'Заявки приходят через сайт нормально', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда потенциальный клиент пишет вечером с вопросом о налогах/ИП?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам, когда есть время', weights: { bot: 25 } },
+          { text: 'Часть вопросов остаётся без ответа, клиент уходит к тому, кто ответит быстрее', weights: { bot: 25, site: 10 } },
+          { text: 'Есть помощник, но не всегда на связи', weights: { bot: 15 } },
+          { text: 'Отвечаю быстро в любое время', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что отнимает время из этого?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Собирать и сортировать документы от клиентов вручную', weights: { agent: 25 } },
+          { text: 'Искать ошибки и несостыковки в документах', weights: { agent: 20 } },
+          { text: 'Составлять регулярные отчёты для каждого клиента', weights: { agent: 15 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы взять больше клиентов на обслуживание прямо сейчас?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, и с текущими объём документов зашкаливает', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но нужен ещё один бухгалтер/помощник', weights: { team: 20 } },
+          { text: 'Да, процесс отлажен', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+
+  appraiser: {
+    label: 'Оценщик',
+    questions: [
+      {
+        text: 'Как клиент узнаёт примерную стоимость оценки и оставляет заявку?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только по телефону/личным сообщениям, сайта нет', weights: { site: 25 } },
+          { text: 'Есть сайт, но без формы заявки или калькулятора', weights: { site: 15 } },
+          { text: 'Сайт есть, но большинство всё равно пишет напрямую с вопросами', weights: { bot: 10 } },
+          { text: 'Заявки приходят через сайт нормально', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда клиент пишет вечером с вопросом «сколько стоит оценить»?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам, когда получится', weights: { bot: 25 } },
+          { text: 'Часть клиентов уходит к тому, кто ответит быстрее', weights: { bot: 25, site: 10 } },
+          { text: 'Есть помощник, но не 24/7', weights: { bot: 15 } },
+          { text: 'Отвечаю быстро в любое время', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что отнимает время из этого?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Собирать исходные данные от клиента (анкеты, фото, документы) вручную', weights: { agent: 25 } },
+          { text: 'Анализировать данные и готовить отчёт об оценке', weights: { agent: 20 } },
+          { text: 'Форматировать и оформлять отчёты под каждого клиента', weights: { agent: 15 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы брать больше заявок на оценку прямо сейчас?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, и с текущими еле успеваю', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но нужен ещё один оценщик/помощник', weights: { team: 20 } },
+          { text: 'Да, процесс отлажен', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+
+  lawyer: {
+    label: 'Юридическая контора',
+    questions: [
+      {
+        text: 'Как к Вам приходят клиенты с юридическими вопросами?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только по рекомендациям/личным контактам, сайта нет', weights: { site: 25 } },
+          { text: 'Есть сайт, но без формы заявки', weights: { site: 15 } },
+          { text: 'Сайт есть, но клиенты сначала пишут в директ с вопросом «а поможете ли мне»', weights: { bot: 10 } },
+          { text: 'Заявки приходят через сайт нормально', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда человек пишет вечером с вопросом вроде «пришёл штраф, что делать»?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам, когда есть время', weights: { bot: 25 } },
+          { text: 'Человек не дожидается ответа и уходит к тому, кто ответит быстрее', weights: { bot: 25, site: 10 } },
+          { text: 'Есть помощник, но не всегда на связи', weights: { bot: 15 } },
+          { text: 'Отвечаю быстро в любое время', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что отнимает время из этого?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Собирать и структурировать детали дела от клиента вручную', weights: { agent: 25 } },
+          { text: 'Искать прецеденты и релевантную практику', weights: { agent: 20 } },
+          { text: 'Готовить документы и заключения', weights: { agent: 15 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы вести больше дел одновременно прямо сейчас?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, и с текущими объём работы зашкаливает', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но нужен ещё один юрист/помощник', weights: { team: 20 } },
+          { text: 'Да, процесс отлажен', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+
+  entrepreneurInbound: {
+    label: 'Предприниматель',
+    questions: [
+      {
+        text: 'Как сейчас приходят заявки от клиентов?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только через личные сообщения/сарафан, отдельного сайта нет', weights: { site: 25 } },
+          { text: 'Есть сайт, но старый/на конструкторе, заявок мало', weights: { site: 15 } },
+          { text: 'Сайт есть, но реклама идёт, а заявок с сайта мало', weights: { site: 10, bot: 10 } },
+          { text: 'Сайт работает, заявки идут нормально', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда клиент пишет вечером или в выходной с вопросом о продукте/цене?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам, когда получится — час-два спустя', weights: { bot: 25 } },
+          { text: 'Часть обращений теряется, забываю ответить', weights: { bot: 25, site: 10 } },
+          { text: 'Есть менеджер, но не всегда на связи', weights: { bot: 15 } },
+          { text: 'Отвечаю быстро в любое время', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что отнимает время из этого?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Слежу за ценами и активностью конкурентов вручную', weights: { agent: 20 } },
+          { text: 'Квалифицирую лидов вручную — кто горячий, кто просто интересуется', weights: { agent: 20 } },
+          { text: 'Составляю отчёты и анализирую продажи', weights: { agent: 15 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы увеличить поток клиентов прямо сейчас, если бы он появился?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, уже не справляюсь с текущим объёмом в одиночку', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но пришлось бы срочно нанимать людей', weights: { team: 20 } },
+          { text: 'Да, процессы уже выстроены', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+
+  customInbound: {
+    label: 'Своё',
+    questions: [
+      {
+        text: 'Куда сейчас приходят заявки от клиентов?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Только личка/директ в соцсетях, отдельной страницы нет', weights: { site: 25 } },
+          { text: 'Есть сайт, но на конструкторе / давно не обновлялся', weights: { site: 15 } },
+          { text: 'Сайт есть, но заявки всё равно чаще идут в директ, а не через форму', weights: { site: 10, bot: 10 } },
+          { text: 'Сайт есть и работает нормально', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Как Вы отвечаете клиентам, когда пишут вечером, в выходные или сразу много людей?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам, когда доходят руки', weights: { bot: 25 } },
+          { text: 'Часть просто теряется, забываю ответить', weights: { bot: 25, site: 10 } },
+          { text: 'Есть менеджер, но не 24/7', weights: { bot: 15 } },
+          { text: 'Отвечаю быстро, тут всё ок', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что чаще всего отнимает время уже после того, как клиент написал?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечать на одни и те же вопросы про цены/условия', weights: { bot: 20 } },
+          { text: 'Собирать и обрабатывать документы/данные от клиента', weights: { agent: 25 } },
+          { text: 'Составлять отчёты, вести учёт, анализировать', weights: { agent: 20 } },
+          { text: 'Напоминать о встрече, оплате, дедлайне', weights: { agent: 15, bot: 10 } },
+          { text: 'Ничего из этого, справляюсь быстро', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Сколько у Вас процессов, которые тормозят рост, потому что Вы тянете их в одиночку?',
+        hint: HINT_TEXT,
+        options: [
+          { text: '0–1, справляюсь', weights: {}, exclusive: true },
+          { text: '2–3, руки не доходят автоматизировать', weights: { team: 15, agent: 10 } },
+          { text: '4+, хочу расти, но упираюсь в то, что не могу нанять больше людей', weights: { team: 30 } },
+        ],
+      },
+    ],
+  },
+
+  outbound: {
+    label: 'Исходящие продажи',
+    categoryLabelOverrides: { site: 'База' },
+    questions: [
+      {
+        text: 'Как Вы сейчас находите потенциальных клиентов?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Ищу вручную каждый раз — справочники, соцсети, знакомства, единой базы нет', weights: { site: 25 } },
+          { text: 'Есть список контактов, но не обновляется и не систематизирован', weights: { site: 15 } },
+          { text: 'База есть, но обзваниваю/пишу всем вручную', weights: { site: 10, agent: 10 } },
+          { text: 'Всё выстроено, база пополняется и используется системно', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что происходит, когда клиент откликается на Ваше предложение — после звонка, письма или тендера?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Отвечаю сама/сам, когда есть время — может пройти день', weights: { bot: 25 } },
+          { text: 'Часть заинтересованных теряется, не успеваю ответить', weights: { bot: 25, site: 10 } },
+          { text: 'Есть менеджер, но не всегда успевает', weights: { bot: 15 } },
+          { text: 'Отвечаю быстро всем', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Что отнимает время из этого?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Составлять коммерческие предложения под каждого клиента вручную', weights: { agent: 25 } },
+          { text: 'Разбирать тендерную документацию и проверять условия', weights: { agent: 25 } },
+          { text: 'Вести учёт, кто на каком этапе переговоров', weights: { agent: 20 } },
+          { text: 'Ничего из этого, справляюсь', weights: {}, exclusive: true },
+        ],
+      },
+      {
+        text: 'Смогли бы Вы охватить в разы больше потенциальных клиентов прямо сейчас?',
+        hint: HINT_TEXT,
+        options: [
+          { text: 'Нет, текущий поиск и так съедает всё время', weights: { team: 30 } },
+          { text: 'Смогла бы/смог бы, но нужны ещё люди для обзвона/переговоров', weights: { team: 20 } },
+          { text: 'Да, охват уже большой и системный', weights: {}, exclusive: true },
+        ],
+      },
+    ],
+  },
+};
+
+var state = {
+  nicheId: null, customText: '', flow: null, branchId: null,
+  sequence: [], qPos: 0, answers: [],
+  totals: { site: 0, bot: 0, agent: 0, team: 0 },
+  theoreticalMax: { site: 0, bot: 0, agent: 0, team: 0 },
+  aiPartnerVotes: [],
+};
+
+var els = {
+  niceGrid: document.getElementById('niche-grid'),
+  customBtn: document.getElementById('niche-custom-btn'),
+  customInput: document.getElementById('niche-custom-input'),
+  customText: document.getElementById('niche-custom-text'),
+  customNext: document.getElementById('niche-custom-next'),
+  qProgress: document.getElementById('q-progress'),
+  qTitle: document.getElementById('q-title'),
+  qHint: document.getElementById('q-hint'),
+  qOptions: document.getElementById('q-options'),
+  qBack: document.getElementById('q-back'),
+  qNext: document.getElementById('q-next'),
+  resultScale: document.getElementById('result-scale'),
+  resultPercentNum: document.getElementById('result-percent-num'),
+  resultFill: document.getElementById('result-fill'),
+  resultTitle: document.getElementById('result-title'),
+  resultText: document.getElementById('result-text'),
+  resultCrosssell: document.getElementById('result-crosssell'),
+  resultSoft: document.getElementById('result-soft'),
+};
+
+var DEFAULT_CATEGORY_LABELS = { site: 'Сайт', bot: 'Бот', agent: 'Агент', team: 'Команда' };
+
+var CATEGORY_RESULT_TEXT = {
+  site: 'Вам подойдёт сайт под заявки — лендинг от 9 000 ₽ или корпоративный сайт от 19 000 ₽: своя страница с формой, которая принимает заявки 24/7 и не зависит от директа.',
+  bot: 'Вам подойдёт связка сайт + AI-бот — от 49 000 ₽: бот отвечает клиентам мгновенно в любое время суток и не даёт заявкам теряться, пока Вы заняты другим.',
+  agent: 'Вам подойдёт AI-агент — берёт на себя рутину, которая сейчас отнимает время вручную. Решение индивидуальное, обсудим задачу и посчитаем стоимость.',
+  team: 'Вам стоит присмотреться к комплексной автоматизации — несколько связанных AI-инструментов вместо одного точечного решения, чтобы расти без найма новых людей. Решение индивидуальное, обсудим, что именно нужно.',
+};
+
+function categoryLabels() {
+  var branch = BRANCHES[state.branchId];
+  var overrides = (branch && branch.categoryLabelOverrides) || {};
+  var labels = {};
+  CATEGORY_KEYS.forEach(function (k) { labels[k] = overrides[k] || DEFAULT_CATEGORY_LABELS[k]; });
+  return labels;
+}
+
+function showScreen(id) {
+  document.querySelectorAll('.quiz-screen').forEach(function (el) {
+    el.classList.toggle('active', el.id === id);
+  });
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function renderNiches() {
+  NICHES.forEach(function (niche) {
+    var btn = document.createElement('button');
+    btn.className = 'niche-btn';
+    btn.type = 'button';
+    btn.textContent = niche.label;
+    btn.addEventListener('click', function () { onNicheChosen(niche.id); });
+    els.niceGrid.appendChild(btn);
+  });
+}
+
+function onNicheChosen(nicheId) {
+  state.nicheId = nicheId;
+  state.customText = '';
+  goAfterNicheChosen();
+}
+
+els.customBtn.addEventListener('click', function () {
+  els.customInput.classList.add('open');
+  els.customText.focus();
+});
+
+els.customText.addEventListener('input', function () {
+  els.customNext.disabled = els.customText.value.trim().length === 0;
+});
+
+els.customNext.addEventListener('click', function () {
+  state.nicheId = 'custom';
+  state.customText = els.customText.value.trim();
+  goAfterNicheChosen();
+});
+
+function goAfterNicheChosen() {
+  if (state.nicheId === 'entrepreneur' || state.nicheId === 'custom') {
+    showScreen('screen-flow');
+  } else {
+    startBranchForNiche(state.nicheId);
+  }
+}
+
+document.getElementById('flow-back').addEventListener('click', function () {
+  showScreen('screen-niche');
+});
+
+document.getElementById('flow-inbound').addEventListener('click', function () {
+  state.flow = 'inbound';
+  var branchId = state.nicheId === 'custom' ? 'customInbound' : 'entrepreneurInbound';
+  startBranch(branchId);
+});
+
+document.getElementById('flow-outbound').addEventListener('click', function () {
+  state.flow = 'outbound';
+  startBranch('outbound');
+});
+
+function startBranchForNiche(nicheId) {
+  startBranch(nicheId);
+}
+
+function startBranch(branchId) {
+  var branch = BRANCHES[branchId];
+  state.branchId = branchId;
+  state.sequence = branch.questions.concat([Q5]);
+  state.qPos = 0;
+  state.answers = state.sequence.map(function () { return []; });
+  state.aiPartnerVotes = [];
+  state.totals = { site: 0, bot: 0, agent: 0, team: 0 };
+  state.theoreticalMax = computeTheoreticalMax(state.sequence);
+  showScreen('screen-question');
+  renderQuestion(state.qPos);
+}
+
+function computeTheoreticalMax(sequence) {
+  var max = { site: 0, bot: 0, agent: 0, team: 0 };
+  sequence.forEach(function (question) {
+    question.options.forEach(function (opt) {
+      CATEGORY_KEYS.forEach(function (cat) {
+        max[cat] += opt.weights[cat] || 0;
+      });
+    });
+  });
+  return max;
+}
+
+function renderQuestion(pos) {
+  var question = state.sequence[pos];
+  els.qProgress.textContent = 'Вопрос ' + (pos + 1) + ' из ' + state.sequence.length;
+  els.qTitle.textContent = question.text;
+  els.qHint.textContent = question.hint;
+  els.qOptions.innerHTML = '';
+  question.options.forEach(function (opt, i) {
+    var row = document.createElement('label');
+    row.className = 'quiz-option';
+    row.innerHTML = '<input type="checkbox" data-idx="' + i + '"> <span>' + opt.text + '</span>';
+    var checkbox = row.querySelector('input');
+    if (state.answers[pos].indexOf(i) !== -1) checkbox.checked = true;
+    checkbox.addEventListener('change', function () { onOptionToggle(question, i, checkbox); });
+    els.qOptions.appendChild(row);
+  });
+  els.qBack.textContent = pos === 0 ? '← назад' : '← предыдущий вопрос';
+  refreshNextButton();
+}
+
+function onOptionToggle(question, idx, checkbox) {
+  var boxes = Array.prototype.slice.call(els.qOptions.querySelectorAll('input[type=checkbox]'));
+  if (checkbox.checked && question.options[idx].exclusive) {
+    boxes.forEach(function (b, i) { if (i !== idx) b.checked = false; });
+  } else if (checkbox.checked) {
+    question.options.forEach(function (o, i) { if (o.exclusive) boxes[i].checked = false; });
+  }
+  refreshNextButton();
+}
+
+function refreshNextButton() {
+  var anyChecked = els.qOptions.querySelector('input[type=checkbox]:checked') !== null;
+  els.qNext.disabled = !anyChecked;
+}
+
+els.qNext.addEventListener('click', function () {
+  var boxes = Array.prototype.slice.call(els.qOptions.querySelectorAll('input[type=checkbox]'));
+  state.answers[state.qPos] = boxes.reduce(function (acc, b, i) {
+    if (b.checked) acc.push(i);
+    return acc;
+  }, []);
+
+  if (state.qPos < state.sequence.length - 1) {
+    state.qPos += 1;
+    renderQuestion(state.qPos);
+  } else {
+    finishQuiz();
+  }
+});
+
+els.qBack.addEventListener('click', function () {
+  if (state.qPos === 0) {
+    if (state.nicheId === 'entrepreneur' || state.nicheId === 'custom') {
+      showScreen('screen-flow');
+    } else {
+      showScreen('screen-niche');
+    }
+    return;
+  }
+  state.qPos -= 1;
+  renderQuestion(state.qPos);
+});
+
+function computeResult() {
+  var totals = { site: 0, bot: 0, agent: 0, team: 0 };
+  var aiPartnerVotes = [];
+  state.sequence.forEach(function (question, qi) {
+    state.answers[qi].forEach(function (optIdx) {
+      var opt = question.options[optIdx];
+      CATEGORY_KEYS.forEach(function (cat) { totals[cat] += opt.weights[cat] || 0; });
+      if (opt.aiPartner !== undefined) aiPartnerVotes.push(opt.aiPartner);
+    });
+  });
+  state.totals = totals;
+  state.aiPartnerVotes = aiPartnerVotes;
+
+  var ranked = CATEGORY_KEYS
+    .map(function (k) { return { key: k, total: totals[k] }; })
+    .sort(function (a, b) {
+      if (b.total !== a.total) return b.total - a.total;
+      return CATEGORY_KEYS.indexOf(a.key) - CATEGORY_KEYS.indexOf(b.key);
+    });
+  var winner = ranked[0];
+  var runnerUp = ranked[1].total > 0 ? ranked[1] : null;
+  var max = state.theoreticalMax[winner.key];
+  var percent = max > 0 ? Math.round((winner.total / max) * 100) : 0;
+  var aiPartner = aiPartnerVotes.indexOf(true) !== -1 ? true
+    : aiPartnerVotes.indexOf('maybe') !== -1 ? 'maybe' : false;
+
+  return {
+    winnerKey: winner.key,
+    winnerTotal: winner.total,
+    percent: percent,
+    runnerUpKey: runnerUp ? runnerUp.key : null,
+    aiPartner: aiPartner,
+  };
+}
+
+function renderResultContent(result) {
+  var labels = categoryLabels();
+
+  els.resultCrosssell.style.display = 'none';
+  els.resultSoft.style.display = 'none';
+
+  if (result.aiPartner === true) {
+    els.resultScale.style.display = 'none';
+    els.resultTitle.textContent = 'Вам подойдёт AI-агент';
+    els.resultText.textContent = 'Цифровой сотрудник 24/7: берёт на себя документы и рутину, советует и подкидывает идеи для роста. Инвестиция окупается тем, что заменяет сразу нескольких специалистов.';
+    return;
+  }
+
+  els.resultScale.style.display = 'block';
+  els.resultPercentNum.textContent = result.percent + '%';
+  els.resultFill.style.width = result.percent + '%';
+
+  if (result.winnerTotal === 0) {
+    els.resultTitle.textContent = 'Похоже, у Вас уже неплохо отлажено';
+    els.resultText.textContent = 'Но, возможно, есть что ещё ускорить — расскажите подробнее, посмотрим вместе.';
+  } else {
+    els.resultTitle.textContent = 'Вам подойдёт: ' + labels[result.winnerKey];
+    els.resultText.textContent = CATEGORY_RESULT_TEXT[result.winnerKey];
+    if (result.runnerUpKey) {
+      els.resultCrosssell.textContent = 'И ещё заметно, что имеет значение направление «' + labels[result.runnerUpKey] + '» — тут тоже есть, чем помочь.';
+      els.resultCrosssell.style.display = 'block';
+    }
+  }
+
+  if (result.aiPartner === 'maybe') {
+    els.resultSoft.textContent = 'Кстати, если позже захотите не разовое решение, а постоянного AI-помощника — это тоже можно обсудить.';
+    els.resultSoft.style.display = 'block';
+  }
+}
+
+function nicheLabel(nicheId) {
+  var found = NICHES.filter(function (n) { return n.id === nicheId; })[0];
+  return found ? found.label : nicheId;
+}
+
+function populateFormFromQuizState(result) {
+  var labels = categoryLabels();
+  document.getElementById('f-niche').value = state.nicheId === 'custom' ? state.customText : nicheLabel(state.nicheId);
+  document.getElementById('f-flow').value = state.flow === 'inbound' ? 'входящие' : state.flow === 'outbound' ? 'исходящие' : '';
+  document.getElementById('f-quiz-answers').value = state.sequence.map(function (q, i) {
+    var picked = state.answers[i].map(function (idx) { return q.options[idx].text; }).join('; ');
+    return q.text + ' — ' + picked;
+  }).join('\n');
+  document.getElementById('f-result-category').value = result.aiPartner === true ? 'AI-агент (партнёр)' : labels[result.winnerKey];
+  document.getElementById('f-result-percent').value = String(result.percent);
+  document.getElementById('f-ai-partner').value = result.aiPartner === true ? 'да' : result.aiPartner === 'maybe' ? 'может быть' : 'нет';
+}
+
+function finishQuiz() {
+  var result = computeResult();
+  renderResultContent(result);
+  populateFormFromQuizState(result);
+  showScreen('screen-result');
+}
+
+var tgRe = /^@[a-zA-Z0-9_]{5,32}$/;
+var tgLinkRe = /^(https?:\/\/)?(t\.me|telegram\.me)\/[a-zA-Z0-9_]{5,32}$/;
+var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+var phoneRe = /^(\+7|8|7)?[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
+
+function isValidContact(value) {
+  return emailRe.test(value) || phoneRe.test(value) || tgRe.test(value) || tgLinkRe.test(value);
+}
+
+function updateButtonState() {
+  var btn = document.querySelector('#contact-form .cta-btn');
+  var consentInput = document.getElementById('f-consent');
+  if (!btn || !consentInput) return;
+  if (consentInput.checked) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  } else {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+  }
+}
+
+document.getElementById('f-consent').addEventListener('change', updateButtonState);
+document.addEventListener('DOMContentLoaded', updateButtonState);
+
+document.getElementById('contact-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var form = e.target;
+  var contactInput = document.getElementById('f-contact');
+  var errorDiv = document.getElementById('contact-error');
+  var consentInput = document.getElementById('f-consent');
+  var consentError = document.getElementById('consent-error');
+
+  if (!isValidContact(contactInput.value)) {
+    errorDiv.style.display = 'block';
+    contactInput.style.borderColor = '#F87171';
+    contactInput.focus();
+    return;
+  }
+  errorDiv.style.display = 'none';
+  contactInput.style.borderColor = '#1a2545';
+
+  if (!consentInput.checked) {
+    consentError.style.display = 'block';
+    return;
+  }
+  consentError.style.display = 'none';
+
+  document.getElementById('f-consent-time').value = new Date().toISOString();
+  var btn = form.querySelector('button[type="submit"]');
+  btn.textContent = 'Отправляем...';
+  btn.disabled = true;
+
+  // Дубль на Formspree — оттуда приходит письмо о заявке (CORS у него настроен).
+  fetch('https://formspree.io/f/mjgdaryr', {
+    method: 'POST',
+    headers: { Accept: 'application/json' },
+    body: new FormData(form),
+  }).catch(function () {});
+
+  // Основной канал — Google Таблица через Apps Script.
+  // mode:"no-cors" обязателен: ответ идёт через редирект без CORS-заголовков,
+  // прочитать res нельзя, но запрос доходит и пишется в таблицу — резолв считаем успехом.
+  fetch('https://script.google.com/macros/s/AKfycbwuaWa3x0EywWH3_WSDOVT-rvRJktaUTIzvIWv2_YqD_vY8S5od4X7qdMuKK3YDU-tV5A/exec', {
+    method: 'POST',
+    mode: 'no-cors',
+    headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+    body: JSON.stringify({
+      name: form.name.value,
+      contact: form.contact.value,
+      tariff: 'Не выбран',
+      message: form.message.value,
+      niche: form.niche.value,
+      flow: form.flow.value,
+      quiz_answers: form.quiz_answers.value,
+      result_category: form.result_category.value,
+      result_percent: form.result_percent.value,
+      ai_partner: form.ai_partner.value,
+      consent_given_at: form.consent_given_at.value,
+      marketing_consent: form.marketing_consent.checked,
+    }),
+  }).then(function () {
+    form.style.display = 'none';
+    document.getElementById('form-success').style.display = 'block';
+  }).catch(function (err) {
+    console.error('Lead submission failed:', err);
+    btn.textContent = 'Оставить заявку';
+    btn.disabled = false;
+  });
+});
+
+renderNiches();
+</script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111617209', 'ym');
+    ym(111617209, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111617209" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+</body>
+</html>

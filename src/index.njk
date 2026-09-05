@@ -1,9 +1,644 @@
----
-layout: base.njk
----
-{% include "sections/hero.njk" %}
-{% include "sections/services.njk" %}
-{% include "sections/prices.njk" %}
-{% include "sections/faq.njk" %}
-{% include "sections/contacts.njk" %}
-{% include "sections/footer.njk" %}
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-844LP3WRP4"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+  gtag('config', 'G-844LP3WRP4');
+</script>
+
+<meta name="google-site-verification" content="p7FB9ajHqFNSniaR-6a4eyQv5qBuHSaoXpx-qpFeBXU" />
+<meta name="yandex-verification" content="0bf562cc96aec78b" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{{ seo.title }}</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Цифровые системы для масштабирования бизнеса">
+<meta property="og:description" content="{{ seo.description }}">
+<meta property="og:url" content="https://vireflow.ru/">
+<meta property="og:image" content="https://vireflow.ru{{ seo.ogImage }}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="ru_RU">
+<meta name="description" content="{{ seo.description }}">
+<link rel="canonical" href="https://vireflow.ru/">
+<meta name="robots" content="index, follow">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  "name": "Елена Мишарина — Vireflow",
+  "url": "https://vireflow.ru/",
+  "description": "Создание лидогенерирующих сайтов, Telegram Mini Apps, чат-ботов и AI-агентов для бизнеса.",
+  "sameAs": [
+    "https://t.me/el_misharina",
+    "https://vk.com/elenamisharina"
+  ]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {% for item in collections.faq %}
+    {"@type":"Question","name":{{ item.data.question | dump | safe }},"acceptedAnswer":{"@type":"Answer","text":{{ item.templateContent | striptags | trim | dump | safe }}}}{% if not loop.last %},{% endif %}
+    {% endfor %}
+  ]
+}
+</script>
+<link rel="icon" href="/uploads/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/uploads/favicon-96.png?v=2" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/uploads/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/styles/site.css">
+</head>
+<body>
+
+<nav>
+  <a class="nav-logo" href="#">{{ about.name }}</a>
+  <div class="nav-links">
+    <a href="#benefits">Услуги</a>
+    <a href="#process">Процесс</a>
+    <a href="#prices">Цены</a>
+    <a href="#faq">FAQ</a>
+    <a href="/blog/">Блог</a>
+  </div>
+  <a class="nav-cta" href="#contact">Получить сайт</a>
+</nav>
+
+<!-- HERO -->
+<section style="padding: 80px 40px 72px; background: #080d1a;">
+  <div class="hero container" style="padding: 0;">
+    <div>
+      <div class="hero-badge"><div class="hero-badge-dot"></div>{{ hero.badge }}</div>
+      <h1>{{ hero.titleBefore }}<span>{{ hero.titleAccent }}</span></h1>
+      <p class="hero-sub">{{ hero.subtitle }}</p>
+      <div class="hero-btns">
+        <a class="btn-primary" href="#contact">{{ hero.primaryButtonText }}</a>
+        <a class="btn-ghost" href="#prices">{{ hero.ghostButtonText }}</a>
+      </div>
+      <div class="hero-stats">
+        {% for stat in hero.stats %}
+        <div><div class="stat-num">{{ stat.num }}</div><div class="stat-label">{{ stat.label }}</div></div>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="hero-visual">
+      <div class="browser-bar">
+        <div class="dot" style="background:#1a2545"></div>
+        <div class="dot" style="background:#1a2545"></div>
+        <div class="dot" style="background:#4a9eff"></div>
+        <div class="browser-url"></div>
+      </div>
+      <div class="browser-screen">
+        <div class="mock-heading"></div>
+        <div class="mock-text" style="width:88%"></div>
+        <div class="mock-text" style="width:72%"></div>
+        <div class="mock-btn"></div>
+        <div class="mock-cards">
+          <div class="mock-card"><div class="mock-icon"></div><div class="mock-line"></div><div class="mock-line" style="width:60%"></div></div>
+          <div class="mock-card"><div class="mock-icon accent"></div><div class="mock-line"></div><div class="mock-line" style="width:60%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAIN -->
+<section class="section-alt" id="services">
+  <div class="container">
+    <div class="section-label">{{ pain.label }}</div>
+    <div class="section-title">{{ pain.title }}</div>
+    <p class="section-sub">{{ pain.subtitle }}</p>
+    <div class="pain-grid">
+      {% for card in pain.cards %}
+      <div class="pain-card">
+        <div class="pain-icon">{{ card.icon }}</div>
+        <div class="pain-title">{{ card.title }}</div>
+        <p class="pain-text">{{ card.text }}</p>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- BENEFITS -->
+<section id="benefits">
+  <div class="container">
+    <div class="section-label">{{ benefits.label }}</div>
+    <div class="section-title">{{ benefits.title }}</div>
+    <p class="section-sub">{{ benefits.subtitle }}</p>
+    <div class="benefits-grid">
+      {% for item in benefits.items %}
+      <div class="benefit-item"><div class="benefit-icon">{{ item.icon }}</div><div><div class="benefit-title">{{ item.title }}</div><p class="benefit-text">{{ item.text }}</p></div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS + INCLUDES -->
+<section class="section-alt" id="process">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <div class="section-label">{{ process.label }}</div>
+        <div class="section-title">{{ process.title }}</div>
+        <div class="process-steps">
+          {% for step in process.steps %}
+          <div class="process-step"><div class="step-num">{{ loop.index }}</div><div><div class="step-title">{{ step.title }}</div><p class="step-text">{{ step.text }}</p></div></div>
+          {% endfor %}
+        </div>
+      </div>
+      <div>
+        <div class="section-label">{{ process.includesLabel }}</div>
+        <div class="section-title">{{ process.includesTitle }}</div>
+        <div class="includes-list">
+          {% for inc in process.includes %}
+          <div class="include-item"><div class="include-check">✦</div><div><div class="include-title">{{ inc.title }}</div><p class="include-text">{{ inc.text }}</p></div></div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- NEURO -->
+<section>
+  <div class="container">
+    <div class="section-label">{{ neuro.label }}</div>
+    <div class="section-title">{{ neuro.title }}</div>
+    <p class="section-sub">{{ neuro.subtitle }}</p>
+    <div class="neuro-flow">
+      {% for node in neuro.flow %}
+      <div class="neuro-node{% if node.active %} active{% endif %}">{{ node.text }}</div>
+      {% if not loop.last %}<div class="neuro-arrow">→</div>{% endif %}
+      {% endfor %}
+    </div>
+    <div class="neuro-cards">
+      {% for card in neuro.cards %}
+      <div class="neuro-card"><div class="neuro-card-icon">{{ card.icon }}</div><div class="neuro-card-title">{{ card.title }}</div><p class="neuro-card-text">{{ card.text }}</p></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="section-alt">
+  <div class="container">
+    <div class="section-label">{{ about.label }}</div>
+    <div class="about-wrap">
+      <div class="about-photo">
+        <img src="{{ about.photo }}" alt="{{ about.photoAlt }}">
+      </div>
+      <div>
+        <div class="about-name">{{ about.name }}</div>
+        <div class="about-role">{{ about.role }}</div>
+        <p class="about-text">{{ about.text | safe }}</p>
+        <div class="about-tags">
+          {% for tag in about.tags %}
+          <span class="about-tag">{{ tag }}</span>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GUARANTEE -->
+<section>
+  <div class="container">
+    <div class="section-label">{{ guarantee.label }}</div>
+    <div class="section-title">{{ guarantee.title }}</div>
+    <div class="guarantee-box">
+      {% for item in guarantee.items %}
+      <div><div class="guarantee-icon">{{ item.icon }}</div><div class="guarantee-title">{{ item.title }}</div><p class="guarantee-text">{{ item.text }}</p></div>
+      {% endfor %}
+      <div class="guarantee-note">{{ guarantee.note }}</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICES -->
+<section class="section-alt" id="prices">
+  <div class="container">
+    <div class="section-label">{{ prices.label }}</div>
+    <div class="section-title">{{ prices.title }}</div>
+    <div class="prices-grid">
+      {% for tariff in prices.items %}
+      <div class="price-card{% if tariff.featured %} featured{% endif %}">
+        {% if tariff.badge %}<div class="price-badge">{{ tariff.badge }}</div>{% endif %}
+        <div class="price-name">{{ tariff.name }}</div>
+        <div class="price-new">{{ tariff.price }}</div>
+        <div class="price-period">{{ tariff.period }}</div>
+        <div class="price-divider"></div>
+        {% for feature in tariff.features %}
+        <div class="price-feature"><span class="price-check">✦</span> {{ feature }}</div>
+        {% endfor %}
+        <div style="font-size: 12px; color: #8B8B9E; margin-top: 12px; padding-top: 12px; border-top: 1px solid #1a2545;">{{ tariff.monthlyNote }}</div>
+        <a class="price-btn{% if tariff.featured %} featured-btn{% endif %}" href="#contact" onclick="selectTariff('{{ tariff.name }} — {{ tariff.price }}')">{{ tariff.buttonText }}</a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-label">Вопросы и ответы</div>
+    <div class="section-title">Часто спрашивают</div>
+    <div class="faq-list">
+      {% for item in collections.faq %}
+      <div class="faq-item{% if loop.first %} open{% endif %}"><div class="faq-q">{{ item.data.question }} <span class="faq-toggle">+</span></div><div class="faq-a">{{ item.templateContent | safe }}</div></div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-section" id="contact">
+  <div class="cta-title">{{ contact.title }}</div>
+  <p class="cta-sub">{{ contact.subtitle }}</p>
+  <div class="cta-form">
+    <div id="form-success" style="display:none; background:#0f1428; border:1px solid #1a2545; border-radius:12px; padding:20px; margin-bottom:16px; color:#4a9eff; font-size:15px; line-height:1.6;">✅ Заявка отправлена! Свяжусь с вами в ближайшее время.</div>
+    <div id="selected-tariff" style="display:none; background:#0f1428; border:1px solid #4a9eff; border-radius:12px; padding:14px 18px; margin-bottom:12px; color:#4a9eff; font-size:14px; text-align:left;">
+      <span style="color:#8B8B9E; font-size:12px;">Выбранный тариф:</span><br>
+      <strong id="tariff-name"></strong>
+      <span onclick="clearTariff()" style="float:right; cursor:pointer; color:#8B8B9E; font-size:18px; line-height:1;">×</span>
+    </div>
+    <form id="contact-form" action="https://formspree.io/f/mjgdaryr" method="POST">
+      <input class="cta-input" type="text" name="name" placeholder="Ваше имя" required>
+      <input class="cta-input" type="text" name="contact" id="f-contact" placeholder="Telegram / email / телефон" required>
+      <div id="contact-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:-6px 0 10px 4px;">Укажите телефон, email или Telegram (например: @username, +7 900 123-45-67 или mail@mail.ru)</div>
+      <input class="cta-input" type="text" name="message" placeholder="Расскажите о задаче (необязательно)">
+      <input type="hidden" name="tariff" id="f-tariff" value="Не выбран">
+      <input type="hidden" name="_subject" value="Новая заявка с сайта — Елена Мишарина">
+      <input type="hidden" name="consent_given_at" id="f-consent-time">
+
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:13px; color:#8B8B9E; margin:14px 0 4px;">
+        <input type="checkbox" id="f-consent" style="margin-top:3px;">
+        <span>Даю согласие на обработку персональных данных в соответствии с <a href="/privacy-policy.html" target="_blank" style="color:#4a9eff;">Политикой конфиденциальности</a></span>
+      </label>
+      <div id="consent-error" style="display:none; color:#F87171; font-size:13px; text-align:left; margin:0 0 10px 4px;">Нужно подтвердить согласие на обработку данных</div>
+
+      <label style="display:flex; align-items:flex-start; gap:8px; text-align:left; font-size:13px; color:#8B8B9E; margin:0 0 14px;">
+        <input type="checkbox" id="f-marketing" name="marketing_consent">
+        <span>Хочу получать полезные материалы и предложения по email/Telegram</span>
+      </label>
+
+      <button class="cta-btn" type="submit">{{ hero.primaryButtonText }}</button>
+    </form>
+  </div>
+  <div class="cta-divider"><div class="cta-divider-line"></div><span class="cta-divider-text">или напишите напрямую</span><div class="cta-divider-line"></div></div>
+  <div class="cta-socials">
+    <a class="social-link" href="{{ contact.telegram }}" target="_blank">✈️ Telegram</a>
+    <a class="social-link" href="{{ contact.vk }}" target="_blank">💬 VK</a>
+    <a class="social-link" href="mailto:{{ contact.email }}">✉️ {{ contact.email }}</a>
+  </div>
+</section>
+
+<footer>
+  <span class="footer-copy">{{ footer.copy }}</span>
+  <a class="footer-link" href="/privacy-policy.html">Политика конфиденциальности</a>
+</footer>
+
+<script>
+document.querySelectorAll(".faq-item").forEach(function(item) {
+  item.querySelector(".faq-q").addEventListener("click", function() {
+    var isOpen = item.classList.contains("open");
+    document.querySelectorAll(".faq-item").forEach(function(i) { i.classList.remove("open"); });
+    if (!isOpen) item.classList.add("open");
+  });
+});
+
+function selectTariff(name) {
+  document.getElementById("f-tariff").value = name;
+  document.getElementById("tariff-name").textContent = name;
+  document.getElementById("selected-tariff").style.display = "block";
+}
+
+function clearTariff() {
+  document.getElementById("f-tariff").value = "Не выбран";
+  document.getElementById("selected-tariff").style.display = "none";
+}
+
+var tgRe = /^@[a-zA-Z0-9_]{5,32}$/;
+var tgLinkRe = /^(https?:\/\/)?(t\.me|telegram\.me)\/[a-zA-Z0-9_]{5,32}$/;
+var emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+var phoneRe = /^(\+7|8|7)?[\s\-]?\(?\d{3}\)?[\s\-]?\d{3}[\s\-]?\d{2}[\s\-]?\d{2}$/;
+
+function isValidContact(value) {
+  return emailRe.test(value) || phoneRe.test(value) || tgRe.test(value) || tgLinkRe.test(value);
+}
+
+function updateButtonState() {
+  var btn = document.querySelector('.cta-btn');
+  var consentInput = document.getElementById('f-consent');
+
+  if (consentInput.checked) {
+    btn.disabled = false;
+    btn.style.opacity = '1';
+    btn.style.cursor = 'pointer';
+  } else {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+  }
+}
+
+document.getElementById('f-consent').addEventListener('change', updateButtonState);
+document.addEventListener('DOMContentLoaded', updateButtonState);
+
+document.getElementById("contact-form").addEventListener("submit", function(e) {
+  e.preventDefault();
+  var form = e.target;
+  var contactInput = document.getElementById("f-contact");
+  var errorDiv = document.getElementById("contact-error");
+  var consentInput = document.getElementById("f-consent");
+  var consentError = document.getElementById("consent-error");
+
+  if (!isValidContact(contactInput.value)) {
+    errorDiv.style.display = "block";
+    contactInput.style.borderColor = "#F87171";
+    contactInput.focus();
+    return;
+  }
+  errorDiv.style.display = "none";
+  contactInput.style.borderColor = "#1a2545";
+
+  if (!consentInput.checked) {
+    consentError.style.display = "block";
+    return;
+  }
+  consentError.style.display = "none";
+
+  document.getElementById("f-consent-time").value = new Date().toISOString();
+  var btn = form.querySelector('button[type="submit"]');
+  btn.textContent = "Отправляем...";
+  btn.disabled = true;
+
+  // Дубль на Formspree — оттуда приходит письмо о заявке (CORS у него настроен).
+  fetch("https://formspree.io/f/mjgdaryr", {
+    method: "POST",
+    headers: { "Accept": "application/json" },
+    body: new FormData(form)
+  }).catch(function () {});
+
+  // Основной канал — Google Таблица через Apps Script.
+  // mode:"no-cors" обязателен: ответ Apps Script идёт через редирект без CORS-заголовков,
+  // поэтому прочитать res нельзя. Запрос при этом доходит и пишется в таблицу,
+  // так что резолв промиса считаем успехом.
+  fetch("https://script.google.com/macros/s/AKfycbwuaWa3x0EywWH3_WSDOVT-rvRJktaUTIzvIWv2_YqD_vY8S5od4X7qdMuKK3YDU-tV5A/exec", {
+    method: "POST",
+    mode: "no-cors",
+    headers: { "Content-Type": "text/plain;charset=UTF-8" },
+    body: JSON.stringify({
+      name: form.name.value,
+      contact: form.contact.value,
+      tariff: form.tariff.value,
+      message: form.message.value,
+      consent_given_at: form.consent_given_at.value,
+      marketing_consent: form.marketing_consent.checked
+    })
+  }).then(function () {
+    form.style.display = "none";
+    document.getElementById("form-success").style.display = "block";
+  }).catch(function (err) {
+    console.error("Lead submission failed:", err);
+    btn.textContent = "Получить сайт под заявки";
+    btn.disabled = false;
+  });
+});
+
+</script>
+
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) {if (document.scripts[j].src === r) { return; }}
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=111617209', 'ym');
+    ym(111617209, 'init', {ssr:true, webvisor:true, clickmap:true, ecommerce:"dataLayer", referrer: document.referrer, url: location.href, accurateTrackBounce:true, trackLinks:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/111617209" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+
+<!-- ALYONA CHAT WIDGET -->
+<div id="alyona-widget">
+  <div class="alyona-chat" id="alyona-chat-window">
+    <div class="alyona-header">
+      <div class="alyona-avatar">🤖</div>
+      <div class="alyona-header-text">
+        <div class="alyona-header-name">Алёна, ассистент</div>
+        <div class="alyona-header-status">на связи</div>
+      </div>
+    </div>
+    <div class="alyona-messages" id="alyona-messages"></div>
+    <div class="alyona-input-row">
+      <input id="alyona-input" type="text" placeholder="Напишите сообщение..." autocomplete="off">
+      <button id="alyona-send" aria-label="Отправить">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+      </button>
+    </div>
+  </div>
+  <div class="alyona-teaser" id="alyona-teaser">
+  Здесь можно спросить всё, что интересует — отвечаю быстро 👋
+  <div class="alyona-teaser-close" id="alyona-teaser-close">✕</div>
+</div> <button id="alyona-toggle" aria-label="Открыть чат с Алёной">
+    <svg class="alyona-icon-chat" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
+    <svg class="alyona-icon-close" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    <span class="alyona-badge-dot"></span>
+  </button>
+</div>
+
+<script>
+(function() {
+  var API_BASE = "https://api.vireflow.ru";
+  var widget = document.getElementById("alyona-widget");
+  var toggleBtn = document.getElementById("alyona-toggle");
+  var messagesEl = document.getElementById("alyona-messages");
+  var inputEl = document.getElementById("alyona-input");
+  var sendBtn = document.getElementById("alyona-send");
+
+  var sessionId = null;
+  var started = false;
+  var sending = false;
+  var teaser = document.getElementById("alyona-teaser");
+  var teaserClose = document.getElementById("alyona-teaser-close");
+  var teaserTimeout;
+
+  function showTeaser() {
+    if (widget.classList.contains("open")) return;
+    teaser.classList.add("show");
+    teaserTimeout = setTimeout(function() { teaser.classList.remove("show"); }, 10000);
+  }
+
+  function hideTeaser() {
+    teaser.classList.remove("show");
+    clearTimeout(teaserTimeout);
+  }
+
+  setTimeout(showTeaser, 4000);
+
+  teaser.addEventListener("click", function() {
+    hideTeaser();
+    toggleBtn.click();
+  });
+
+  teaserClose.addEventListener("click", function(e) {
+    e.stopPropagation();
+    hideTeaser();
+  });
+
+  function addMessage(text, role) {
+    var el = document.createElement("div");
+    el.className = "alyona-msg " + role;
+    el.textContent = text;
+    messagesEl.appendChild(el);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+    return el;
+  }
+
+  function showTyping() {
+    var el = document.createElement("div");
+    el.className = "alyona-typing";
+    el.id = "alyona-typing-indicator";
+    el.innerHTML = "<span></span><span></span><span></span>";
+    messagesEl.appendChild(el);
+    messagesEl.scrollTop = messagesEl.scrollHeight;
+  }
+
+  function hideTyping() {
+    var el = document.getElementById("alyona-typing-indicator");
+    if (el) el.remove();
+  }
+
+  function startChat() {
+    if (started) return;
+    started = true;
+    showTyping();
+    fetch(API_BASE + "/api/chat/start", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({})
+    }).then(function(res) {
+      if (!res.ok) throw new Error("bad status");
+      return res.json();
+    }).then(function(data) {
+      hideTyping();
+      sessionId = data.session_id;
+      addMessage(data.greeting || "Здравствуйте! Чем могу помочь?", "bot");
+    }).catch(function() {
+      hideTyping();
+      addMessage("Не получилось подключиться к чату. Попробуйте обновить страницу или напишите нам в Telegram.", "error");
+      started = false;
+    });
+  }
+
+  function sendMessage() {
+    var text = inputEl.value.trim();
+    if (!text || sending || !sessionId) return;
+    sending = true;
+    sendBtn.disabled = true;
+    addMessage(text, "user");
+    inputEl.value = "";
+    showTyping();
+    fetch(API_BASE + "/api/chat/message", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ session_id: sessionId, text: text })
+    }).then(function(res) {
+      if (!res.ok) throw new Error("bad status");
+      return res.json();
+    }).then(function(data) {
+      hideTyping();
+      addMessage(data.reply || "...", "bot");
+    }).catch(function() {
+      hideTyping();
+      addMessage("Не получилось отправить, попробуйте ещё раз.", "error");
+    }).finally(function() {
+      sending = false;
+      sendBtn.disabled = false;
+      inputEl.focus();
+    });
+  }
+
+  toggleBtn.addEventListener("click", function() {
+    hideTeaser();
+    var isOpen = widget.classList.toggle("open");
+    if (isOpen) {
+      startChat();
+      setTimeout(function() { inputEl.focus(); }, 150);
+    }
+  });
+
+  sendBtn.addEventListener("click", sendMessage);
+  inputEl.addEventListener("keydown", function(e) {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+})();
+</script>
+
+<script>
+// REVEAL ON SCROLL + BRIGHTNESS EFFECT
+(function() {
+  var revealSelector = '.pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step, .neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .section-title, .section-sub, .section-label';
+
+  function initReveal() {
+    var elements = document.querySelectorAll(revealSelector);
+    if ('IntersectionObserver' in window) {
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.15 });
+      elements.forEach(function(el) { observer.observe(el); });
+    } else {
+      elements.forEach(function(el) { el.classList.add('visible'); });
+    }
+  }
+
+  function updateScrollBrightness() {
+    var blocks = document.querySelectorAll(revealSelector);
+    var viewportCenter = window.innerHeight / 2;
+    blocks.forEach(function(block) {
+      var rect = block.getBoundingClientRect();
+      var elementCenter = rect.top + rect.height / 2;
+      var distance = Math.abs(elementCenter - viewportCenter);
+      var maxDistance = window.innerHeight * 0.6;
+      var brightness = Math.max(0.35, 1 - (distance / maxDistance) * 0.65);
+      block.style.filter = 'brightness(' + brightness + ')';
+    });
+  }
+
+  function init() {
+    initReveal();
+    updateScrollBrightness();
+    window.addEventListener('scroll', updateScrollBrightness, { passive: true });
+    window.addEventListener('resize', updateScrollBrightness);
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+</script>
+
+</body>
+</html>

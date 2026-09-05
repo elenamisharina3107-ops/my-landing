@@ -1,66 +1,32 @@
 # ─────────────────────────────────────────────────────────────────────
-#  СПИСОК ПОЛЕЙ САЙТА («схема»)
-#  Для нового сайта переписывается только этот файл (плюс примеры контента
-#  в src/_data и src/content). Порядок разделов и полей здесь = порядок
-#  в панели. Машинные имена (name) клиенту не показываются — он видит
-#  только label и hint.
-#
-#  Примечание по «условным полям» (Задача 1.2, риск): в Sveltia CMS их
-#  нет (issue sveltia/sveltia-cms#139, открыт, не реализовано). Поле
-#  buttonText поэтому показывается всегда, с пояснением в hint, что оно
-#  учитывается только при включённом переключателе выше — это осознанное
-#  упрощение, не баг.
+#  СПИСОК ПОЛЕЙ САЙТА vireflow.ru (Елена Мишарина)
 # ─────────────────────────────────────────────────────────────────────
 
 backend:
   name: github
-  repo: OWNER/REPO # подставляется при заведении сайта (Задача 5.1)
+  repo: elenamisharina3107-ops/my-landing
   branch: main
-  # Логин клиента идёт через наш вход, маскирующий GitHub (Этап 2).
-  # base_url — ОБЯЗАТЕЛЬНО полный адрес с https://, не просто путь
-  # (подставляется при заведении сайта, вместе с site_url — Задача 5.1).
-  # Находка (5 сентября 2026, живая проверка): с относительным путём
-  # ("/admin/_panel") Sveltia дублирует "/admin" при сборке адреса входа —
-  # получалось "/admin/admin/_panel/auth" и настоящий 404 на сервере.
-  base_url: https://example.ru/admin/_panel
+  base_url: https://vireflow.ru/admin/_panel
   auth_endpoint: auth
 
-# Локальная разработка: Sveltia открывает папку проекта напрямую в браузере
-# (Chrome/Edge, File System Access API) — экран входа, кнопка «Work with
-# local repository». Прокси-сервер не нужен, GitHub не участвует.
 local_backend: true
 
-# Картинки: клиент грузит оригинал сюда, робот сжимает при сборке
-# (шорткод {% image %}, .eleventy.js).
 media_folder: src/uploads
 public_folder: /uploads
 
-# ── Брендирование панели (Задача 1.3) ──────────────────────────────────
-# Логотип клиента — в шапке панели, на экране входа Sveltia и на вкладке
-# браузера (Sveltia использует его и как favicon). Меняется на новый сайт —
-# заменить файл в src/admin/branding/logo.png (не CMS-медиа, часть шаблона).
 logo:
   src: /admin/branding/logo.png
   show_in_header: true
-app_title: "Панель — Шаблон сайта" # заменить на имя клиента на боевом сайте
-site_url: https://example.ru        # ссылка «Открыть сайт» — адрес клиента
-display_url: https://example.ru
+app_title: "Панель — Vireflow"
+site_url: https://vireflow.ru
+display_url: https://vireflow.ru
 
-# ─────────────────────────────────────────────────────────────────────
-#  Переиспользуемый кусок полей — SEO. Объявлен один раз через YAML-якорь
-#  (&seo_fields) и подключается через слияние (<<: *seo_fields) везде,
-#  где нужна SEO-настройка: в общем разделе «SEO» и, при необходимости,
-#  в отдельной услуге (переопределение). Это и есть ответ на «Переименование
-#  поля» и «Общий кусок fields» из плана — меняем один раз, применяется
-#  везде, где подключено.
-# ─────────────────────────────────────────────────────────────────────
 seo_fields: &seo_fields
   - { name: title, label: "Заголовок вкладки", widget: string, hint: "Показывается на вкладке браузера и в поиске" }
   - { name: description, label: "Описание для поиска", widget: text, hint: "1–2 предложения, показывается в результатах поиска" }
   - { name: ogImage, label: "Картинка для ссылок", widget: image, required: false, hint: "Показывается при пересылке ссылки в мессенджерах" }
 
 collections:
-  # ── Одиночные блоки (file collections) ────────────────────────────
   - name: singletons
     label: "Блоки главной страницы"
     files:
@@ -68,80 +34,165 @@ collections:
         label: "Первый экран"
         file: src/_data/hero.json
         fields:
-          - { name: title, label: "Заголовок", widget: string, hint: "Главная строка на первом экране" }
-          - { name: subtitle, label: "Подзаголовок", widget: text, hint: "Короткое пояснение под заголовком" }
-          - { name: image, label: "Картинка", widget: image, hint: "Большое фото справа от текста" }
-          - { name: imageAlt, label: "Описание картинки", widget: string, hint: "Для незрячих посетителей и поисковиков — что на фото" }
-          - { name: showButton, label: "Показывать кнопку", widget: boolean, default: true }
-          - { name: buttonText, label: "Текст кнопки", widget: string, required: false, hint: "Учитывается, только если включена «Показывать кнопку» выше" }
-
-      - name: contacts
-        label: "Контакты"
-        file: src/_data/contacts.json
-        fields:
-          - { name: phone, label: "Телефон", widget: string, pattern: ["^\\+?[\\d\\s\\-()]{10,}$", "Похоже на неверный телефон"] }
-          - { name: email, label: "Почта", widget: string, pattern: ["^\\S+@\\S+\\.\\S+$", "Похоже на неверную почту"] }
-          - name: address
-            label: "Адрес"
-            widget: object
-            fields:
-              - { name: city, label: "Город", widget: string }
-              - { name: street, label: "Улица, дом", widget: string }
-          - { name: hours, label: "Часы работы", widget: string }
-          - { name: website, label: "Сайт", widget: string, required: false, pattern: ["^https?://", "Ссылка должна начинаться с http:// или https://"] }
-          - name: socials
-            label: "Соцсети"
+          - { name: badge, label: "Плашка над заголовком", widget: string }
+          - { name: titleBefore, label: "Заголовок (начало)", widget: string }
+          - { name: titleAccent, label: "Заголовок (выделенное слово)", widget: string, hint: "Показывается синим цветом" }
+          - { name: subtitle, label: "Подзаголовок", widget: text }
+          - { name: primaryButtonText, label: "Текст главной кнопки", widget: string }
+          - { name: ghostButtonText, label: "Текст второй кнопки", widget: string }
+          - name: stats
+            label: "Цифры под кнопками"
             widget: list
-            hint: "Можно перетаскивать, чтобы менять порядок"
             fields:
-              - { name: label, label: "Название", widget: string }
-              - { name: url, label: "Ссылка", widget: string, pattern: ["^https?://", "Ссылка должна начинаться с http:// или https://"] }
+              - { name: num, label: "Число/слово", widget: string }
+              - { name: label, label: "Подпись", widget: string }
 
-      - name: settings
-        label: "Общие настройки"
-        file: src/_data/settings.json
+      - name: pain
+        label: "Блок «Узнаёшь себя?»"
+        file: src/_data/pain.json
         fields:
-          - name: theme
-            label: "Акцентный цвет"
-            widget: select
-            options:
-              - { label: "Зелёный", value: green }
-              - { label: "Терракотовый", value: terracotta }
-              - { label: "Синий", value: blue }
-          - { name: footer, label: "Подпись в подвале сайта", widget: string }
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - name: cards
+            label: "Карточки"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок карточки", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: benefits
+        label: "Блок «Что вы получите»"
+        file: src/_data/benefits.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - name: items
+            label: "Пункты"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: process
+        label: "Блок «Как я работаю»"
+        file: src/_data/process.json
+        fields:
+          - { name: label, label: "Надпись-метка (шаги)", widget: string }
+          - { name: title, label: "Заголовок (шаги)", widget: string }
+          - name: steps
+            label: "Шаги работы"
+            widget: list
+            hint: "Номер (1, 2, 3…) проставляется автоматически по порядку"
+            fields:
+              - { name: title, label: "Заголовок шага", widget: string }
+              - { name: text, label: "Текст", widget: text }
+          - { name: includesLabel, label: "Надпись-метка (что входит)", widget: string }
+          - { name: includesTitle, label: "Заголовок (что входит)", widget: string }
+          - name: includes
+            label: "Что входит в сайт"
+            widget: list
+            fields:
+              - { name: title, label: "Заголовок пункта", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: neuro
+        label: "Блок «Уровень PRO»"
+        file: src/_data/neuro.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - name: flow
+            label: "Схема-цепочка (сверху)"
+            widget: list
+            fields:
+              - { name: text, label: "Текст в кружке", widget: string }
+              - { name: active, label: "Выделить цветом", widget: boolean, default: false }
+          - name: cards
+            label: "Карточки"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: about
+        label: "Блок «Об исполнителе»"
+        file: src/_data/about.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: photo, label: "Фото", widget: image }
+          - { name: photoAlt, label: "Описание фото", widget: string }
+          - { name: name, label: "Имя", widget: string }
+          - { name: role, label: "Должность/роль", widget: string }
+          - { name: text, label: "Текст о себе", widget: text, hint: "Можно использовать <br><br> для переноса абзаца" }
+          - name: tags
+            label: "Теги-плашки"
+            widget: list
+            field: { name: tag, label: "Тег", widget: string }
+
+      - name: guarantee
+        label: "Блок «Гарантия»"
+        file: src/_data/guarantee.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - name: items
+            label: "Пункты гарантии"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок", widget: string }
+              - { name: text, label: "Текст", widget: text }
+          - { name: note, label: "Пояснение внизу блока", widget: text }
 
       - name: prices
-        label: "Прайс-лист"
+        label: "Тарифы"
         file: src/_data/prices.json
         fields:
+          - { name: label, label: "Надпись-метка", widget: string }
           - { name: title, label: "Заголовок раздела", widget: string }
           - name: items
-            label: "Позиции"
+            label: "Тарифы"
             widget: list
             hint: "Можно перетаскивать, чтобы менять порядок"
             fields:
-              - { name: name, label: "Название", widget: string }
-              - { name: price, label: "Цена", widget: string, hint: "Например «от 500 ₽» — текстом, чтобы можно было написать «от»" }
+              - { name: name, label: "Название тарифа", widget: string }
+              - { name: price, label: "Цена", widget: string, hint: "Например «19 000 ₽» — текстом" }
+              - { name: period, label: "Пояснение к цене", widget: string, hint: "Например «один платёж»" }
+              - name: features
+                label: "Что входит (список строк)"
+                widget: list
+                field: { name: feature, label: "Пункт", widget: string }
+              - { name: monthlyNote, label: "Строка про ежемесячные расходы", widget: string }
+              - { name: buttonText, label: "Текст кнопки", widget: string }
+              - { name: featured, label: "Выделить как популярный", widget: boolean, default: false }
+              - { name: badge, label: "Текст плашки сверху", widget: string, required: false, hint: "Показывается только если «Выделить как популярный» включено" }
+
+      - name: contact
+        label: "Блок «Получить сайт» (контакты)"
+        file: src/_data/contact.json
+        fields:
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - { name: telegram, label: "Ссылка на Telegram", widget: string }
+          - { name: vk, label: "Ссылка на VK", widget: string }
+          - { name: email, label: "Почта", widget: string }
+
+      - name: footer
+        label: "Подвал сайта"
+        file: src/_data/footer.json
+        fields:
+          - { name: copy, label: "Строка копирайта", widget: string }
 
       - name: seo
         label: "SEO (текст для поисковиков)"
         file: src/_data/seo.json
         fields: *seo_fields
-
-  # ── Списки (folder collections) ────────────────────────────────────
-  - name: services
-    label: "Услуги"
-    label_singular: "Услуга"
-    folder: src/content/services
-    create: true
-    slug: "{{slug}}"
-    sortable_fields: [order, name]
-    fields:
-      - { name: name, label: "Название", widget: string }
-      - { name: price, label: "Цена, ₽", widget: number, value_type: int, min: 0 }
-      - { name: oldPrice, label: "Старая цена, ₽", widget: number, value_type: int, required: false, hint: "Заполните, если хотите показать зачёркнутую старую цену" }
-      - { name: order, label: "Порядок", widget: number, value_type: int, hint: "Чем меньше число, тем выше в списке" }
-      - { name: body, label: "Описание", widget: markdown }
 
   - name: faq
     label: "Вопросы и ответы"
