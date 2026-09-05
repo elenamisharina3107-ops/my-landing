@@ -1,0 +1,20 @@
+# сборка
+_site/
+.cache/
+
+# зависимости
+node_modules/
+
+# секреты — никогда в git
+.env
+.env.*
+panel/store/config.json
+panel/store/users.json
+
+# python-хлам из прошлых экспериментов
+venv/
+__pycache__/
+*.pyc
+
+# ОС / редакторы
+.DS_Store

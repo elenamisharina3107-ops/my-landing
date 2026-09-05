@@ -1,0 +1,207 @@
+# ─────────────────────────────────────────────────────────────────────
+#  СПИСОК ПОЛЕЙ САЙТА vireflow.ru (Елена Мишарина)
+# ─────────────────────────────────────────────────────────────────────
+
+backend:
+  name: github
+  repo: elenamisharina3107-ops/my-landing
+  branch: main
+  base_url: https://vireflow.ru/admin/_panel
+  auth_endpoint: auth
+
+local_backend: true
+
+media_folder: src/uploads
+public_folder: /uploads
+
+logo:
+  src: /admin/branding/logo.png
+  show_in_header: true
+app_title: "Панель — Vireflow"
+site_url: https://vireflow.ru
+display_url: https://vireflow.ru
+
+seo_fields: &seo_fields
+  - { name: title, label: "Заголовок вкладки", widget: string, hint: "Показывается на вкладке браузера и в поиске" }
+  - { name: description, label: "Описание для поиска", widget: text, hint: "1–2 предложения, показывается в результатах поиска" }
+  - { name: ogImage, label: "Картинка для ссылок", widget: image, required: false, hint: "Показывается при пересылке ссылки в мессенджерах" }
+
+collections:
+  - name: singletons
+    label: "Блоки главной страницы"
+    files:
+      - name: hero
+        label: "Первый экран"
+        file: src/_data/hero.json
+        fields:
+          - { name: badge, label: "Плашка над заголовком", widget: string }
+          - { name: titleBefore, label: "Заголовок (начало)", widget: string }
+          - { name: titleAccent, label: "Заголовок (выделенное слово)", widget: string, hint: "Показывается синим цветом" }
+          - { name: subtitle, label: "Подзаголовок", widget: text }
+          - { name: primaryButtonText, label: "Текст главной кнопки", widget: string }
+          - { name: ghostButtonText, label: "Текст второй кнопки", widget: string }
+          - name: stats
+            label: "Цифры под кнопками"
+            widget: list
+            fields:
+              - { name: num, label: "Число/слово", widget: string }
+              - { name: label, label: "Подпись", widget: string }
+
+      - name: pain
+        label: "Блок «Узнаёшь себя?»"
+        file: src/_data/pain.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - name: cards
+            label: "Карточки"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок карточки", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: benefits
+        label: "Блок «Что вы получите»"
+        file: src/_data/benefits.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - name: items
+            label: "Пункты"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: process
+        label: "Блок «Как я работаю»"
+        file: src/_data/process.json
+        fields:
+          - { name: label, label: "Надпись-метка (шаги)", widget: string }
+          - { name: title, label: "Заголовок (шаги)", widget: string }
+          - name: steps
+            label: "Шаги работы"
+            widget: list
+            hint: "Номер (1, 2, 3…) проставляется автоматически по порядку"
+            fields:
+              - { name: title, label: "Заголовок шага", widget: string }
+              - { name: text, label: "Текст", widget: text }
+          - { name: includesLabel, label: "Надпись-метка (что входит)", widget: string }
+          - { name: includesTitle, label: "Заголовок (что входит)", widget: string }
+          - name: includes
+            label: "Что входит в сайт"
+            widget: list
+            fields:
+              - { name: title, label: "Заголовок пункта", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: neuro
+        label: "Блок «Уровень PRO»"
+        file: src/_data/neuro.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - name: flow
+            label: "Схема-цепочка (сверху)"
+            widget: list
+            fields:
+              - { name: text, label: "Текст в кружке", widget: string }
+              - { name: active, label: "Выделить цветом", widget: boolean, default: false }
+          - name: cards
+            label: "Карточки"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: about
+        label: "Блок «Об исполнителе»"
+        file: src/_data/about.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: photo, label: "Фото", widget: image }
+          - { name: photoAlt, label: "Описание фото", widget: string }
+          - { name: name, label: "Имя", widget: string }
+          - { name: role, label: "Должность/роль", widget: string }
+          - { name: text, label: "Текст о себе", widget: text, hint: "Можно использовать <br><br> для переноса абзаца" }
+          - name: tags
+            label: "Теги-плашки"
+            widget: list
+            field: { name: tag, label: "Тег", widget: string }
+
+      - name: guarantee
+        label: "Блок «Гарантия»"
+        file: src/_data/guarantee.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - name: items
+            label: "Пункты гарантии"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок", widget: string }
+              - { name: text, label: "Текст", widget: text }
+          - { name: note, label: "Пояснение внизу блока", widget: text }
+
+      - name: prices
+        label: "Тарифы"
+        file: src/_data/prices.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок раздела", widget: string }
+          - name: items
+            label: "Тарифы"
+            widget: list
+            hint: "Можно перетаскивать, чтобы менять порядок"
+            fields:
+              - { name: name, label: "Название тарифа", widget: string }
+              - { name: price, label: "Цена", widget: string, hint: "Например «19 000 ₽» — текстом" }
+              - { name: period, label: "Пояснение к цене", widget: string, hint: "Например «один платёж»" }
+              - name: features
+                label: "Что входит (список строк)"
+                widget: list
+                field: { name: feature, label: "Пункт", widget: string }
+              - { name: monthlyNote, label: "Строка про ежемесячные расходы", widget: string }
+              - { name: buttonText, label: "Текст кнопки", widget: string }
+              - { name: featured, label: "Выделить как популярный", widget: boolean, default: false }
+              - { name: badge, label: "Текст плашки сверху", widget: string, required: false, hint: "Показывается только если «Выделить как популярный» включено" }
+
+      - name: contact
+        label: "Блок «Получить сайт» (контакты)"
+        file: src/_data/contact.json
+        fields:
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - { name: telegram, label: "Ссылка на Telegram", widget: string }
+          - { name: vk, label: "Ссылка на VK", widget: string }
+          - { name: email, label: "Почта", widget: string }
+
+      - name: footer
+        label: "Подвал сайта"
+        file: src/_data/footer.json
+        fields:
+          - { name: copy, label: "Строка копирайта", widget: string }
+
+      - name: seo
+        label: "SEO (текст для поисковиков)"
+        file: src/_data/seo.json
+        fields: *seo_fields
+
+  - name: faq
+    label: "Вопросы и ответы"
+    label_singular: "Вопрос"
+    folder: src/content/faq
+    create: true
+    slug: "{{slug}}"
+    sortable_fields: [order, question]
+    fields:
+      - { name: question, label: "Вопрос", widget: string }
+      - { name: order, label: "Порядок", widget: number, value_type: int, hint: "Чем меньше число, тем выше в списке" }
+      - { name: body, label: "Ответ", widget: markdown }
