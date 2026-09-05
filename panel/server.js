@@ -1,0 +1,54 @@
+import { sendJson } from "./http-utils.js";
+import * as auth from "./auth.js";
+import * as account from "./account.js";
+import * as users from "./users.js";
+import * as history from "./history.js";
+import * as exportRoute from "./export.js";
+import * as start from "./start.js";
+import * as logout from "./logout.js";
+
+const BASE = "/admin/_panel";
+
+/**
+ * Роутер приложения панели. Не зависит от того, поднят ли сервер
+ * по-настоящему (createApp()) или вызывается напрямую из теста.
+ */
+export function createApp(config) {
+  const routes = {
+    "": start.handle, // /admin/_panel — «с чего начать»
+    "/": start.handle, // /admin/_panel/ — то же самое, со слэшем
+    "/auth": auth.handle,
+    "/account": account.handle,
+    "/users": users.handle,
+    "/history": history.handle,
+    "/export": exportRoute.handle,
+    "/logout": logout.handle,
+  };
+
+  return async function handleRequest(req, res) {
+    const url = new URL(req.url, "http://localhost");
+    const pathname = url.pathname;
+
+    if (pathname === `${BASE}/health`) {
+      sendJson(res, 200, { status: "ok", repo: config.repo });
+      return;
+    }
+
+    const routePath = pathname.startsWith(BASE) ? pathname.slice(BASE.length) : null;
+    // routePath может быть "" (запрос точно на /admin/_panel) — сравниваем
+    // с null явно, иначе пустая строка (falsy) ложно считалась бы «нет пути».
+    const handler = routePath !== null ? routes[routePath] : undefined;
+
+    if (!handler) {
+      sendJson(res, 404, { error: "Страница не найдена" });
+      return;
+    }
+
+    try {
+      await handler(req, res, { config, url });
+    } catch (err) {
+      console.error(err);
+      sendJson(res, 500, { error: "Внутренняя ошибка сервера" });
+    }
+  };
+}

@@ -1,0 +1,37 @@
+name: Сборка и деплой на Beget
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Установить зависимости сайта
+        run: npm ci
+
+      - name: Проверить схему панели (config.yml)
+        run: npm run check:config
+
+      - name: Собрать сайт
+        run: npm run build
+
+      - name: Загрузить _site/ на Beget по FTP
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.BEGET_FTP_HOST }}
+          username: ${{ secrets.BEGET_FTP_USER }}
+          password: ${{ secrets.BEGET_FTP_PASSWORD }}
+          local-dir: ./_site/
+          # Путь на Beget до корня сайта (см. scripts/deploy-notes.md).
+          server-dir: ${{ secrets.BEGET_FTP_PATH }}
+          exclude: |
+            **/.git*/**

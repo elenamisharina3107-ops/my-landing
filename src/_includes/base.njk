@@ -1,0 +1,23 @@
+<!doctype html>
+{# Акцентный цвет — из общих настроек (settings.theme), см. src/styles/site.css #}
+<html lang="ru" data-accent="{{ settings.theme or 'green' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  {# SEO: берётся из src/_data/seo.json, с фолбэком на заголовок героя #}
+  <title>{{ seo.title or hero.title }}</title>
+  <meta name="description" content="{{ seo.description or hero.subtitle }}">
+  <meta property="og:title" content="{{ seo.title or hero.title }}">
+  <meta property="og:description" content="{{ seo.description or hero.subtitle }}">
+  {% if seo.ogImage or hero.image %}
+  <meta property="og:image" content="{{ seo.ogImage or hero.image }}">
+  {% endif %}
+  <meta property="og:type" content="website">
+
+  <link rel="stylesheet" href="/styles/site.css">
+</head>
+<body>
+  {{ content | safe }}
+</body>
+</html>

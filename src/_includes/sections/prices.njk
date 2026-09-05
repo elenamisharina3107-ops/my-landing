@@ -1,0 +1,8 @@
+<section class="prices">
+  <h2>{{ prices.title }}</h2>
+  <ul class="price-list">
+    {% for item in prices.items %}
+      <li><span>{{ item.name }}</span><span class="price-list__price">{{ item.price }}</span></li>
+    {% endfor %}
+  </ul>
+</section>

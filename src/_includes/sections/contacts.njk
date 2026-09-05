@@ -1,0 +1,19 @@
+<section class="contacts" id="contacts">
+  <h2>Контакты</h2>
+  <dl class="contacts__list">
+    <div><dt>Телефон</dt><dd><a href="tel:{{ contacts.phone | replace(r/[^\d+]/g, '') }}">{{ contacts.phone }}</a></dd></div>
+    <div><dt>Почта</dt><dd><a href="mailto:{{ contacts.email }}">{{ contacts.email }}</a></dd></div>
+    <div><dt>Адрес</dt><dd>{{ contacts.address.city }}, {{ contacts.address.street }}</dd></div>
+    <div><dt>Часы работы</dt><dd>{{ contacts.hours }}</dd></div>
+    {% if contacts.website %}
+      <div><dt>Сайт</dt><dd><a href="{{ contacts.website }}">{{ contacts.website }}</a></dd></div>
+    {% endif %}
+  </dl>
+  {% if contacts.socials %}
+    <ul class="contacts__socials">
+      {% for s in contacts.socials %}
+        <li><a href="{{ s.url }}">{{ s.label }}</a></li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+</section>

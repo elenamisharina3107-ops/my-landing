@@ -1,0 +1,17 @@
+<section class="services">
+  <h2>Услуги и цены</h2>
+  <ul class="cards">
+    {% for item in collections.services %}
+      <li class="card">
+        <h3>{{ item.data.name }}</h3>
+        <div class="card__body">{{ item.content | safe }}</div>
+        <p class="card__price">
+          {{ item.data.price }} ₽
+          {% if item.data.oldPrice %}
+            <span class="card__old">{{ item.data.oldPrice }} ₽</span>
+          {% endif %}
+        </p>
+      </li>
+    {% endfor %}
+  </ul>
+</section>

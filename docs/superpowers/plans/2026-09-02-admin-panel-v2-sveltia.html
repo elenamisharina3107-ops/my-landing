@@ -1,0 +1,1050 @@
+<title>Шаблон сайта с панелью Sveltia</title>
+<meta name="description" content="План v2: переиспользуемый шаблон сайта на Eleventy со встроенной панелью Sveltia CMS, вход с маскировкой GitHub, хостинг на Beget.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Serif:ital,wght@0,500;0,600;1,500&display=swap">
+
+<style>
+  :root {
+    --ground: #f6f7f8;
+    --surface: #ffffff;
+    --surface-2: #eef1f3;
+    --ink: #1b2530;
+    --ink-soft: #41505d;
+    --muted: #6a7783;
+    --border: #e0e4e8;
+    --border-strong: #c9d0d7;
+    --accent: #2c6e64;
+    --accent-ink: #1f5049;
+    --accent-bg: #e6f0ee;
+    --risk: #8f5d13;
+    --risk-ink: #714a0f;
+    --risk-bg: #f5ebda;
+    --lena: #a54c2b;
+    --lena-ink: #8a3f24;
+    --lena-bg: #f5e5df;
+    --shadow: 0 1px 2px rgba(20,30,40,.05), 0 10px 30px rgba(20,30,40,.06);
+    --measure: 68ch;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --ground: #0f141a;
+      --surface: #171e25;
+      --surface-2: #1e262e;
+      --ink: #e5eaed;
+      --ink-soft: #bcc6ce;
+      --muted: #8a97a2;
+      --border: #29313a;
+      --border-strong: #3a444f;
+      --accent: #5cb4a6;
+      --accent-ink: #8ad3c8;
+      --accent-bg: #16302c;
+      --risk: #d8a44e;
+      --risk-ink: #e6bd7a;
+      --risk-bg: #2d2617;
+      --lena: #dd8a64;
+      --lena-ink: #e8a888;
+      --lena-bg: #32211a;
+      --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.45);
+    }
+  }
+  :root[data-theme="dark"] {
+    --ground: #0f141a;
+    --surface: #171e25;
+    --surface-2: #1e262e;
+    --ink: #e5eaed;
+    --ink-soft: #bcc6ce;
+    --muted: #8a97a2;
+    --border: #29313a;
+    --border-strong: #3a444f;
+    --accent: #5cb4a6;
+    --accent-ink: #8ad3c8;
+    --accent-bg: #16302c;
+    --risk: #d8a44e;
+    --risk-ink: #e6bd7a;
+    --risk-bg: #2d2617;
+    --lena: #dd8a64;
+    --lena-ink: #e8a888;
+    --lena-bg: #32211a;
+    --shadow: 0 1px 2px rgba(0,0,0,.35), 0 10px 30px rgba(0,0,0,.45);
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--ground);
+    color: var(--ink);
+    font-family: "IBM Plex Sans", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    font-size: 16px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  .wrap {
+    max-width: 1120px;
+    margin: 0 auto;
+    padding: 0 clamp(18px, 4vw, 44px);
+  }
+
+  /* ---- masthead ---- */
+  .masthead {
+    border-bottom: 1px solid var(--border);
+    padding: clamp(40px, 7vw, 76px) 0 clamp(28px, 4vw, 44px);
+  }
+  .eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .72rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    margin: 0 0 18px;
+  }
+  h1 {
+    font-family: "IBM Plex Serif", Georgia, "Times New Roman", serif;
+    font-weight: 600;
+    font-size: clamp(2rem, 5.2vw, 3.1rem);
+    line-height: 1.1;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 .5em;
+    max-width: 20ch;
+  }
+  .lede {
+    font-size: clamp(1.05rem, 2.2vw, 1.22rem);
+    color: var(--ink-soft);
+    max-width: var(--measure);
+    margin: 0;
+  }
+  .meta {
+    margin-top: 28px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px 10px;
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .78rem;
+    color: var(--muted);
+  }
+  .meta span {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 999px;
+    padding: 4px 12px;
+  }
+
+  /* ---- layout with TOC ---- */
+  .layout {
+    display: grid;
+    grid-template-columns: 236px minmax(0, 1fr);
+    gap: clamp(28px, 5vw, 64px);
+    padding: clamp(32px, 5vw, 56px) 0 96px;
+    align-items: start;
+  }
+  .toc {
+    position: sticky;
+    top: 20px;
+    font-size: .88rem;
+  }
+  .toc h2 {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 12px;
+    font-weight: 500;
+  }
+  .toc ol { list-style: none; margin: 0; padding: 0; }
+  .toc li { margin: 0; }
+  .toc a {
+    display: block;
+    padding: 5px 10px;
+    color: var(--ink-soft);
+    text-decoration: none;
+    border-left: 2px solid var(--border);
+    transition: border-color .15s, color .15s, background .15s;
+  }
+  .toc a:hover { color: var(--accent-ink); border-left-color: var(--accent); background: var(--accent-bg); }
+  .toc .toc-num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    color: var(--muted);
+    margin-right: 8px;
+    font-size: .82em;
+  }
+
+  .content { min-width: 0; }
+  .content > section { scroll-margin-top: 24px; }
+  .content > section + section { margin-top: clamp(44px, 6vw, 72px); }
+
+  h2.sec {
+    font-family: "IBM Plex Serif", Georgia, serif;
+    font-weight: 600;
+    font-size: clamp(1.5rem, 3.4vw, 2rem);
+    line-height: 1.18;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 .1em;
+  }
+  .sec-eyebrow {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .72rem;
+    letter-spacing: .16em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    display: block;
+    margin-bottom: 10px;
+  }
+  h3 {
+    font-family: "IBM Plex Sans", system-ui, sans-serif;
+    font-weight: 600;
+    font-size: 1.12rem;
+    margin: 1.8em 0 .5em;
+    letter-spacing: -0.005em;
+  }
+  p { max-width: var(--measure); }
+  .content a { color: var(--accent-ink); text-decoration-thickness: 1px; text-underline-offset: 2px; }
+
+  ul, ol { padding-left: 1.3em; max-width: var(--measure); }
+  li { margin: .3em 0; }
+  li::marker { color: var(--muted); }
+
+  code {
+    font-family: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+    font-size: .86em;
+    background: var(--surface-2);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: .08em .38em;
+    word-break: break-word;
+  }
+  pre {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px 20px;
+    overflow-x: auto;
+    box-shadow: var(--shadow);
+    font-size: .8rem;
+    line-height: 1.55;
+  }
+  pre code { background: none; border: 0; padding: 0; font-size: inherit; }
+
+  /* ---- callouts ---- */
+  .callout {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--accent);
+    border-radius: 10px;
+    padding: 20px clamp(18px, 3vw, 26px);
+    box-shadow: var(--shadow);
+    margin: 22px 0;
+  }
+  .callout > :first-child { margin-top: 0; }
+  .callout > :last-child { margin-bottom: 0; }
+  .callout h3 { margin-top: 0; }
+  .callout--plain { border-left-color: var(--accent); }
+  .callout--risk { border-left-color: var(--risk); background: var(--risk-bg); }
+  .callout--risk .tag { color: var(--risk-ink); }
+  .callout--lena { border-left-color: var(--lena); background: var(--lena-bg); }
+  .callout--lena .tag { color: var(--lena-ink); }
+  .tag {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .68rem;
+    letter-spacing: .14em;
+    text-transform: uppercase;
+    color: var(--accent-ink);
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  /* ---- tables ---- */
+  .table-scroll { overflow-x: auto; margin: 22px 0; border-radius: 12px; border: 1px solid var(--border); box-shadow: var(--shadow); }
+  table { border-collapse: collapse; width: 100%; font-size: .9rem; background: var(--surface); }
+  th, td { text-align: left; padding: 11px 16px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  thead th {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .7rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    font-weight: 500;
+    background: var(--surface-2);
+    position: sticky; top: 0;
+  }
+  tbody tr:last-child td { border-bottom: 0; }
+  td code { white-space: nowrap; }
+
+  /* ---- stage / tasks ---- */
+  .stage-lede { color: var(--ink-soft); max-width: var(--measure); }
+
+  .task {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: clamp(16px, 2.6vw, 22px) clamp(18px, 3vw, 26px);
+    box-shadow: var(--shadow);
+    margin: 16px 0;
+  }
+  .task__head { display: flex; align-items: baseline; gap: 12px; }
+  .task__num {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-weight: 500;
+    font-size: .82rem;
+    color: var(--surface);
+    background: var(--accent);
+    border-radius: 6px;
+    padding: 2px 8px;
+    flex: none;
+    letter-spacing: .02em;
+  }
+  .task__head h4 {
+    margin: 0;
+    font-size: 1.04rem;
+    font-weight: 600;
+    letter-spacing: -0.005em;
+  }
+  .chip {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .64rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--lena-ink);
+    background: var(--lena-bg);
+    border: 1px solid var(--lena);
+    border-radius: 999px;
+    padding: 2px 9px;
+    white-space: nowrap;
+    align-self: center;
+  }
+  .task dl { margin: 14px 0 0; display: grid; grid-template-columns: max-content 1fr; gap: 6px 18px; }
+  .task dt {
+    font-family: "IBM Plex Mono", ui-monospace, monospace;
+    font-size: .68rem;
+    letter-spacing: .1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    padding-top: 3px;
+  }
+  .task dd { margin: 0; min-width: 0; }
+  .task dd > :first-child { margin-top: 0; }
+  .task dd > :last-child { margin-bottom: 0; }
+  .task dd ol, .task dd ul { max-width: none; padding-left: 1.2em; }
+  .task dd p { max-width: none; margin: 0; }
+  .commit { color: var(--accent-ink); }
+
+  @media (max-width: 900px) {
+    .layout { grid-template-columns: 1fr; gap: 0; }
+    .toc {
+      position: static;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: var(--surface);
+      padding: 16px 18px;
+      margin-bottom: 40px;
+      box-shadow: var(--shadow);
+    }
+    .toc-grid { columns: 2; column-gap: 20px; }
+    .task dl { grid-template-columns: 1fr; gap: 3px 0; }
+    .task dt { padding-top: 12px; }
+    .task dt:first-of-type { padding-top: 0; }
+  }
+  @media (max-width: 520px) {
+    .toc-grid { columns: 1; }
+  }
+
+  :focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; border-radius: 3px; }
+
+  footer.doc {
+    border-top: 1px solid var(--border);
+    padding: 32px 0 64px;
+    color: var(--muted);
+    font-size: .84rem;
+  }
+  footer.doc p { max-width: none; }
+</style>
+
+<div class="wrap">
+  <header class="masthead">
+    <p class="eyebrow">План реализации · v2 · 2 сентября 2026</p>
+    <h1>Шаблон сайта со встроенной панелью Sveltia</h1>
+    <p class="lede">Переиспользуемая заготовка: статический сайт на Eleventy, готовый редактор
+      Sveltia&nbsp;CMS вместо собственной панели, вход по email и паролю с маскировкой GitHub,
+      хостинг на Beget с оплатой рублями.</p>
+    <div class="meta">
+      <span>Ветка: agent/admin-panel-v2</span>
+      <span>Заменяет: план v1 (Next.js + Vercel + Postgres)</span>
+      <span>Источник: CONCEPT.md р.&nbsp;6</span>
+    </div>
+  </header>
+
+  <div class="layout">
+    <nav class="toc" aria-label="Содержание">
+      <h2>Содержание</h2>
+      <div class="toc-grid">
+      <ol>
+        <li><a href="#plain">Простым языком</a></li>
+        <li><a href="#arch">Архитектура</a></li>
+        <li><a href="#decisions">Принятые решения</a></li>
+        <li><a href="#risks">Принятые риски</a></li>
+        <li><a href="#constraints">Глобальные ограничения</a></li>
+        <li><a href="#files">Структура файлов</a></li>
+        <li><a href="#s0"><span class="toc-num">0</span>Сайт и контент в файлах</a></li>
+        <li><a href="#s1"><span class="toc-num">1</span>Панель Sveltia, локально</a></li>
+        <li><a href="#s2"><span class="toc-num">2</span>Вход с маскировкой GitHub</a></li>
+        <li><a href="#s3"><span class="toc-num">3</span>Робот и Beget</a></li>
+        <li><a href="#s4"><span class="toc-num">4</span>История, экспорт, владелец</a></li>
+        <li><a href="#s5"><span class="toc-num">5</span>Тиражируемый шаблон</a></li>
+        <li><a href="#s6"><span class="toc-num">6</span>Боевой пилот</a></li>
+        <li><a href="#coverage">Покрытие требований</a></li>
+        <li><a href="#out">Чего не делаем в v1</a></li>
+      </ol>
+      </div>
+    </nav>
+
+    <main class="content">
+
+      <section id="plain">
+        <span class="sec-eyebrow">Для Лены</span>
+        <h2 class="sec">Простым языком</h2>
+        <p><strong>Из чего собран один сайт с панелью:</strong></p>
+        <ul>
+          <li><strong>сайт</strong> — обычные готовые файлы, лежат на хостинге Beget (оплата
+            рублями, всё в одной компании: хостинг&nbsp;+ домен&nbsp;+ почта&nbsp;+ бесплатный SSL);</li>
+          <li><strong>тексты и картинки</strong> — лежат отдельными файлами в «главной папке»
+            проекта на GitHub (бесплатный склад). Это и есть «контент в собственности» — обычные
+            файлы, которые принадлежат клиенту;</li>
+          <li><strong>панель</strong> по адресу <code>сайт.ру/admin</code> — готовый бесплатный
+            редактор Sveltia&nbsp;CMS с твоим логотипом. Мы его не программируем, только настраиваем;</li>
+          <li><strong>«робот»</strong> (GitHub Actions, бесплатно) — после нажатия «Опубликовать»
+            собирает сайт заново и кладёт на Beget. Занимает ~1&nbsp;минуту;</li>
+          <li><strong>маленький вход</strong> — наша страница логина по email и паролю, чтобы
+            клиент <strong>не видел GitHub</strong>. Это единственный кусок, который мы пишем сами,
+            и он небольшой.</li>
+        </ul>
+        <p><strong>Что делаешь ты для нового сайта:</strong> копируешь заготовку → заполняешь
+          список полей (что клиент сможет менять) → собираешь внешний вид со мной → заводишь
+          клиенту склад на GitHub и хостинг на Beget по чек-листу → создаёшь логин, отдаёшь доступ.</p>
+        <p><strong>Что делает клиент:</strong> заходит на <code>сайт.ру/admin</code>, вводит email
+          и пароль (GitHub не видит), правит текст&nbsp;/ цену&nbsp;/ картинку&nbsp;/ список, жмёт
+          «Опубликовать», через минуту сайт обновился. Ошибся → «История» → «Вернуть эту версию».</p>
+        <p><strong>Что мы получаем бесплатно</strong> (в прошлом плане это надо было программировать
+          и охранять): история всех версий, откат, черновик→публикация, загрузка картинок.</p>
+
+        <div class="callout callout--lena">
+          <span class="tag">Честные минусы</span>
+          <ol>
+            <li>После «Опубликовать» сайт обновляется через ~1&nbsp;минуту, не мгновенно.</li>
+            <li>«Маскировка GitHub» работает на 90%. Технически ключ доступа к складу оказывается
+              в браузере клиента — очень любопытный клиент теоретически может его достать и зайти
+              в свой же склад напрямую. Вреда другим сайтам это не наносит (ключ только от его склада).</li>
+            <li>При настройке нового сайта на один шаг больше, чем на Vercel (подключить «робота»), —
+              но это разовый рецепт по чек-листу.</li>
+          </ol>
+        </div>
+      </section>
+
+      <section id="arch">
+        <span class="sec-eyebrow">Как устроено</span>
+        <h2 class="sec">Архитектура</h2>
+        <pre aria-label="Схема архитектуры"><code>          ┌───────────────── GitHub (склад, бесплатно) ──────────────────┐
+          │  репозиторий клиента:                                         │
+          │  src/_data/*.json     — одиночные блоки (герой, настройки)    │
+          │  src/content/**/*.md  — списки (услуги, отзывы, FAQ)          │
+          │  src/uploads/*        — загруженные картинки (оригиналы)      │
+          │  admin/config.yml     — список полей = «схема»                │
+          └──────┬────────────────────────────────────┬──────────────────┘
+                 │ Sveltia пишет коммиты              │ push → запускает робота
+                 ▼                                     ▼
+   ┌─────────────┴────────────┐        ┌────────── GitHub Actions ───────────┐
+   │  Панель Sveltia CMS      │        │  npm run build (Eleventy)           │
+   │  сайт.ру/admin (статика) │        │  → FTP-загрузка _site/ на Beget     │
+   │  editorial workflow ВКЛ  │        └──────────────────┬─────────────────┘
+   └───────────┬─────────────┘                            ▼
+               │ за токеном идёт к…          ┌──────── Beget (хостинг, ₽) ─────┐
+               ▼                             │  /  …………  собранный сайт        │
+   ┌───────────┴───────────────────────────┐│  /admin/  …  статика Sveltia    │
+   │  Node-приложение на Beget             ││  /admin/_panel/*  …  Node-прил. │
+   │  /admin/_panel/auth    — наш вход     ││  домен + SSL от Beget           │
+   │  /admin/_panel/account — смена пароля │└────────────────────────────────┘
+   │  /admin/_panel/users   — редакторы
+   │  /admin/_panel/history — версии + «вернуть»
+   │  /admin/_panel/export  — скачать контент
+   │  хранит: users.json (хэши), токен бота — вне веб-доступа
+   └──────────────────────────────────────────────────────────────────────┘</code></pre>
+        <p><strong>Технологии:</strong> Eleventy&nbsp;(11ty)&nbsp;v3 — генератор статики;
+          Sveltia&nbsp;CMS — панель (формат конфига совместим с Decap&nbsp;CMS);
+          Node.js&nbsp;20 — маленькое приложение входа&nbsp;/ истории на Beget;
+          GitHub&nbsp;+ GitHub&nbsp;Actions — склад и «робот»;
+          <code>@11ty/eleventy-img</code> — сжатие картинок при сборке;
+          Playwright — сквозной e2e; Vitest — юнит-тесты Node-приложения.</p>
+      </section>
+
+      <section id="decisions">
+        <span class="sec-eyebrow">Зафиксировано</span>
+        <h2 class="sec">Принятые решения</h2>
+        <p>Менять, если неверно.</p>
+        <ol>
+          <li><strong>Язык приложения входа — Node.js</strong>, не PHP: в песочнице есть Node
+            (можно разрабатывать и тестировать локально), Beget поддерживает Node на виртуальном
+            хостинге. Подтвердить поддержку при заведении аккаунта (Задача&nbsp;3.2).</li>
+          <li><strong>Склад — GitHub</strong> (не GitLab): туда же встроен бесплатный «робот».
+            Запасной вариант — GitLab, если доступ к GitHub из&nbsp;РФ станет проблемой.</li>
+          <li><strong>Репозиторий заводится на аккаунт клиента</strong> — независимость с первого
+            дня. Отдельный «бот»-аккаунт Лены добавляется соавтором: от него берётся токен для
+            панели и через него Лена работает как <code>editor</code>.</li>
+          <li><strong>Токен для панели — fine-grained PAT бота</strong>, доступ только к одному
+            репозиторию (contents&nbsp;+ pull requests). Срок&nbsp;1&nbsp;год, продление по
+            напоминанию. Ужесточение (GitHub&nbsp;App, часовые токены) — после пилота.</li>
+          <li><strong>Черновик→публикация — editorial workflow Sveltia</strong> (сохранение уходит
+            в отдельную ветку, «Опубликовать» вливает в основную). Проверить связку с нашим входом
+            рано — Задача&nbsp;2.4.</li>
+          <li><strong>Предпросмотр в v1 — панель предпросмотра внутри Sveltia.</strong> Отдельный
+            сайт-предпросмотр на поддомене — Этап&nbsp;5.</li>
+          <li><strong>Хостинг — по аккаунту Beget на клиента</strong> (тариф Blog, 420&nbsp;₽/мес,
+            до 5&nbsp;сайтов). Если клиент отдаёт хостинг на обслуживание — можно держать несколько
+            на одном тарифе, это вопрос пакета поддержки, не архитектуры.</li>
+          <li><strong>Сжатие картинок — при сборке</strong> (<code>eleventy-img</code>): клиент
+            грузит оригинал, робот делает webp и нужные размеры.</li>
+        </ol>
+      </section>
+
+      <section id="risks">
+        <span class="sec-eyebrow">Осознанно</span>
+        <h2 class="sec">Принятые риски</h2>
+        <div class="callout callout--risk">
+          <span class="tag">Не чиним в v1</span>
+          <ul>
+            <li><strong>Токен в браузере клиента</strong> (см. решение&nbsp;4): ограничен одним
+              репозиторием.</li>
+            <li><strong>Задержка ~1&nbsp;мин</strong> между «Опубликовать» и обновлением сайта
+              (сборка роботом).</li>
+            <li><strong>editorial workflow Sveltia</strong> исторически капризен — проверяется
+              отдельной ранней задачей&nbsp;(2.4). Запасной план — одна ветка <code>draft</code>
+              + кнопка «Опубликовать» в <code>/admin/_panel/</code>, вливающая её в <code>main</code>.</li>
+            <li><strong>Счётчик символов</strong> в Sveltia из коробки не на всех полях — если
+              критично для заголовков, добавляем свой мини-виджет позже.</li>
+            <li><strong>Переименование поля</strong> после запуска: тексты — обычные файлы в git,
+              поэтому переименование = замена ключа в JSON&nbsp;+ конфиге&nbsp;+ шаблоне одним
+              коммитом, история остаётся читаемой. Инструкция — Задача&nbsp;5.4. На файлах эта
+              проблема много легче, чем была бы на базе данных.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="constraints">
+        <span class="sec-eyebrow">Правила</span>
+        <h2 class="sec">Глобальные ограничения</h2>
+        <ul>
+          <li><strong>Node.js&nbsp;20</strong>, пакетный менеджер <code>npm</code>.</li>
+          <li><strong>Всё, что видит клиент, — на русском</strong>: наш вход, письма, кнопки.
+            Интерфейс Sveltia русифицируется её локализацией (проверить полноту — Задача&nbsp;1.2).</li>
+          <li><strong>Машинное имя поля клиенту не показывается</strong> — только <code>label</code>
+            и <code>hint</code> (в Sveltia так по умолчанию).</li>
+          <li><strong>Порядок полей в панели = порядок в <code>admin/config.yml</code></strong>.</li>
+          <li><strong>Секреты</strong> (<code>users.json</code>, токен бота, FTP-доступы) — вне
+            веб-корня и вне git. В репозитории — только <code>*.example</code> образцы.</li>
+          <li><strong>Коммит после каждой задачи с зелёной проверкой</strong>, формат:
+            <code>feat:</code> / <code>test:</code> / <code>chore:</code> / <code>docs:</code>.</li>
+          <li><strong>Ветка:</strong> <code>agent/admin-panel-v2</code>, от <code>master</code>.
+            Каркас Next.js из ветки <code>agent/admin-panel-mvp</code> не используется.</li>
+        </ul>
+        <div class="callout callout--plain">
+          <span class="tag">Тестовая стратегия · учли прошлый провал</span>
+          <p>В плане v1 тесты упирались в отсутствующую базу данных. Здесь:</p>
+          <ul>
+            <li>Eleventy-сайт — тестируется локально целиком (<code>build</code>&nbsp;+ <code>serve</code>).</li>
+            <li>Sveltia — локально через local backend, без GitHub.</li>
+            <li>Node-приложение — Vitest, GitHub&nbsp;API мокается; один прогон против реального
+              тест-репозитория при наличии токена.</li>
+            <li>Робот-деплой — локально проверяется только сборка; FTP-шаг — «сухой» прогон при
+              заведённом Beget (Задача&nbsp;3.2).</li>
+            <li>Сквозной e2e — на этапе пилота (Задача&nbsp;6.1).</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="files">
+        <span class="sec-eyebrow">Раскладка</span>
+        <h2 class="sec">Структура файлов</h2>
+        <pre><code>admin-panel-template/
+├── .eleventy.js                 # конфиг генератора сайта
+├── package.json
+├── src/
+│   ├── _data/
+│   │   ├── hero.json            # одиночные блоки — Sveltia "file" collections
+│   │   ├── settings.json        # контакты, соцсети, футер
+│   │   └── seo.json
+│   ├── content/
+│   │   ├── services/*.md        # списки — Sveltia "folder" collections
+│   │   └── faq/*.md
+│   ├── uploads/                 # загруженные картинки (оригиналы)
+│   ├── _includes/               # шаблоны блоков сайта
+│   ├── index.njk                # страница лендинга
+│   ├── styles/site.css
+│   └── admin/
+│       ├── index.html           # загрузчик Sveltia + wrapper «Войти»
+│       └── config.yml           # СПИСОК ПОЛЕЙ («схема»)
+├── panel/                       # Node-приложение → /admin/_panel/ на Beget
+│   ├── server.js                # роутер
+│   ├── auth.js                  # вход по email/паролю → GitHub-токен
+│   ├── users.js                 # createUser / listUsers / setPassword / deleteUser
+│   ├── history.js               # версии контента + restore (GitHub API)
+│   ├── export.js                # архив контента
+│   ├── store/                   # users.example.json, config.example.json
+│   └── views/                   # русские страницы: login, account, users, history
+├── .github/workflows/deploy.yml # робот: сборка + FTP на Beget
+├── scripts/new-site.md          # чек-лист «новый сайт»
+├── docs/handover/               # чек-листы приёмки, границы поддержки, план видео
+└── tests/{unit,e2e}/</code></pre>
+      </section>
+
+      <section id="s0">
+        <span class="sec-eyebrow">Этап 0</span>
+        <h2 class="sec">Сайт и контент в файлах</h2>
+
+        <article class="task" id="t-0.1">
+          <div class="task__head"><span class="task__num">0.1</span><h4>Каркас Eleventy</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>package.json</code>, <code>.eleventy.js</code>,
+              <code>src/index.njk</code>, <code>src/_includes/base.njk</code>,
+              <code>src/styles/site.css</code>, <code>.gitignore</code></dd>
+            <dt>Что делает</dt><dd>Рабочие команды <code>npm run build</code> (собирает
+              <code>_site/</code>) и <code>npm run dev</code> (локальный сервер с автообновлением).</dd>
+            <dt>Шаги</dt><dd><ol>
+              <li><code>git checkout master &amp;&amp; git checkout -b agent/admin-panel-v2</code>.</li>
+              <li>Удалить файлы каркаса Next.js, если попали из прошлой ветки.</li>
+              <li><code>npm init -y</code>; <code>npm i -D @11ty/eleventy@^3</code>.</li>
+              <li><code>.eleventy.js</code>: вход <code>src</code>, выход <code>_site</code>,
+                Nunjucks, копировать <code>styles</code> и <code>uploads</code> как есть.</li>
+              <li>Минимальная страница «Привет»; скрипты <code>build</code> / <code>dev</code>.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd><code>npm run build</code> → в <code>_site/index.html</code> есть
+              «Привет». <code>npm run dev</code> → <code>localhost:8080</code> отдаёт страницу.</dd>
+            <dt>Коммит</dt><dd><code class="commit">chore: каркас Eleventy</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-0.2">
+          <div class="task__head"><span class="task__num">0.2</span><h4>Контент как файлы + чтение в шаблонах</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>src/_data/hero.json</code>, <code>settings.json</code>,
+              <code>seo.json</code>, <code>src/content/services/*.md</code> (2 примера),
+              <code>src/_includes/sections/*.njk</code>, <code>src/index.njk</code></dd>
+            <dt>Что делает</dt><dd>Страница лендинга полностью собрана из файлов контента.
+              В шаблонах — только вёрстка и обращения к данным
+              (<code>hero.title</code>, <code>settings.phone</code>, цикл по
+              <code>collections.services</code>).</dd>
+            <dt>Шаги</dt><dd><ol>
+              <li><code>hero.json</code>: заголовок, подзаголовок, картинка, <code>showButton</code>,
+                <code>buttonText</code>.</li>
+              <li><code>settings.json</code>: телефон, email, адрес, соцсети, футер, часы.</li>
+              <li><code>seo.json</code>: <code>title</code>, <code>description</code>, <code>ogImage</code>.</li>
+              <li><code>services/*.md</code> — front-matter <code>name</code>, <code>price</code>,
+                <code>oldPrice</code>; коллекция <code>services</code> в <code>.eleventy.js</code>.</li>
+              <li>Секции рисуют блоки из данных; <code>base.njk</code> подставляет SEO в
+                <code>&lt;head&gt;</code> с фолбэком на <code>hero.title</code>.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd>Правка <code>hero.json</code> руками → <code>npm run dev</code>
+              показывает новый заголовок; в <code>&lt;head&gt;</code> — title&nbsp;/ description&nbsp;/
+              og:image из <code>seo.json</code>.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: лендинг собирается из файлов контента</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-0.3">
+          <div class="task__head"><span class="task__num">0.3</span><h4>Сжатие картинок при сборке</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>.eleventy.js</code>, <code>src/_includes/image.njk</code></dd>
+            <dt>Что делает</dt><dd>Любая картинка из контента при сборке превращается в webp&nbsp;+
+              2–3 размера; в HTML — <code>&lt;picture&gt;</code> с <code>srcset</code>. Оригинал
+              в <code>src/uploads/</code> остаётся.</dd>
+            <dt>Шаги</dt><dd><ol>
+              <li><code>npm i -D @11ty/eleventy-img</code>.</li>
+              <li>Async-shortcode <code>image</code> (src, alt, sizes) → webp&nbsp;+ jpeg fallback,
+                ширины 640&nbsp;/ 1280&nbsp;/ 2000.</li>
+              <li>Секции используют shortcode вместо голого <code>&lt;img&gt;</code>.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd>Тестовый JPEG 3000px в <code>uploads</code>, ссылка из
+              <code>hero.json</code>, <code>npm run build</code> → в <code>_site/img/</code>
+              webp-файлы ≤2000px; страница показывает картинку.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: автосжатие картинок при сборке</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <section id="s1">
+        <span class="sec-eyebrow">Этап 1</span>
+        <h2 class="sec">Панель Sveltia, локально</h2>
+
+        <article class="task" id="t-1.1">
+          <div class="task__head"><span class="task__num">1.1</span><h4>Sveltia в <code>/admin</code> + локальный режим</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>src/admin/index.html</code>, <code>src/admin/config.yml</code>,
+              <code>.eleventy.js</code> (копировать <code>admin</code>)</dd>
+            <dt>Что делает</dt><dd><code>/admin/</code> открывает Sveltia; в dev-режиме она правит
+              локальные файлы без GitHub.</dd>
+            <dt>Шаги</dt><dd><ol>
+              <li><code>index.html</code> — подключить <code>@sveltia/cms</code> со CDN
+                (зафиксировать версию).</li>
+              <li><code>config.yml</code> — <code>backend: github</code>, <code>local_backend: true</code>,
+                <code>media_folder: src/uploads</code>, <code>public_folder: /uploads</code>.</li>
+              <li><code>npm run cms</code> — локальный прокси; инструкция запускать с <code>npm run dev</code>.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd><code>npm run dev</code> + прокси → <code>/admin/</code> открывается,
+              видит контент, правка сохраняется в локальный файл.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: панель Sveltia в /admin (локальный режим)</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-1.2">
+          <div class="task__head"><span class="task__num">1.2</span><h4><code>config.yml</code> — все типы полей и разделы</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>src/admin/config.yml</code></dd>
+            <dt>Что делает</dt><dd>Описывает все разделы и поля лендинга. Это и есть «схема» —
+              для нового сайта переписывается только этот файл.</dd>
+            <dt>Типы</dt><dd><p>текст→<code>string</code>; длинный→<code>text</code>;
+              форматированный→<code>markdown</code> (жирный, ссылка, список); число→<code>number</code>;
+              галочка→<code>boolean</code>; ссылка→<code>string</code>&nbsp;+ <code>pattern</code>;
+              выбор→<code>select</code>; картинка→<code>image</code>&nbsp;+ обязательный <code>alt</code>;
+              список→<code>list</code> с <code>fields</code>; группа→<code>object</code>;
+              переиспользуемый SEO — общий кусок <code>fields</code>.</p></dd>
+            <dt>Шаги</dt><dd><ol>
+              <li>Разделы: <code>hero</code>, <code>services</code> (folder), <code>prices</code>
+                (list), <code>faq</code> (folder), <code>contacts</code>, <code>settings</code> (file), <code>seo</code>.</li>
+              <li>Каждому полю — <code>label</code> и <code>hint</code> на русском; сообщения
+                <code>pattern</code> на русском.</li>
+              <li>Условное поле <code>buttonText</code> при <code>showButton: true</code> через
+                <code>condition</code>. <strong>Проверить, что механизм работает</strong> (риск).</li>
+              <li>Русская локализация интерфейса Sveltia — включить, проверить глазами.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd><code>/admin/</code> показывает все разделы в заданном порядке;
+              каждый тип поля рисуется и сохраняется; условное поле появляется&nbsp;/ скрывается;
+              машинные ключи не видны.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: список полей лендинга (все типы, условные поля, русские подписи)</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-1.3">
+          <div class="task__head"><span class="task__num">1.3</span><h4>Брендирование панели</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>src/admin/index.html</code>, <code>config.yml</code>,
+              <code>src/admin/branding.css</code>, <code>src/uploads/branding/</code></dd>
+            <dt>Что делает</dt><dd>Логотип клиента и «Разработка и поддержка — Vireflow» в панели;
+              favicon и заголовок вкладки; акцентный цвет. Всё — из одного места.</dd>
+            <dt>Шаги</dt><dd><ol>
+              <li><code>config.yml</code>: <code>logo_url</code>, <code>site_url</code>, <code>display_url</code>.</li>
+              <li><code>branding.css</code> в <code>index.html</code> — акцент, подпись студии
+                в подвале, ссылка «Написать в поддержку».</li>
+              <li>Заголовок вкладки и favicon.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd>Глазами — лого, подпись студии, favicon, кнопка поддержки на месте.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: фирменный вид панели</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <section id="s2">
+        <span class="sec-eyebrow">Этап 2</span>
+        <h2 class="sec">Вход с маскировкой GitHub</h2>
+
+        <article class="task" id="t-2.1">
+          <div class="task__head"><span class="task__num">2.1</span><h4>Каркас Node-приложения</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>panel/server.js</code>, <code>panel/package.json</code>,
+              <code>panel/store/config.example.json</code>, <code>panel/store/users.example.json</code>,
+              <code>tests/unit/panel-smoke.test.ts</code></dd>
+            <dt>Что делает</dt><dd>HTTP-приложение с роутером под <code>/admin/_panel/*</code>,
+              читает конфиг из файла вне веб-корня, отдаёт заглушки страниц.</dd>
+            <dt>Шаги</dt><dd><ol>
+              <li>Отдельный <code>package.json</code>; зависимости минимальные,
+                <code>bcryptjs</code>, <code>cookie</code>, тест — <code>vitest</code>.</li>
+              <li>Роуты <code>/auth</code>, <code>/account</code>, <code>/users</code>,
+                <code>/history</code>, <code>/export</code>, health-check.</li>
+              <li>Конфиг <code>{ repo, botToken, sessionSecret, supportUrl }</code>.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd><code>npm test</code> в <code>panel/</code> — зелено;
+              <code>node panel/server.js</code> поднимается.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: каркас приложения панели (Node)</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-2.2">
+          <div class="task__head"><span class="task__num">2.2</span><h4>Пароли и хранилище пользователей</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>panel/password.js</code>, <code>panel/users.js</code>,
+              <code>tests/unit/users.test.ts</code></dd>
+            <dt>Что делает</dt><dd><code>hashPassword</code> / <code>verifyPassword</code> (bcrypt);
+              CRUD пользователей в <code>users.json</code> (email, passwordHash, role
+              <code>owner|editor</code>, mustChangePassword); <code>deleteUser</code> бросает
+              ошибку на последнем владельце; <code>createUser</code> / <code>resetPassword</code>
+              выдают временный пароль (12&nbsp;симв.).</dd>
+            <dt>Шаги</dt><dd>TDD — тест на верный&nbsp;/ неверный пароль, на выдачу временного,
+              на защиту последнего владельца; затем реализация поверх файла (атомарная запись
+              temp&nbsp;+ rename).</dd>
+            <dt>Проверка</dt><dd><code>npm test</code> — зелено (все сценарии).</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: пароли и управление пользователями (файловое хранилище)</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-2.3">
+          <div class="task__head"><span class="task__num">2.3</span><h4>Вход по протоколу Decap → выдача GitHub-токена</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>panel/auth.js</code>, <code>panel/session.js</code>,
+              <code>panel/views/login.html</code>, <code>tests/unit/auth.test.ts</code></dd>
+            <dt>Что делает</dt><dd>Sveltia открывает <code>/admin/_panel/auth?provider=github&hellip;</code>.
+              Обработчик: GET — <strong>наша</strong> форма (email, пароль) на русском с логотипом;
+              POST — проверка через <code>verifyPassword</code>; при успехе отдаёт HTML, который
+              делает <code>window.opener.postMessage('authorization:github:success:{token&hellip;}')</code>
+              и закрывается. Клиент GitHub не видит. Ставит подписанную сессионную куку для
+              страниц <code>/account</code>, <code>/users</code>, <code>/history</code>.</dd>
+            <dt>Шаги</dt><dd>TDD — неверный пароль → форма с ошибкой; верный → страница с
+              <code>postMessage</code> и токеном; <code>mustChangePassword</code> → редирект.
+              Затем реализация.</dd>
+            <dt>Проверка</dt><dd><code>npm test</code> — зелено. Ручной прогон: локально поднять
+              <code>panel/</code>, войти нашей формой, убедиться, что Sveltia получила токен и
+              показала контент тест-репозитория.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: вход по email/паролю с выдачей GitHub-токена (маскировка GitHub)</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-2.4">
+          <div class="task__head"><span class="task__num">2.4</span><h4>Проверка editorial workflow в связке</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>tests/e2e/editorial.spec.ts</code>, при необходимости — правки
+              <code>config.yml</code></dd>
+            <dt>Что делает</dt><dd>Подтверждает, что черновик→публикация работает через наш вход
+              на <strong>реальном тест-репозитории</strong>.</dd>
+            <dt>Шаги</dt><dd><ol>
+              <li>Тест-репозиторий, бот-токен, <code>editorial_workflow</code> в конфиге.</li>
+              <li>e2e: войти → изменить заголовок → «Сохранить» (в ветку&nbsp;/ PR, не в
+                <code>main</code>) → «Опубликовать» → изменение в <code>main</code>.</li>
+              <li>Если workflow нестабилен — запасной план (ветка <code>draft</code> + наша кнопка),
+                зафиксировать решение здесь.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd>e2e зелёный; в <code>main</code> коммит только после «Опубликовать».</dd>
+            <dt>Коммит</dt><dd><code class="commit">test: сквозная проверка черновик→публикация через наш вход</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-2.5">
+          <div class="task__head"><span class="task__num">2.5</span><h4>Смена своего пароля</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>panel/views/account.html</code>, роут <code>/account</code>,
+              <code>tests/unit/account.test.ts</code></dd>
+            <dt>Что делает</dt><dd>Форма (новый пароль + подтверждение, мин.&nbsp;8, совпадение) →
+              <code>setPassword</code>, снимает <code>mustChangePassword</code>. Первый вход клиента
+              ведёт сюда принудительно.</dd>
+            <dt>Проверка</dt><dd>Тест на валидацию; ручной прогон — после смены пускает в панель.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: смена пароля + принудительная смена при первом входе</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <section id="s3">
+        <span class="sec-eyebrow">Этап 3</span>
+        <h2 class="sec">Робот и Beget — первый живой запуск</h2>
+
+        <article class="task" id="t-3.1">
+          <div class="task__head"><span class="task__num">3.1</span><h4>Робот сборки и деплоя</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>.github/workflows/deploy.yml</code>, <code>scripts/deploy-notes.md</code></dd>
+            <dt>Что делает</dt><dd>На push в <code>main</code> — <code>npm ci &amp;&amp; npm run build</code>,
+              затем FTP-загрузка <code>_site/</code> на Beget. Node-приложение <code>panel/</code>
+              деплоится отдельно (3.2).</dd>
+            <dt>Шаги</dt><dd><ol>
+              <li>Workflow: Node&nbsp;20, кэш npm, <code>npm run build</code>.</li>
+              <li>FTP-деплой (<code>SamKirkland/FTP-Deploy-Action</code>), доступы — из secrets
+                (<code>BEGET_FTP_HOST/USER/PASS</code>, путь).</li>
+              <li><code>deploy-notes.md</code> — что положить в secrets, куда деплоить.</li>
+            </ol></dd>
+            <dt>Проверка</dt><dd>Ручной прогон шага сборки — <code>_site/</code> формируется.
+              FTP-шаг — в 3.2.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: робот сборки и деплоя на Beget</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-3.2">
+          <div class="task__head"><span class="task__num">3.2</span><h4>Runbook Beget</h4><span class="chip">нужна Лена</span></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>scripts/beget-setup.md</code></dd>
+            <dt>Что делает</dt><dd>Пошагово: тариф Blog → домен&nbsp;/ поддомен → SSL
+              (Let's Encrypt) → <strong>проверить поддержку Node.js</strong>, поднять
+              <code>panel/</code> на <code>/admin/_panel/</code> → положить <code>store/config.json</code>
+              и <code>store/users.json</code> вне веб-корня → структура папок (<code>/</code> — сайт,
+              <code>/admin</code> — статика Sveltia).</dd>
+            <dt>Проверка</dt><dd><code>/admin/_panel/health</code> на реальном домене отвечает 200;
+              <code>/admin/</code> отдаёт Sveltia; корень отдаёт заглушку сайта.</dd>
+            <dt>Коммит</dt><dd><code class="commit">docs: инструкция по настройке Beget</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-3.3">
+          <div class="task__head"><span class="task__num">3.3</span><h4>Первый живой цикл</h4><span class="chip">нужна Лена</span></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>tests/e2e/live-smoke.spec.ts</code></dd>
+            <dt>Что делает</dt><dd>На настоящем домене: войти → изменить заголовок героя →
+              «Опубликовать» → подождать робота → заголовок изменился на живом сайте.</dd>
+            <dt>Проверка</dt><dd>e2e зелёный против реального домена (<code>LIVE_URL</code>).</dd>
+            <dt>Коммит</dt><dd><code class="commit">test: первый живой цикл правка→публикация→сайт обновился</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <section id="s4">
+        <span class="sec-eyebrow">Этап 4</span>
+        <h2 class="sec">История, экспорт, инструменты владельца</h2>
+
+        <article class="task" id="t-4.1">
+          <div class="task__head"><span class="task__num">4.1</span><h4>Страница «История» с откатом</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>panel/history.js</code>, <code>panel/views/history.html</code>,
+              <code>tests/unit/history.test.ts</code></dd>
+            <dt>Что делает</dt><dd>Список версий контента (коммиты <code>main</code>, затрагивающие
+              <code>src/_data</code>, <code>src/content</code>, <code>src/uploads</code>): дата, кто,
+              краткое «что изменилось». Кнопка «Вернуть эту версию» — создаёт новый коммит,
+              возвращающий файлы контента к тому состоянию (историю не переписывает).</dd>
+            <dt>Шаги</dt><dd>TDD с моками GitHub&nbsp;API — список версий, diff по файлам,
+              revert-коммит. Затем UI. Доступ — по нашей сессионной куке.</dd>
+            <dt>Проверка</dt><dd><code>npm test</code> зелено; ручной прогон на тест-репозитории —
+              «Вернуть» откатывает контент.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: история версий с откатом одной кнопкой</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-4.2">
+          <div class="task__head"><span class="task__num">4.2</span><h4>Экспорт контента</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>panel/export.js</code>, кнопка в <code>history.html</code> или на старте</dd>
+            <dt>Что делает</dt><dd><code>/admin/_panel/export</code> — отдаёт ZIP:
+              <code>src/_data/*</code>, <code>src/content/**</code>, <code>admin/config.yml</code>,
+              <code>README.txt</code>. Проще всего — проксировать
+              <code>github.com/OWNER/REPO/archive/main.zip</code> с бот-токеном.</dd>
+            <dt>Проверка</dt><dd>Тест — архив не пустой, содержит <code>hero.json</code>; ручной —
+              скачивается по кнопке.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: экспорт всего контента в ZIP</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-4.3">
+          <div class="task__head"><span class="task__num">4.3</span><h4>Экран пользователей (владелец)</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>panel/views/users.html</code>, роут <code>/users</code>,
+              <code>tests/e2e/users.spec.ts</code></dd>
+            <dt>Что делает</dt><dd>Только <code>owner</code>: список (email, роль, статус), добавить
+              редактора → показать временный пароль, сбросить пароль, удалить.
+              <code>editor</code> на <code>/users</code> → редирект.</dd>
+            <dt>Проверка</dt><dd>e2e — владелец заводит редактора и видит пароль; редактор не
+              пускается; последнего владельца удалить нельзя.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: управление пользователями в панели (только владелец)</code></dd>
+          </dl>
+        </article>
+
+        <article class="task" id="t-4.4">
+          <div class="task__head"><span class="task__num">4.4</span><h4>Стартовый экран «С чего начать»</h4></div>
+          <dl>
+            <dt>Файлы</dt><dd><code>src/admin/index.html</code> (wrapper) или <code>panel/views/start.html</code></dd>
+            <dt>Что делает</dt><dd>После входа — приветствие, ссылки на разделы, «Последние
+              изменения» (3–5 из истории), «Экспорт контента», «Написать в поддержку», ссылка на
+              обучающие видео.</dd>
+            <dt>Проверка</dt><dd>Глазами.</dd>
+            <dt>Коммит</dt><dd><code class="commit">feat: стартовый экран панели</code></dd>
+          </dl>
+        </article>
+      </section>
+
+      <section id="s5">
+        <span class="sec-eyebrow">Этап 5 · outline</span>
+        <h2 class="sec">Превращение в тиражируемый шаблон</h2>
+        <p class="stage-lede">Детальный план дописывается, когда стек v2 подтверждён на первом
+          живом запуске.</p>
+        <ul>
+          <li><strong>5.1 · <code>scripts/new-site.md</code></strong> — чек-лист: форк заготовки →
+            переписать <code>admin/config.yml</code> и примеры контента → собрать вёрстку →
+            создать репозиторий на аккаунте клиента, добавить бота-соавтора, выпустить токен →
+            завести Beget по <code>beget-setup.md</code> → прописать secrets робота → создать
+            владельца в <code>users.json</code>, отдать временный пароль.</li>
+          <li><strong>5.2 · <code>README.md</code> для Лены</strong> — как собрать новый сайт,
+            что где менять.</li>
+          <li><strong>5.3 · <code>docs/handover/</code></strong> — чек-лист передачи аккаунтов,
+            чек-лист приёмки с подписью, документ о границах поддержки (гарантия 30&nbsp;дней на
+            баги, что платно), план видео (1&nbsp;тур + 5–8 микро-роликов).</li>
+          <li><strong>5.4 · <code>docs/schema-change.md</code></strong> — как безопасно
+            переименовать&nbsp;/ добавить&nbsp;/ убрать поле на живом сайте (замена ключа в
+            JSON&nbsp;+ конфиге&nbsp;+ шаблоне одним коммитом; проверка сборкой).</li>
+          <li><strong>5.5</strong> — сайт-предпросмотр на поддомене <code>preview.сайт.ру</code>
+            (робот деплоит ветку черновика), если панели предпросмотра Sveltia окажется мало.</li>
+          <li><strong>5.6</strong> — русификация Sveltia: дослать недостающие строки в апстрим
+            или локальным оверрайдом.</li>
+        </ul>
+      </section>
+
+      <section id="s6">
+        <span class="sec-eyebrow">Этап 6 · outline</span>
+        <h2 class="sec">Боевой пилот</h2>
+        <ul>
+          <li><strong>6.1</strong> — сквозной e2e (<code>tests/e2e/full-loop.spec.ts</code>):
+            вход → правка каждого типа поля → картинка + alt → список (добавить&nbsp;/ переставить&nbsp;/
+            удалить) → предпросмотр → публикация → сайт обновился → история → откат → публикация →
+            экспорт.</li>
+          <li><strong>6.2</strong> — первый реальный сайт (кандидат — лендинг Лены
+            <code>my-landing</code>): перенести вёрстку в шаблон, составить <code>config.yml</code>
+            под его блоки.</li>
+          <li><strong>6.3</strong> — развернуть на реальных аккаунтах клиента, пройти весь цикл
+            в проде, отдать доступ, обучение по плану видео, подписать чек-лист приёмки.</li>
+          <li><strong>6.4</strong> — зафиксировать в памяти время сборки и вскрытые пробелы —
+            вход в план&nbsp;v2.1.</li>
+        </ul>
+      </section>
+
+      <section id="coverage">
+        <span class="sec-eyebrow">Сверка</span>
+        <h2 class="sec">Покрытие требований концепции</h2>
+        <div class="table-scroll">
+          <table>
+            <thead><tr><th>Требование (CONCEPT.md р.&nbsp;6)</th><th>Где закрыто</th></tr></thead>
+            <tbody>
+              <tr><td>Формат «списка полей» + пример</td><td><code>admin/config.yml</code> (1.2)</td></tr>
+              <tr><td>Форма по списку: разделы, подписи, подсказки, проверка</td><td>Sveltia (1.2)</td></tr>
+              <tr><td>Счётчик символов на заголовках</td><td>частично Sveltia; свой виджет — позже</td></tr>
+              <tr><td>Все типы полей, включая список с перетаскиванием</td><td>Sveltia <code>list</code> (1.2)</td></tr>
+              <tr><td>Картинка: загрузка + автосжатие + alt</td><td>0.3 (сборка) + 1.2 (<code>image</code>+<code>alt</code>)</td></tr>
+              <tr><td>Автосохранение черновика</td><td>Sveltia (черновик в ветке)</td></tr>
+              <tr><td>Черновик → предпросмотр → публикация + статус</td><td>editorial workflow (2.4)</td></tr>
+              <tr><td>История версий: было&nbsp;/ стало + откат</td><td>4.1</td></tr>
+              <tr><td>Экран «Общие настройки»</td><td>раздел <code>settings</code> (1.2)</td></tr>
+              <tr><td>Вход, смена пароля, две роли</td><td>2.3, 2.5, 4.3</td></tr>
+              <tr><td>Не разлогинивает без причины</td><td>сессионная кука + токен бота (2.3)</td></tr>
+              <tr><td>Фирменный вид + «С чего начать»</td><td>1.3, 4.4</td></tr>
+              <tr><td>Экспорт контента</td><td>4.2</td></tr>
+              <tr><td>Сайт показывает контент, метки в вёрстке</td><td>0.2</td></tr>
+              <tr><td>SEO</td><td>0.2 (<code>seo.json</code> в <code>&lt;head&gt;</code>)</td></tr>
+              <tr><td>Сброс кэша после публикации</td><td>робот пересобирает сайт (3.1)</td></tr>
+              <tr><td>Условные поля</td><td>1.2 (<code>condition</code> Sveltia)</td></tr>
+              <tr><td>Обход лимита загрузки</td><td>не актуально — Sveltia грузит в GitHub напрямую</td></tr>
+              <tr><td>Комплект сдачи</td><td>Этап 5</td></tr>
+              <tr><td>Один реальный сайт, весь цикл</td><td>Этап 6</td></tr>
+              <tr><td>Защита последнего владельца</td><td>2.2, 4.3</td></tr>
+              <tr><td>Независимость клиента</td><td>репозиторий и хостинг на клиента; контент — обычные файлы</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="out">
+        <span class="sec-eyebrow">Границы</span>
+        <h2 class="sec">Чего этот план сознательно не делает в v1</h2>
+        <p>Живой предпросмотр «форма и сайт рядом»; конструктор страниц из блоков; курируемая
+          палитра цветов; несколько языков; права по разделам; статистика в панели; редактор
+          промпта ИИ-сотрудника; мгновенное (без задержки робота) обновление сайта; полное
+          сокрытие GitHub на 100%.</p>
+      </section>
+
+    </main>
+  </div>
+
+  <footer class="doc" role="contentinfo">
+    <p>Черновик от 2&nbsp;сентября&nbsp;2026. Продолжает <code>CONCEPT.md</code> и
+      <code>ARCHITECTURE.md</code>. Заменяет план <code>2026-09-01-admin-panel-mvp.md</code>.
+      Ветка&nbsp;<code>agent/admin-panel-v2</code>.</p>
+  </footer>
+</div>
