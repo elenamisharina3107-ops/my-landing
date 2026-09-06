@@ -16,5 +16,8 @@
     "@11ty/eleventy": "^3.1.6",
     "@11ty/eleventy-img": "^6.0.4",
     "js-yaml": "^5.4.1"
+  },
+  "dependencies": {
+    "markdown-it": "14.3.1"
   }
 }

@@ -10,6 +10,8 @@
  */
 const path = require("node:path");
 const Image = require("@11ty/eleventy-img");
+const MarkdownIt = require("markdown-it");
+const md = new MarkdownIt({ html: false });
 
 const IMG_WIDTHS = [640, 1280, 2000];
 
@@ -24,6 +26,12 @@ function resolveImageInput(src) {
 }
 
 module.exports = function (eleventyConfig) {
+  // Превратить текст из markdown-поля (JSON-данные, не файл .md) в HTML —
+  // нужно для полей типа «свой текст политики», которые редактируются
+  // в панели как обычный markdown, но лежат в _data/*.json, а не в
+  // отдельном .md-файле (те 11ty рендерит сам, без этого фильтра).
+  eleventyConfig.addFilter("markdownify", (value) => md.render(value || ""));
+
   // Копировать без обработки
   eleventyConfig.addPassthroughCopy({ "src/styles": "styles" });
 

@@ -194,12 +194,31 @@ collections:
         file: src/_data/seo.json
         fields: *seo_fields
 
+      - name: privacy
+        label: "Политика конфиденциальности (152-ФЗ)"
+        file: src/_data/privacy.json
+        fields:
+          - { name: effectiveDate, label: "Дата вступления в силу", widget: string, hint: "Например «21 июля 2026 года»" }
+          - { name: legalForm, label: "Форма организации", widget: select, options: ["ИП", "ООО"] }
+          - { name: ownerName, label: "Название компании / ФИО владельца", widget: string, hint: "Например «Мишарина Елена» или «Ромашка»" }
+          - { name: inn, label: "ИНН", widget: string }
+          - { name: ogrn, label: "ОГРН / ОГРНИП", widget: string }
+          - { name: ogrnDate, label: "Дата регистрации (для ОГРН)", widget: string, hint: "Например «09.02.2026»" }
+          - { name: address, label: "Юридический адрес", widget: string }
+          - { name: contactTelegram, label: "Telegram для обращений по данным", widget: string, required: false }
+          - { name: contactEmail, label: "Email для обращений по данным", widget: string, required: false }
+          - { name: contactVk, label: "VK для обращений по данным", widget: string, required: false }
+          - { name: useCustomText, label: "Использовать свой готовый текст политики вместо стандартного", widget: boolean, default: false, hint: "Включите, если у вас уже есть готовая политика (например от своего юриста) — тогда поля выше не используются, а показывается текст из поля «Свой текст» ниже" }
+          - { name: customText, label: "Свой текст политики (используется, если включено выше)", widget: markdown, required: false }
+          - { name: bodyText, label: "Что и как собираем (стандартный текст, можно менять)", widget: markdown, hint: "Основная часть политики — какие данные собираются, для чего, кому передаются и т.д. Уже заполнено обычным текстом, поправьте под свои сервисы (например уберите упоминание чат-ассистента, если его нет на сайте)" }
+
   - name: faq
     label: "Вопросы и ответы"
     label_singular: "Вопрос"
     folder: src/content/faq
     create: true
     slug: "{{slug}}"
+    summary: "{{question}}"
     sortable_fields: [order, question]
     fields:
       - { name: question, label: "Вопрос", widget: string }
