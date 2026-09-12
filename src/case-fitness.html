@@ -1,0 +1,538 @@
+---
+permalink: /case-fitness.html
+---
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Соколов Силовой Тренинг — демо-кейс Vireflow</title>
+<meta name="description" content="Демо-кейс: лендинг для тренера по силовой подготовке с периодизацией и логом тренировок. Пример вёрстки и подхода Vireflow.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/uploads/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/uploads/favicon-96.png?v=2" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/uploads/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Public+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ground:#1A1815;
+    --surface:#242019;
+    --surface-raise:#2E281F;
+    --line:#3A342B;
+    --ink:#F3EEE4;
+    --ink-soft:#948C7E;
+    --red:#E13A2E;
+    --blue:#4E8BFF;
+    --on-red:#F3EEE4;
+    --shadow: 0 20px 44px -20px rgba(0,0,0,0.6);
+    --display:'Big Shoulders Display', 'Arial Narrow', sans-serif;
+    --sans:'Public Sans', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono:'JetBrains Mono', 'SF Mono', Consolas, monospace;
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{ max-width:1240px; margin-inline:auto; padding-inline:clamp(1.25rem,4vw,3rem); }
+
+  h1,h2,h3{ font-family:var(--display); font-weight:900; text-transform:uppercase; letter-spacing:0.01em; margin:0; text-wrap:balance; line-height:0.98; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  img{ max-width:100%; }
+  .eyebrow{
+    font-family:var(--mono); font-size:0.75rem; letter-spacing:0.16em;
+    text-transform:uppercase; color:var(--blue); display:inline-flex; align-items:center; gap:0.6em;
+  }
+  .eyebrow::before{ content:''; width:1.4em; height:2px; background:var(--red); display:inline-block; }
+  .mono{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{ opacity:1; transform:none; transition:opacity .6s ease, transform .6s ease; }
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{ opacity:0; transform:translateY(16px); }
+    .reveal.is-visible{ opacity:1; transform:none; }
+  }
+
+  /* ---------- demo banner ---------- */
+  .demo-banner{ background:#0F0E0C; color:var(--ink-soft); font-family:var(--mono); font-size:0.78rem; padding-block:0.6rem; border-bottom:1px solid var(--line); }
+  .demo-banner .wrap{ display:flex; flex-wrap:wrap; gap:0.4rem 1.4rem; align-items:center; justify-content:space-between; }
+  .demo-banner .links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+  .demo-banner a{ color:var(--red); text-decoration:underline; text-underline-offset:0.2em; white-space:nowrap; }
+
+  /* ---------- nav ---------- */
+  .nav{ position:sticky; top:0; z-index:40; background:rgba(26,24,21,0.92); backdrop-filter:blur(8px); border-bottom:1px solid var(--line); }
+  .nav .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-block:0.9rem; }
+  .logo{ font-family:var(--display); font-weight:900; font-size:1.15rem; letter-spacing:0.02em; text-decoration:none; text-transform:uppercase; }
+  .navlinks{ display:flex; gap:1.6rem; list-style:none; margin:0; padding:0; }
+  .navlinks a{ text-decoration:none; font-size:0.9rem; color:var(--ink-soft); }
+  .navlinks a:hover{ color:var(--ink); }
+  @media (max-width:760px){ .navlinks{ display:none; } }
+
+  .btn{
+    font-family:var(--sans); font-weight:700; font-size:0.9rem; border-radius:2px; border:2px solid transparent;
+    padding:0.75rem 1.4rem; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem;
+    transition:transform .15s ease, box-shadow .15s ease; text-transform:uppercase; letter-spacing:0.03em;
+  }
+  .btn:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
+  .btn-primary{ background:var(--red); color:var(--on-red); border-color:var(--red); }
+  .btn-primary:hover{ box-shadow:var(--shadow); transform:translateY(-2px); }
+  .btn-ghost{ border-color:var(--line); color:var(--ink); background:transparent; }
+  .btn-ghost:hover{ border-color:var(--ink); }
+
+  /* ---------- hero ---------- */
+  .hero{ padding-block:clamp(2.5rem,7vw,4.5rem) clamp(2rem,5vw,3rem); position:relative; overflow:clip; border-bottom:1px solid var(--line); }
+  .hero-grid{ display:grid; grid-template-columns:1.2fr 0.8fr; gap:clamp(2rem,5vw,4rem); align-items:end; }
+  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; } }
+  .hero h1{ font-size:clamp(2.6rem,6.2vw,5.2rem); margin-block:0.7rem 1.3rem; }
+  .hero h1 em{ font-style:normal; color:var(--red); }
+  .hero-sub{ max-width:44ch; color:var(--ink-soft); font-size:1.05rem; }
+  .hero-cta{ display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.8rem; align-items:center; }
+  .hero-note{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); margin-top:1.1rem; }
+  .hero-note b{ color:var(--ink); font-weight:700; }
+
+  /* loading-strip motif: barbell plate stack */
+  .plates{ display:flex; align-items:center; gap:3px; }
+  .plate{ border-radius:3px; flex-shrink:0; }
+  .plate-bar{ width:26px; height:6px; background:var(--ink-soft); opacity:0.5; }
+  .load-readout{ margin-top:1.6rem; background:var(--surface); border:1px solid var(--line); padding:1.1rem 1.2rem; }
+  .load-readout .eyebrow{ margin-bottom:0.7rem; }
+  .load-row{ display:flex; align-items:center; gap:0.9rem; }
+  .load-num{ font-family:var(--display); font-weight:900; font-size:2.4rem; color:var(--ink); }
+  .load-unit{ font-family:var(--mono); font-size:0.8rem; color:var(--ink-soft); }
+
+  /* ---------- section shell ---------- */
+  section{ padding-block:clamp(2.4rem,5vw,4rem); border-bottom:1px solid var(--line); }
+  .section-alt{ background:var(--surface); }
+  .section-head{ margin-bottom:1.8rem; }
+  .section-head .eyebrow{ margin-bottom:0.6rem; }
+  .section-head h2{ font-size:clamp(1.9rem,3.4vw,3rem); }
+  .lede{ max-width:64ch; color:var(--ink-soft); margin-top:0.9rem; }
+
+  /* ---------- periodization timeline ---------- */
+  .phase-list{ display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:2rem; }
+  @media (max-width:800px){ .phase-list{ grid-template-columns:1fr 1fr; } }
+  @media (max-width:480px){ .phase-list{ grid-template-columns:1fr; } }
+  .phase{ background:var(--ground); padding:1.4rem 1.2rem; }
+  .section-alt .phase{ background:var(--surface); }
+  .phase-num{ font-family:var(--mono); color:var(--red); font-size:0.8rem; }
+  .phase h3{ text-transform:none; font-family:var(--sans); font-weight:700; font-size:1.05rem; margin-block:0.5rem 0.4rem; letter-spacing:0; }
+  .phase p{ color:var(--ink-soft); font-size:0.88rem; }
+  .phase .mono{ display:block; margin-top:0.6rem; font-size:0.76rem; color:var(--blue); }
+
+  /* ---------- workout blocks (log sheet) ---------- */
+  .blocks-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); margin-top:2rem; }
+  .block-card{ background:var(--ground); padding:1.4rem 1.3rem; display:flex; flex-direction:column; gap:0.7rem; }
+  .section-alt .block-card{ background:var(--surface); }
+  .block-top{ display:flex; justify-content:space-between; align-items:baseline; }
+  .block-code{ font-family:var(--mono); font-size:0.72rem; color:var(--red); letter-spacing:0.05em; }
+  .block-card h3{ text-transform:none; font-family:var(--sans); font-weight:700; font-size:1.02rem; letter-spacing:0; }
+  .block-card p{ color:var(--ink-soft); font-size:0.88rem; }
+  .block-meta{ font-family:var(--mono); font-size:0.74rem; color:var(--blue); display:flex; gap:1rem; flex-wrap:wrap; border-top:1px solid var(--line); padding-top:0.6rem; margin-top:auto; }
+
+  /* ---------- progress example ---------- */
+  .progress-wrap{ margin-top:2rem; display:flex; flex-direction:column; gap:1.1rem; max-width:640px; }
+  .progress-row{ display:grid; grid-template-columns:5rem 1fr 4.5rem; align-items:center; gap:1rem; }
+  .progress-row .label{ font-family:var(--mono); font-size:0.8rem; color:var(--ink-soft); }
+  .progress-track{ height:16px; background:var(--surface-raise); border:1px solid var(--line); position:relative; }
+  .progress-fill{ height:100%; }
+  .progress-row .value{ font-family:var(--mono); font-size:0.9rem; text-align:right; }
+  .progress-note{ font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); margin-top:0.4rem; }
+
+  /* ---------- about ---------- */
+  .about-body{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:2.5rem; margin-top:2rem; }
+  @media (max-width:760px){ .about-body{ grid-template-columns:1fr; } }
+  blockquote{ margin:0; font-family:var(--display); font-weight:900; text-transform:uppercase; font-size:clamp(1.4rem,2.6vw,2rem); line-height:1.15; border-left:4px solid var(--red); padding-left:1.2rem; }
+  .credentials{ list-style:none; margin:1.4rem 0 0; padding:0; font-size:0.9rem; color:var(--ink-soft); display:flex; flex-direction:column; gap:0.5rem; }
+  .credentials b{ color:var(--ink); font-weight:700; }
+  .coach-badge{ display:flex; align-items:center; gap:1rem; margin-bottom:1.4rem; }
+  .coach-mono{ width:60px; height:60px; border-radius:50%; flex-shrink:0; background:var(--surface-raise); border:2px solid var(--red); display:flex; align-items:center; justify-content:center; font-family:var(--display); font-weight:900; font-size:1.3rem; }
+  .coach-badge .who b{ display:block; font-size:0.98rem; font-weight:700; }
+  .coach-badge .who span{ font-size:0.8rem; color:var(--ink-soft); font-family:var(--mono); }
+
+  /* ---------- reviews ---------- */
+  .reviews-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.2rem; margin-top:2rem; }
+  .review-card{ background:var(--ground); border:1px solid var(--line); padding:1.3rem; display:flex; flex-direction:column; gap:0.9rem; }
+  .section-alt .review-card{ background:var(--surface); }
+  .review-head{ display:flex; align-items:center; gap:0.7rem; }
+  .review-avatar{ width:34px; height:34px; border-radius:50%; background:var(--surface-raise); border:1px solid var(--blue); color:var(--ink); font-family:var(--mono); font-size:0.76rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .review-head b{ font-size:0.9rem; }
+  .review-head span{ font-size:0.74rem; color:var(--ink-soft); font-family:var(--mono); display:block; }
+  .review-card p{ color:var(--ink-soft); font-size:0.95rem; line-height:1.5; }
+  .review-sample-note{ font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); grid-column:1/-1; padding-top:0.4rem; }
+
+  /* ---------- faq ---------- */
+  .faq-item{ border-top:1px solid var(--line); }
+  .faq-item:last-child{ border-bottom:1px solid var(--line); }
+  .faq-q{ width:100%; text-align:left; background:none; border:0; padding:1.1rem 0; font-family:var(--sans); font-weight:700; font-size:1rem; color:var(--ink); display:flex; justify-content:space-between; align-items:center; cursor:pointer; gap:1rem; }
+  .faq-q .plus{ font-family:var(--mono); font-weight:400; color:var(--red); transition:transform .25s ease; flex-shrink:0; font-size:1.2rem; }
+  .faq-item[data-open="true"] .plus{ transform:rotate(45deg); }
+  .faq-a{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s ease; }
+  .faq-item[data-open="true"] .faq-a{ grid-template-rows:1fr; }
+  .faq-a-inner{ overflow:hidden; }
+  .faq-a p{ color:var(--ink-soft); padding-bottom:1.2rem; max-width:64ch; font-size:0.94rem; }
+
+  /* ---------- contact ---------- */
+  .contact-body{ display:grid; grid-template-columns:1fr 1fr; gap:3rem; margin-top:2rem; }
+  @media (max-width:760px){ .contact-body{ grid-template-columns:1fr; } }
+  .contact-price{ font-family:var(--mono); font-size:0.85rem; background:var(--surface-raise); border:1px solid var(--line); padding:0.9rem 1rem; margin-block:1.1rem; }
+  .contact-price b{ color:var(--red); }
+  .slots{ display:flex; flex-wrap:wrap; gap:0.6rem; margin-top:1.4rem; }
+  .slot{ font-family:var(--mono); font-size:0.78rem; border:1px solid var(--line); padding:0.5rem 0.8rem; color:var(--ink-soft); }
+  .slot.open{ color:var(--blue); border-color:var(--blue); }
+  .contact-alt{ display:flex; align-items:center; gap:0.9rem; margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--line); }
+  .contact-alt span{ font-size:0.85rem; color:var(--ink-soft); }
+  .field{ display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.1rem; }
+  .field label{ font-size:0.8rem; color:var(--ink-soft); font-family:var(--mono); }
+  .field input{ font-family:var(--sans); font-size:0.95rem; padding:0.7rem 0.8rem; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:2px; }
+  .field input:focus-visible{ outline:2px solid var(--blue); outline-offset:1px; }
+  .form-note{ font-size:0.82rem; color:var(--ink-soft); margin-top:0.8rem; min-height:1.4em; }
+  .form-note.ok{ color:var(--blue); }
+
+  footer{ border-top:1px solid var(--line); padding-block:2.2rem; background:#0F0E0C; }
+  .footer-row{ display:flex; flex-wrap:wrap; gap:1rem 1.4rem; justify-content:space-between; align-items:center; font-size:0.85rem; color:var(--ink-soft); }
+  .footer-row .links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+  .footer-row a{ color:var(--blue); text-decoration:underline; text-underline-offset:0.2em; white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <div class="wrap">
+    <span>🏋️ Демо-кейс — я собрала эту страницу, чтобы показать возможности вёрстки. Это не реальный человек и не реальный бизнес.</span>
+    <span class="links">
+      <a href="/">← На главную Vireflow</a>
+      <a href="/#contact">Обсудить свой сайт →</a>
+    </span>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#hero">СОКОЛОВ</a>
+    <ul class="navlinks">
+      <li><a href="#program">Программа</a></li>
+      <li><a href="#blocks">Блоки</a></li>
+      <li><a href="#about">Обо мне</a></li>
+      <li><a href="#faq">Вопросы</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#contact"><span>Записаться</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow reveal">Силовая подготовка · индивидуально</span>
+        <h1 class="reveal" style="transition-delay:.06s">Сила растёт по <em>графику</em>,<br>не по настроению.</h1>
+        <p class="hero-sub reveal" style="transition-delay:.12s">Индивидуальная программа с периодизацией нагрузки и контролем по RPE — вместо тренировок «на ощущениях», которые упираются в потолок через месяц.</p>
+        <div class="hero-cta reveal" style="transition-delay:.18s">
+          <a class="btn btn-primary" href="#contact"><span>Записаться на тестовую</span></a>
+          <a class="btn btn-ghost" href="#program">Смотреть программу</a>
+        </div>
+        <p class="hero-note reveal" style="transition-delay:.24s">Тестовая тренировка — <b>1 500 ₽</b>. Веду не больше <b>8 клиентов одновременно</b> — слежу за прогрессией каждого лично.</p>
+      </div>
+      <div class="reveal" style="transition-delay:.16s">
+        <div class="load-readout">
+          <span class="eyebrow">Пример: лог тренировки</span>
+          <div class="load-row">
+            <div class="load-num mono">100</div>
+            <div>
+              <div class="load-unit">кг · присед · 5×5 @RPE7</div>
+              <div class="plates" style="margin-top:0.5rem;">
+                <span class="plate plate-bar"></span>
+                <span class="plate" style="width:14px;height:34px;background:var(--red)"></span>
+                <span class="plate" style="width:11px;height:30px;background:var(--blue)"></span>
+                <span class="plate" style="width:8px;height:22px;background:var(--ink-soft)"></span>
+                <span class="plate" style="width:6px;height:16px;background:var(--surface-raise);border:1px solid var(--line)"></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="problem">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Проблема</span>
+        <h2>Тренировки без структуры<br>упираются в потолок</h2>
+        <p class="lede">Обычно ко мне приходят не за «ещё одной программой из интернета», а после нескольких — где сначала был результат, а потом всё встало. Чаще всего дело не в лени, а в том, что нагрузка росла случайно: без плана по неделям и без ориентира вроде RPE — организм либо не успевает восстановиться, либо топчется на месте.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="program">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Периодизация</span>
+        <h2>Как строится программа</h2>
+        <p class="lede">Один мезоцикл — 10 недель, 4 фазы. Нагрузка растёт не хаотично, а по плану, с разгрузкой в конце цикла.</p>
+      </div>
+      <div class="phase-list reveal">
+        <div class="phase">
+          <span class="phase-num mono">01</span>
+          <h3>Адаптация</h3>
+          <p>Техника, базовые паттерны движения, привыкание к объёму.</p>
+          <span class="mono">2 недели · RPE 5–6</span>
+        </div>
+        <div class="phase">
+          <span class="phase-num mono">02</span>
+          <h3>Накопление</h3>
+          <p>Рост объёма тренировок — больше подходов при умеренном весе.</p>
+          <span class="mono">4 недели · RPE 7–8</span>
+        </div>
+        <div class="phase">
+          <span class="phase-num mono">03</span>
+          <h3>Интенсификация</h3>
+          <p>Вес растёт, объём немного снижается — готовим пик силы.</p>
+          <span class="mono">3 недели · RPE 8–9</span>
+        </div>
+        <div class="phase">
+          <span class="phase-num mono">04</span>
+          <h3>Реализация</h3>
+          <p>Выход на новый максимум или плановый деload перед следующим циклом.</p>
+          <span class="mono">1 неделя · RPE 9–10</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="blocks">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Тренировочные блоки</span>
+        <h2>Из чего состоит неделя</h2>
+        <p class="lede">Обычно 3–4 тренировки в неделю, блоки чередуются по фазе цикла.</p>
+      </div>
+      <div class="blocks-grid reveal">
+        <article class="block-card">
+          <div class="block-top"><span class="block-code">БЛ-01</span></div>
+          <h3>Верх тела: жим</h3>
+          <p>Жим лёжа, жим стоя, тяга блока — база + вспомогательные упражнения.</p>
+          <div class="block-meta"><span>4×6</span><span>RPE 8</span><span>отдых 3 мин</span></div>
+        </article>
+        <article class="block-card">
+          <div class="block-top"><span class="block-code">БЛ-02</span></div>
+          <h3>Низ тела: присед / тяга</h3>
+          <p>Присед со штангой, становая тяга — приоритет техники под нагрузкой.</p>
+          <div class="block-meta"><span>5×5</span><span>RPE 7</span><span>отдых 3–4 мин</span></div>
+        </article>
+        <article class="block-card">
+          <div class="block-top"><span class="block-code">БЛ-03</span></div>
+          <h3>Метаболический</h3>
+          <p>Круговые с гирей, функциональные связки — плотность вместо веса.</p>
+          <div class="block-meta"><span>3×12</span><span>RPE 7</span><span>отдых 90 сек</span></div>
+        </article>
+        <article class="block-card">
+          <div class="block-top"><span class="block-code">БЛ-04</span></div>
+          <h3>Мобильность</h3>
+          <p>Суставная гимнастика, растяжка — между силовыми блоками, для восстановления.</p>
+          <div class="block-meta"><span>20 мин</span><span>RPE 3</span><span>ежедневно</span></div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="progress">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Пример прогресса</span>
+        <h2>1ПМ за один мезоцикл</h2>
+        <p class="lede">Пример клиента на программе 10 недель — не гарантия, у каждого своя скорость прогресса.</p>
+      </div>
+      <div class="progress-wrap reveal">
+        <div class="progress-row">
+          <span class="label mono">Присед</span>
+          <div class="progress-track"><div class="progress-fill" style="width:70%;background:var(--red)"></div></div>
+          <span class="value mono">100→120 кг</span>
+        </div>
+        <div class="progress-row">
+          <span class="label mono">Жим лёжа</span>
+          <div class="progress-track"><div class="progress-fill" style="width:55%;background:var(--blue)"></div></div>
+          <span class="value mono">70→80 кг</span>
+        </div>
+        <div class="progress-row">
+          <span class="label mono">Становая</span>
+          <div class="progress-track"><div class="progress-fill" style="width:78%;background:var(--ink-soft)"></div></div>
+          <span class="value mono">120→145 кг</span>
+        </div>
+      </div>
+      <p class="progress-note">Пример из практики, не гарантия результата — прогресс зависит от стажа, восстановления и режима.</p>
+    </div>
+  </section>
+
+  <section id="about">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Обо мне</span>
+        <h2>Соколов Марк</h2>
+      </div>
+      <div class="about-body">
+        <div class="reveal">
+          <blockquote>Тело не обманешь мотивацией — только цифрами: вес, повторы, дни отдыха.</blockquote>
+        </div>
+        <div class="reveal">
+          <div class="coach-badge">
+            <div class="coach-mono">МС</div>
+            <div class="who"><b>Марк Соколов</b><span>тренер по силовой подготовке</span></div>
+          </div>
+          <p class="lede" style="margin-top:0">Стаж 11 лет. Работаю с силовой подготовкой и коррекцией техники — в том числе после травм и длительных перерывов.</p>
+          <ul class="credentials">
+            <li><b>Сертификация —</b> тренер ФПР (Федерация пауэрлифтинга России)</li>
+            <li><b>Опыт —</b> судья соревнований по пауэрлифтингу</li>
+            <li><b>Формат —</b> очно и онлайн, максимум 8 клиентов одновременно</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="reviews">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Отзывы</span>
+        <h2>Так будет выглядеть блок отзывов</h2>
+        <p class="lede">Ниже — пример вёрстки, а не настоящие клиенты.</p>
+      </div>
+      <div class="reviews-grid reveal">
+        <article class="review-card">
+          <div class="review-head"><div class="review-avatar">И.</div><div><b>Игорь</b><span>10 недель, силовой блок</span></div></div>
+          <p>«Впервые увидел прогресс в цифрах, а не в зеркале — присед вырос на 20 кг за мезоцикл».</p>
+        </article>
+        <article class="review-card">
+          <div class="review-head"><div class="review-avatar">А.</div><div><b>Анна</b><span>цель: тяга 100 кг</span></div></div>
+          <p>«Впервые расписали, почему именно такой вес и почему не больше — раньше просто гадала».</p>
+        </article>
+        <article class="review-card">
+          <div class="review-head"><div class="review-avatar">П.</div><div><b>Павел</b><span>после травмы плеча</span></div></div>
+          <p>«Вернулся к жиму без боли — план учитывал ограничение с первой недели, а не «как-нибудь»».</p>
+        </article>
+        <span class="review-sample-note">Пример карточек — на вашем сайте здесь будут отзывы ваших реальных клиентов.</span>
+      </div>
+    </div>
+  </section>
+
+  <section id="faq">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Вопросы</span>
+        <h2>FAQ</h2>
+      </div>
+      <div class="reveal">
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" aria-expanded="false"><span>Нужна ли начальная физическая форма?</span><span class="plus">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner"><p>Нет. Программа стартует с фазы адаптации — вес и объём подбираются под текущий уровень, а не наоборот.</p></div></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" aria-expanded="false"><span>Тренировки очно или онлайн?</span><span class="plus">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner"><p>И так, и так. Онлайн — видеосвязь + разбор техники по видео, план тот же, что при очных встречах.</p></div></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" aria-expanded="false"><span>Что если есть травма или ограничение?</span><span class="plus">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner"><p>Обсуждаем на тестовой тренировке — программа строится с учётом ограничения, а не вопреки ему.</p></div></div>
+        </div>
+        <div class="faq-item" data-open="false">
+          <button class="faq-q" aria-expanded="false"><span>Сколько раз в неделю нужно заниматься?</span><span class="plus">+</span></button>
+          <div class="faq-a"><div class="faq-a-inner"><p>Обычно 3–4 раза. Меньше — прогрессия замедляется, больше — не успевает восстановление между блоками.</p></div></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section-alt" id="contact">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <span class="eyebrow">Запись</span>
+        <h2>Записаться на тестовую</h2>
+      </div>
+      <div class="contact-body">
+        <div class="reveal">
+          <p class="lede" style="margin-top:0">Оставьте контакт — подберу время на тестовую тренировку и коротко отвечу на вопросы по программе.</p>
+          <p class="contact-price">Тестовая тренировка — <b>1 500 ₽</b>, при записи на мезоцикл — засчитывается в стоимость.</p>
+          <div class="slots">
+            <span class="slot open">Пн вечер</span>
+            <span class="slot">Вт — занято</span>
+            <span class="slot open">Ср утро</span>
+            <span class="slot">Чт — занято</span>
+            <span class="slot open">Пт вечер</span>
+          </div>
+          <div class="contact-alt">
+            <a class="btn btn-ghost" href="https://t.me/sokolov_strength" target="_blank" rel="noopener">Написать в Telegram</a>
+            <span>отвечаю быстрее, чем через форму</span>
+          </div>
+        </div>
+        <form class="reveal" id="demoForm">
+          <div class="field"><label for="f-name">Имя</label><input id="f-name" name="name" type="text" placeholder="Как к вам обращаться" required></div>
+          <div class="field"><label for="f-phone">Телефон или Telegram</label><input id="f-phone" name="phone" type="text" placeholder="+7 999 000-00-00 / @username" required></div>
+          <button class="btn btn-primary" type="submit"><span>Записаться</span></button>
+          <p class="form-note" id="formNote"></p>
+        </form>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>Это демонстрационный проект — я сделала его, чтобы показать подход и возможности, а не реального специалиста.</span>
+    <span class="links">
+      <a href="/">← На главную Vireflow</a>
+      <a href="/#contact">Обсудить свой сайт →</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+    }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', function(){
+      var open = item.getAttribute('data-open') === 'true';
+      document.querySelectorAll('.faq-item').forEach(function(other){
+        other.setAttribute('data-open','false');
+        other.querySelector('.faq-q').setAttribute('aria-expanded','false');
+      });
+      item.setAttribute('data-open', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+
+  var form = document.getElementById('demoForm');
+  var note = document.getElementById('formNote');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    note.textContent = 'Демо-форма: в реальном проекте заявка ушла бы вам в Telegram/почту/CRM сразу после отправки.';
+    note.classList.add('ok');
+  });
+})();
+</script>
+</body>
+</html>

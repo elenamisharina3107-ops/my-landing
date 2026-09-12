@@ -91,6 +91,10 @@ section { padding: 72px 40px; }
 .portfolio-card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
 .portfolio-card-text { font-size: 13px; color: #8B8B9E; line-height: 1.6; margin-bottom: 14px; }
 .portfolio-card-link { font-size: 13px; font-weight: 600; color: #4a9eff; }
+.portfolio-preview.dark { background: #1A1815; }
+.portfolio-preview.dark .portfolio-preview-body { background: #242019; }
+.portfolio-preview.dark .portfolio-mock-line { background: #3A342B; }
+.portfolio-preview.dark .portfolio-mock-tag { background: #E13A2E; }
 
 /* NEURO */
 .neuro-flow { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 32px 0; flex-wrap: wrap; }
