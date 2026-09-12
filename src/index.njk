@@ -63,10 +63,8 @@
 <nav>
   <a class="nav-logo" href="#">{{ about.name }}</a>
   <div class="nav-links">
-    <a href="#benefits">Услуги</a>
-    <a href="#portfolio">Примеры</a>
-    <a href="#process">Процесс</a>
-    <a href="#prices">Цены</a>
+    <a href="#benefits" class="nav-tab-link" data-tab="ai">ИИ-менеджеры</a>
+    <a href="#process" class="nav-tab-link" data-tab="sites">Сайты</a>
     <a href="#faq">FAQ</a>
     <a href="/blog/">Блог</a>
   </div>
@@ -82,7 +80,7 @@
       <p class="hero-sub">{{ hero.subtitle }}</p>
       <div class="hero-btns">
         <a class="btn-primary" href="#contact">{{ hero.primaryButtonText }}</a>
-        <a class="btn-ghost" href="#prices">{{ hero.ghostButtonText }}</a>
+        <a class="btn-ghost" href="#ai-prices">{{ hero.ghostButtonText }}</a>
       </div>
       <div class="hero-stats">
         {% for stat in hero.stats %}
@@ -129,8 +127,16 @@
   </div>
 </section>
 
+<!-- TAB SWITCHER -->
+<div class="tab-switcher-wrap">
+  <div class="container tab-switcher" role="tablist" aria-label="Выбор направления">
+    <button type="button" class="tab-btn" data-tab="ai" role="tab" aria-selected="true">🤖 ИИ-менеджеры</button>
+    <button type="button" class="tab-btn" data-tab="sites" role="tab" aria-selected="false">🌐 Сайты</button>
+  </div>
+</div>
+
 <!-- BENEFITS -->
-<section id="benefits">
+<section id="benefits" class="tab-content tab-ai">
   <div class="container">
     <div class="section-label">{{ benefits.label }}</div>
     <div class="section-title">{{ benefits.title }}</div>
@@ -144,7 +150,7 @@
 </section>
 
 <!-- PROCESS + INCLUDES -->
-<section class="section-alt" id="process">
+<section class="section-alt tab-content tab-sites" id="process">
   <div class="container">
     <div class="two-col">
       <div>
@@ -170,7 +176,7 @@
 </section>
 
 <!-- PORTFOLIO -->
-<section id="portfolio">
+<section id="portfolio" class="tab-content tab-sites">
   <div class="container">
     <div class="section-label">Примеры возможностей</div>
     <div class="section-title">Так может выглядеть сайт под вашу нишу</div>
@@ -211,7 +217,7 @@
 </section>
 
 <!-- NEURO -->
-<section>
+<section id="neuro" class="tab-content tab-ai">
   <div class="container">
     <div class="section-label">{{ neuro.label }}</div>
     <div class="section-title">{{ neuro.title }}</div>
@@ -274,7 +280,7 @@
 </section>
 
 <!-- PRICES -->
-<section class="section-alt" id="prices">
+<section class="section-alt tab-content tab-sites" id="prices">
   <div class="container">
     <div class="section-label">{{ prices.label }}</div>
     <div class="section-title">{{ prices.title }}</div>
@@ -299,7 +305,7 @@
 </section>
 
 <!-- AI PRICES -->
-<section id="ai-prices">
+<section id="ai-prices" class="tab-content tab-ai">
   <div class="container">
     <div class="section-label">{{ aiPrices.label }}</div>
     <div class="section-title">{{ aiPrices.title }}</div>
@@ -725,6 +731,61 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   toTopBtn.addEventListener('click', () => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
+</script>
+
+<script>
+// ПЕРЕКЛЮЧЕНИЕ ВКЛАДОК «ИИ-МЕНЕДЖЕРЫ» / «САЙТЫ»
+(function () {
+  var REVEAL_SELECTOR = '.pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step, .neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .portfolio-card, .section-title, .section-sub, .section-label';
+  // какой вкладке принадлежит якорь — чтобы прямая ссылка/пункт меню открывали нужную вкладку
+  var HASH_TO_TAB = { benefits: 'ai', neuro: 'ai', 'ai-prices': 'ai', process: 'sites', portfolio: 'sites', prices: 'sites' };
+
+  var buttons = document.querySelectorAll('.tab-btn, .nav-tab-link');
+
+  function revealNow(tab) {
+    document.querySelectorAll('.tab-content.tab-' + tab).forEach(function (panel) {
+      panel.querySelectorAll(REVEAL_SELECTOR).forEach(function (el) {
+        el.classList.add('visible');
+      });
+    });
+  }
+
+  function setTab(tab) {
+    document.body.setAttribute('data-tab', tab);
+    document.querySelectorAll('.tab-btn').forEach(function (b) {
+      b.setAttribute('aria-selected', b.dataset.tab === tab ? 'true' : 'false');
+    });
+    revealNow(tab);
+    try { localStorage.setItem('vf-tab', tab); } catch (e) {}
+  }
+
+  buttons.forEach(function (btn) {
+    btn.addEventListener('click', function (e) {
+      var tab = btn.dataset.tab;
+      if (!tab) return;
+      if (btn.classList.contains('nav-tab-link')) {
+        e.preventDefault();
+        setTab(tab);
+        var target = document.querySelector(btn.getAttribute('href'));
+        if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      } else {
+        setTab(tab);
+      }
+    });
+  });
+
+  var initialTab = 'ai';
+  var hash = location.hash.replace('#', '');
+  if (HASH_TO_TAB[hash]) {
+    initialTab = HASH_TO_TAB[hash];
+  } else {
+    try {
+      var saved = localStorage.getItem('vf-tab');
+      if (saved === 'sites' || saved === 'ai') initialTab = saved;
+    } catch (e) {}
+  }
+  setTab(initialTab);
+})();
 </script>
 </body>
 </html>
