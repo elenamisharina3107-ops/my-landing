@@ -44,7 +44,7 @@
   "@context": "https://schema.org",
   "@type": "FAQPage",
   "mainEntity": [
-    {% for item in collections.faq %}
+    {% for item in collections.faqAi %}
     {"@type":"Question","name":{{ item.data.question | dump | safe }},"acceptedAnswer":{"@type":"Answer","text":{{ item.templateContent | striptags | trim | dump | safe }}}}{% if not loop.last %},{% endif %}
     {% endfor %}
   ]
@@ -235,7 +235,7 @@
     <div class="section-label">Вопросы и ответы</div>
     <div class="section-title">Часто спрашивают</div>
     <div class="faq-list">
-      {% for item in collections.faq %}
+      {% for item in collections.faqAi %}
       <div class="faq-item{% if loop.first %} open{% endif %}"><div class="faq-q">{{ item.data.question }} <span class="faq-toggle">+</span></div><div class="faq-a">{{ item.templateContent | safe }}</div></div>
       {% endfor %}
     </div>

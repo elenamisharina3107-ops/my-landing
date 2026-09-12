@@ -63,6 +63,18 @@ module.exports = function (eleventyConfig) {
       .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
   });
 
+  // Та же папка, разбита по странице: «Сайты» (/sites/) и «ИИ-менеджеры» (/).
+  eleventyConfig.addCollection("faqSites", (collectionApi) => {
+    return collectionApi
+      .getFilteredByTag("sites")
+      .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+  });
+  eleventyConfig.addCollection("faqAi", (collectionApi) => {
+    return collectionApi
+      .getFilteredByTag("ai")
+      .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
+  });
+
   // Шорткод {% image src, alt, sizes %}
   // Любая картинка при сборке → webp + jpeg-фолбэк, ширины 640/1280/2000.
   // Результат — тег <picture> с srcset. Файлы кладутся в _site/img/.

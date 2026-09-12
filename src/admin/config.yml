@@ -255,4 +255,13 @@ collections:
     fields:
       - { name: question, label: "Вопрос", widget: string }
       - { name: order, label: "Порядок", widget: number, value_type: int, hint: "Чем меньше число, тем выше в списке" }
+      - name: tags
+        label: "На какой странице показывать"
+        widget: select
+        multiple: true
+        default: ["sites"]
+        hint: "Обязательно выберите хотя бы одну — иначе вопрос нигде не появится"
+        options:
+          - { label: "Сайты (/sites/)", value: "sites" }
+          - { label: "ИИ-менеджеры (/)", value: "ai" }
       - { name: body, label: "Ответ", widget: markdown }
