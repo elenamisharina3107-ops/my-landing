@@ -38,8 +38,9 @@ collections:
           - { name: titleBefore, label: "Заголовок (начало)", widget: string }
           - { name: titleAccent, label: "Заголовок (выделенное слово)", widget: string, hint: "Показывается синим цветом" }
           - { name: subtitle, label: "Подзаголовок", widget: text }
-          - { name: primaryButtonText, label: "Текст главной кнопки", widget: string }
-          - { name: ghostButtonText, label: "Текст второй кнопки", widget: string }
+          - { name: aiButtonText, label: "Главная кнопка на странице «ИИ-менеджеры» (/)", widget: string }
+          - { name: primaryButtonText, label: "Главная кнопка на странице «Сайты» (/sites/)", widget: string }
+          - { name: ghostButtonText, label: "Текст второй кнопки (обе страницы)", widget: string }
           - name: stats
             label: "Цифры под кнопками"
             widget: list
