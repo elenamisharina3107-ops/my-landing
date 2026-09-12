@@ -227,6 +227,13 @@
       <div class="neuro-card"><div class="neuro-card-icon">{{ card.icon }}</div><div class="neuro-card-title">{{ card.title }}</div><p class="neuro-card-text">{{ card.text }}</p></div>
       {% endfor %}
     </div>
+    <div class="section-label" style="margin-top:56px;">{{ neuro.processLabel }}</div>
+    <div class="section-title">{{ neuro.processTitle }}</div>
+    <div class="process-steps">
+      {% for step in neuro.steps %}
+      <div class="process-step"><div class="step-num">{{ loop.index }}</div><div><div class="step-title">{{ step.title }}</div><p class="step-text">{{ step.text }}</p></div></div>
+      {% endfor %}
+    </div>
   </div>
 </section>
 
