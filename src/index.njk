@@ -271,6 +271,7 @@
   <div class="container">
     <div class="section-label">{{ prices.label }}</div>
     <div class="section-title">{{ prices.title }}</div>
+    <p class="section-sub">{{ prices.intro }}</p>
     <div class="prices-grid">
       {% for tariff in prices.items %}
       <div class="price-card{% if tariff.featured %} featured{% endif %}">
@@ -295,6 +296,7 @@
   <div class="container">
     <div class="section-label">{{ aiPrices.label }}</div>
     <div class="section-title">{{ aiPrices.title }}</div>
+    <p class="section-sub">{{ aiPrices.intro }}</p>
     <div class="prices-grid">
       {% for tariff in aiPrices.items %}
       <div class="price-card{% if tariff.featured %} featured{% endif %}">
