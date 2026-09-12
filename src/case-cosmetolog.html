@@ -1,0 +1,604 @@
+---
+permalink: /case-cosmetolog.html
+---
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ковалёва Косметология — демо-кейс Vireflow</title>
+<meta name="description" content="Демо-кейс: лендинг для эстетической косметологии на основе диагностики кожи. Пример вёрстки и подхода Vireflow.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/uploads/favicon.svg?v=2" type="image/svg+xml">
+
+<link rel="icon" href="/uploads/favicon-96.png?v=2" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/uploads/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --ink:#16191B;
+    --ink-soft:#5B5650;
+    --paper:#ECE8E2;
+    --surface:#E1DBCF;
+    --surface-raise:#D8D1C2;
+    --line:#C9C0AE;
+    --teal:#3F6259;
+    --teal-soft:#567F73;
+    --amber:#B8863C;
+    --amber-soft:#D9A354;
+    --on-amber:#16191B;
+    --blush:#C98C7E;
+    --blush-soft:#E7C9BE;
+    --shadow: 0 18px 40px -22px rgba(22,25,27,0.35);
+    --serif:'Instrument Serif', 'Iowan Old Style', Georgia, serif;
+    --sans:'IBM Plex Sans', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono:'IBM Plex Mono', 'SF Mono', Consolas, monospace;
+    color-scheme: light;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      radial-gradient(circle at 1.5px 1.5px, var(--line) 1px, transparent 0);
+    background-size:26px 26px;
+    background-attachment:fixed;
+  }
+
+  .wrap{ max-width:1280px; margin-inline:auto; padding-inline:clamp(1.25rem,4vw,3rem); }
+
+  h1,h2,h3{ font-family:var(--serif); font-style:italic; font-weight:400; margin:0; text-wrap:balance; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  img{ max-width:100%; }
+  .eyebrow{
+    font-family:var(--mono); font-style:normal; font-size:0.72rem; letter-spacing:0.15em;
+    text-transform:uppercase; color:var(--teal); display:inline-flex; align-items:center; gap:0.6em;
+  }
+  .eyebrow::before{ content:''; width:1.4em; height:1px; background:currentColor; display:inline-block; }
+  .data{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{ opacity:1; transform:none; transition:opacity .7s ease, transform .7s ease; }
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{ opacity:0; transform:translateY(18px); }
+    .reveal.is-visible{ opacity:1; transform:none; }
+  }
+
+  /* ---------- demo banner ---------- */
+  .demo-banner{
+    background:var(--ink); color:var(--paper);
+    font-family:var(--mono); font-size:0.78rem; letter-spacing:0.02em;
+    padding-block:0.6rem;
+  }
+  .demo-banner .wrap{ display:flex; flex-wrap:wrap; gap:0.4rem 1.4rem; align-items:center; justify-content:space-between; }
+  .demo-banner .links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+  .demo-banner a{ color:var(--amber-soft); text-decoration:underline; text-underline-offset:0.2em; white-space:nowrap; }
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter:blur(10px) saturate(1.1);
+    border-bottom:1px solid var(--line);
+  }
+  .nav .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-block:0.9rem; }
+  .logo{ font-family:var(--mono); font-size:0.85rem; letter-spacing:0.06em; text-transform:uppercase; text-decoration:none; }
+  .logo b{ font-weight:600; }
+  .navlinks{ display:flex; gap:1.6rem; list-style:none; margin:0; padding:0; }
+  .navlinks a{ text-decoration:none; font-size:0.92rem; color:var(--ink-soft); position:relative; padding-block:0.2rem; }
+  .navlinks a::after{ content:''; position:absolute; left:0; right:100%; bottom:-2px; height:1px; background:var(--teal); transition:right .25s ease; }
+  .navlinks a:hover{ color:var(--ink); }
+  .navlinks a:hover::after{ right:0; }
+  @media (max-width:760px){ .navlinks{ display:none; } }
+
+  .btn{
+    font-family:var(--sans); font-weight:600; font-size:0.92rem; border-radius:2px; border:1px solid transparent;
+    padding:0.75rem 1.3rem; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem;
+    transition:transform .2s ease, box-shadow .2s ease;
+  }
+  .btn:focus-visible{ outline:2px solid var(--teal); outline-offset:2px; }
+  .btn-primary{ background:var(--amber); color:var(--on-amber); position:relative; overflow:hidden; }
+  .btn-primary span{ position:relative; z-index:1; }
+  .btn-primary::before{ content:''; position:absolute; inset:0; background:var(--amber-soft); transform:translateX(-100%); transition:transform .3s ease; }
+  .btn-primary:hover::before{ transform:translateX(0); }
+  .btn-primary:hover{ box-shadow:var(--shadow); transform:translateY(-1px); }
+  .btn-ghost{ border-color:var(--line); color:var(--ink); background:transparent; }
+  .btn-ghost:hover{ border-color:var(--teal); color:var(--teal); }
+
+  /* ---------- hero ---------- */
+  .hero{ padding-block:clamp(2.5rem,7vw,5rem) clamp(2rem,5vw,3.5rem); position:relative; overflow:clip; }
+  .hero-grid{ display:grid; grid-template-columns:1.15fr 0.85fr; gap:clamp(2rem,5vw,4rem); align-items:center; }
+  @media (max-width:900px){ .hero-grid{ grid-template-columns:1fr; } }
+  .hero h1{ font-size:clamp(2.3rem,4.6vw,4.1rem); line-height:1.06; margin-block:0.9rem 1.2rem; }
+  .hero-sub{ max-width:46ch; color:var(--ink-soft); font-size:1.05rem; }
+  .hero-cta{ display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.8rem; align-items:center; }
+  .hero-note{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); margin-top:1rem; }
+  .hero-note b{ color:var(--ink); font-weight:500; }
+
+  .ring-stage{ position:relative; aspect-ratio:1/1; max-width:360px; margin-inline:auto; }
+  .ring{ position:absolute; inset:0; border-radius:50%; border:1px dashed var(--line); }
+  .ring.r2{ inset:11%; border-color:var(--teal); opacity:0.55; animation:spin 46s linear infinite; }
+  .ring.r3{ inset:22%; border-style:solid; border-color:var(--line); }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
+  @media (prefers-reduced-motion: reduce){ .ring.r2{ animation:none; } }
+  .ring-dot{ position:absolute; width:9px; height:9px; border-radius:50%; background:var(--amber); top:11%; left:50%; margin-left:-4.5px; }
+
+  .diag-card{
+    position:absolute; bottom:-6%; left:-8%; width:min(230px,60vw);
+    background:var(--surface); border:1px solid var(--line); box-shadow:var(--shadow);
+    padding:0.9rem 1rem; font-family:var(--mono); font-size:0.74rem; line-height:1.65;
+  }
+  .diag-card .eyebrow{ font-size:0.62rem; margin-bottom:0.4rem; }
+  .diag-card dl{ margin:0; display:grid; grid-template-columns:auto 1fr; gap:0.15rem 0.6rem; }
+  .diag-card dt{ color:var(--ink-soft); }
+  .diag-card dd{ margin:0; text-align:right; }
+  @media (max-width:900px){ .diag-card{ position:static; width:100%; margin-top:1.5rem; } }
+
+  /* ---------- section shell ---------- */
+  section{ padding-block:clamp(2.4rem,5vw,4rem); border-top:1px solid var(--line); }
+  .section-head{ display:grid; grid-template-columns:auto 1fr; gap:1.2rem; align-items:baseline; margin-bottom:1.8rem; }
+  .section-num{ font-family:var(--mono); color:var(--ink-soft); font-size:0.85rem; }
+  .section-head h2{ font-size:clamp(1.6rem,2.6vw,2.3rem); }
+  .lede{ max-width:64ch; color:var(--ink-soft); margin-bottom:1.6rem; }
+
+  /* ---------- layout: rail + content ---------- */
+  .layout{ display:grid; grid-template-columns:200px 1fr; gap:clamp(1.5rem,4vw,3.5rem); align-items:start; }
+  @media (max-width:900px){ .layout{ grid-template-columns:1fr; } }
+  .rail{ position:sticky; top:70px; list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.9rem; }
+  @media (max-width:900px){
+    .rail{ position:static; flex-direction:row; overflow-x:auto; gap:1.2rem; padding-bottom:0.6rem; border-bottom:1px solid var(--line); }
+  }
+  .rail a{ text-decoration:none; font-size:0.85rem; color:var(--ink-soft); display:flex; gap:0.6rem; white-space:nowrap; }
+  .rail a b{ font-family:var(--mono); font-weight:400; color:var(--line); }
+  .rail a.active{ color:var(--ink); }
+  .rail a.active b{ color:var(--teal); }
+
+  .content > section:first-child{ border-top:none; padding-top:0; }
+
+  /* ---------- protocol cards ---------- */
+  .protocols-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .protocol{ background:var(--paper); padding:1.4rem 1.3rem; display:flex; flex-direction:column; gap:0.7rem; transition:background .25s ease; }
+  .protocol:hover{ background:var(--surface); }
+  .protocol-top{ display:flex; justify-content:space-between; align-items:baseline; gap:0.6rem; }
+  .protocol-code{ font-family:var(--mono); font-size:0.72rem; color:var(--amber); letter-spacing:0.06em; }
+  .protocol-price{ font-family:var(--mono); font-size:0.78rem; color:var(--ink); }
+  .protocol h3{ font-style:normal; font-family:var(--sans); font-weight:600; font-size:1.02rem; }
+  .protocol p{ color:var(--ink-soft); font-size:0.9rem; flex:1; }
+  .protocol-meta{ font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:0.6rem; }
+
+  /* ---------- mid-page CTA ---------- */
+  .mid-cta{ background:var(--ink); color:var(--paper); margin-block:clamp(2rem,4vw,3rem); padding:clamp(1.6rem,4vw,2.4rem) clamp(1.6rem,4vw,2.4rem); display:flex; flex-wrap:wrap; gap:1.2rem; justify-content:space-between; align-items:center; }
+  .mid-cta p{ font-family:var(--serif); font-style:italic; font-size:clamp(1.15rem,2.2vw,1.5rem); max-width:32ch; color:var(--paper); }
+  .mid-cta .btn-primary{ flex-shrink:0; }
+
+  /* ---------- diagnostics diagram ---------- */
+  .diagnostics-body{ display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; align-items:center; }
+  @media (max-width:760px){ .diagnostics-body{ grid-template-columns:1fr; } }
+  .zone-map{ width:100%; max-width:340px; }
+  .zone-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1.1rem; }
+  .zone-list li{ display:grid; grid-template-columns:1.4rem 1fr; gap:0.8rem; }
+  .zone-list .dot{ width:10px; height:10px; border-radius:50%; margin-top:0.4rem; }
+  .zone-list b{ font-family:var(--sans); font-weight:600; display:block; font-size:0.95rem; }
+  .zone-list span{ color:var(--ink-soft); font-size:0.88rem; }
+
+  /* ---------- process timeline ---------- */
+  .process-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  .process-item{ display:grid; grid-template-columns:3.2rem 1fr; gap:1.4rem; padding-block:1.3rem; border-top:1px solid var(--line); position:relative; }
+  .process-item:first-child{ border-top:none; }
+  .process-item .num{ font-family:var(--serif); font-style:italic; font-size:1.8rem; color:var(--line); }
+  .process-item h3{ font-style:normal; font-family:var(--sans); font-weight:600; font-size:1.05rem; margin-bottom:0.35rem; }
+  .process-item p{ color:var(--ink-soft); font-size:0.92rem; max-width:56ch; }
+
+  /* ---------- about ---------- */
+  .about-body{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:2.5rem; }
+  @media (max-width:760px){ .about-body{ grid-template-columns:1fr; } }
+  blockquote{ margin:0; font-family:var(--serif); font-style:italic; font-size:clamp(1.3rem,2.2vw,1.7rem); line-height:1.4; border-left:2px solid var(--amber); padding-left:1.2rem; }
+  .credentials{ list-style:none; margin:1.4rem 0 0; padding:0; font-size:0.9rem; color:var(--ink-soft); display:flex; flex-direction:column; gap:0.5rem; }
+  .credentials li{ display:flex; gap:0.6rem; }
+  .credentials b{ color:var(--ink); font-weight:600; }
+  .avatar-badge{ display:flex; align-items:center; gap:1rem; margin-bottom:1.4rem; }
+  .avatar-mono{
+    width:64px; height:64px; border-radius:50%; flex-shrink:0;
+    background:linear-gradient(145deg, var(--blush-soft), var(--surface-raise));
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--serif); font-style:italic; font-size:1.5rem; color:var(--ink);
+  }
+  .avatar-badge .who b{ display:block; font-size:0.98rem; }
+  .avatar-badge .who span{ font-size:0.82rem; color:var(--ink-soft); }
+
+  /* ---------- reviews ---------- */
+  .reviews-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.3rem; }
+  .review-card{ background:var(--surface); border:1px solid var(--line); padding:1.3rem; display:flex; flex-direction:column; gap:0.9rem; }
+  .review-head{ display:flex; align-items:center; gap:0.7rem; }
+  .review-avatar{ width:36px; height:36px; border-radius:50%; background:var(--blush-soft); color:var(--ink); font-family:var(--mono); font-size:0.78rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .review-head b{ font-size:0.92rem; }
+  .review-head span{ font-size:0.76rem; color:var(--ink-soft); display:block; }
+  .review-card p{ color:var(--ink-soft); font-style:italic; font-family:var(--serif); font-size:1.05rem; line-height:1.45; }
+  .review-sample-note{ font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); grid-column:1/-1; padding-top:0.4rem; }
+
+  /* ---------- faq ---------- */
+  .faq-item{ border-top:1px solid var(--line); }
+  .faq-item:last-child{ border-bottom:1px solid var(--line); }
+  .faq-q{ width:100%; text-align:left; background:none; border:0; padding:1.1rem 0; font-family:var(--sans); font-weight:600; font-size:1rem; color:var(--ink); display:flex; justify-content:space-between; align-items:center; cursor:pointer; gap:1rem; }
+  .faq-q .plus{ font-family:var(--mono); font-weight:400; color:var(--teal); transition:transform .25s ease; flex-shrink:0; }
+  .faq-item[data-open="true"] .plus{ transform:rotate(45deg); }
+  .faq-a{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s ease; }
+  .faq-item[data-open="true"] .faq-a{ grid-template-rows:1fr; }
+  .faq-a-inner{ overflow:hidden; }
+  .faq-a p{ color:var(--ink-soft); padding-bottom:1.2rem; max-width:64ch; font-size:0.94rem; }
+
+  /* ---------- contact ---------- */
+  .contact-body{ display:grid; grid-template-columns:1fr 1fr; gap:3rem; }
+  @media (max-width:760px){ .contact-body{ grid-template-columns:1fr; } }
+  .contact-price{ font-family:var(--mono); font-size:0.85rem; background:var(--surface); border:1px solid var(--line); padding:0.9rem 1rem; margin-block:1.1rem; }
+  .contact-price b{ color:var(--amber); }
+  .contact-alt{ display:flex; align-items:center; gap:0.9rem; margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--line); }
+  .contact-alt span{ font-size:0.88rem; color:var(--ink-soft); }
+  .field{ display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.1rem; }
+  .field label{ font-size:0.8rem; color:var(--ink-soft); }
+  .field input{ font-family:var(--sans); font-size:0.95rem; padding:0.7rem 0.8rem; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:2px; }
+  .field input:focus-visible{ outline:2px solid var(--teal); outline-offset:1px; }
+  .form-note{ font-size:0.82rem; color:var(--ink-soft); margin-top:0.8rem; min-height:1.4em; }
+  .form-note.ok{ color:var(--teal); }
+  .location{ display:flex; align-items:center; gap:1rem; margin-top:1.6rem; }
+  .location-map{ width:64px; height:64px; flex-shrink:0; }
+  .location span{ font-size:0.88rem; color:var(--ink-soft); }
+  .location b{ color:var(--ink); display:block; font-size:0.94rem; }
+
+  footer{ border-top:1px solid var(--line); padding-block:2.2rem; }
+  .footer-row{ display:flex; flex-wrap:wrap; gap:1rem 1.4rem; justify-content:space-between; align-items:center; font-size:0.85rem; color:var(--ink-soft); }
+  .footer-row .links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+  .footer-row a{ color:var(--teal); text-decoration:underline; text-underline-offset:0.2em; white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <div class="wrap">
+    <span>🧴 Демо-кейс — я собрала эту страницу, чтобы показать возможности вёрстки. Это не реальный человек и не реальный бизнес.</span>
+    <span class="links">
+      <a href="/">← На главную Vireflow</a>
+      <a href="/#contact">Обсудить свой сайт →</a>
+    </span>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#hero">КОВАЛЁВА <b>КОСМЕТОЛОГИЯ</b></a>
+    <ul class="navlinks">
+      <li><a href="#diagnostics">Разбор</a></li>
+      <li><a href="#protocols">Протоколы</a></li>
+      <li><a href="#about">Обо мне</a></li>
+      <li><a href="#reviews">Отзывы</a></li>
+      <li><a href="#faq">Вопросы</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#contact"><span>Записаться</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow reveal">Эстетическая косметология · приём по записи</span>
+        <h1 class="reveal" style="transition-delay:.08s">Кожу сначала читают.<br>Потом с ней работают.</h1>
+        <p class="hero-sub reveal" style="transition-delay:.16s">Разбор состояния кожи и протокол на основе диагностики — вместо «процедуры месяца» наугад. Сначала понимаем, что происходит с барьером, сосудами и типом кожи, потом выстраиваем порядок процедур.</p>
+        <div class="hero-cta reveal" style="transition-delay:.24s">
+          <a class="btn btn-primary" href="#contact"><span>Записаться на разбор</span></a>
+          <a class="btn btn-ghost" href="#protocols">Смотреть протоколы</a>
+        </div>
+        <p class="hero-note reveal" style="transition-delay:.3s">Разбор — <b>2 500 ₽</b>, засчитывается в стоимость курса. Беру не больше <b>3 новых клиентов в неделю</b> — приём без потока.</p>
+      </div>
+      <div class="ring-stage reveal" style="transition-delay:.2s">
+        <div class="ring r1"></div>
+        <div class="ring r2"><div class="ring-dot"></div></div>
+        <div class="ring r3"></div>
+        <div class="diag-card">
+          <span class="eyebrow">Пример разбора</span>
+          <dl>
+            <dt>Фототип</dt><dd>II–III</dd>
+            <dt>Барьер</dt><dd>снижен</dd>
+            <dt>Внимание</dt><dd>T-зона, купероз</dd>
+            <dt>Протокол</dt><dd>PR-02 + PR-04</dd>
+          </dl>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="layout">
+      <nav class="rail" aria-label="Оглавление">
+        <a href="#problem" data-target="problem"><b>01</b>Почему разово не работает</a>
+        <a href="#diagnostics" data-target="diagnostics"><b>02</b>Как проходит разбор</a>
+        <a href="#protocols" data-target="protocols"><b>03</b>Протоколы</a>
+        <a href="#process" data-target="process"><b>04</b>Как строится работа</a>
+        <a href="#about" data-target="about"><b>05</b>Обо мне</a>
+        <a href="#reviews" data-target="reviews"><b>06</b>Отзывы</a>
+        <a href="#faq" data-target="faq"><b>07</b>Вопросы</a>
+        <a href="#contact" data-target="contact"><b>08</b>Запись</a>
+      </nav>
+
+      <div class="content">
+        <section id="problem">
+          <div class="section-head reveal">
+            <span class="section-num">01</span>
+            <h2>Почему разовая процедура не работает</h2>
+          </div>
+          <p class="lede reveal">Чаще всего ко мне приходят не за «ещё одной процедурой», а после нескольких — которые не дали ожидаемого результата. Обычно дело не в процедуре, а в том, что её выбрали без разбора: не учли сниженный барьер, купероз или чувствительность — и результат либо не виден, либо кожа отвечает раздражением.</p>
+          <p class="lede reveal">Разбор занимает один приём, но экономит месяцы процедур не по адресу.</p>
+        </section>
+
+        <section id="diagnostics">
+          <div class="section-head reveal">
+            <span class="section-num">02</span>
+            <h2>Как проходит разбор</h2>
+          </div>
+          <p class="lede reveal">Дерматоскопия, оценка фототипа по шкале Фицпатрика, состояния барьера и сосудистой реактивности — по зонам лица отдельно, потому что т-зона, скулы и периорбитальная область почти всегда ведут себя по-разному.</p>
+          <div class="diagnostics-body">
+            <svg class="zone-map reveal" viewBox="0 0 320 320" role="img" aria-label="Схема зон лица для разбора">
+              <ellipse cx="160" cy="170" rx="108" ry="140" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+              <circle cx="160" cy="115" r="9" fill="var(--amber)"/>
+              <line x1="160" y1="115" x2="240" y2="80" stroke="var(--line)" stroke-width="1"/>
+              <circle cx="112" cy="185" r="9" fill="var(--teal)"/>
+              <line x1="112" y1="185" x2="30" y2="200" stroke="var(--line)" stroke-width="1"/>
+              <circle cx="208" cy="185" r="9" fill="var(--teal)"/>
+              <line x1="208" y1="185" x2="290" y2="200" stroke="var(--line)" stroke-width="1"/>
+              <circle cx="160" cy="255" r="9" fill="var(--ink-soft)"/>
+              <line x1="160" y1="255" x2="240" y2="280" stroke="var(--line)" stroke-width="1"/>
+            </svg>
+            <ul class="zone-list reveal">
+              <li><span class="dot" style="background:var(--amber)"></span><div><b>T-зона</b><span>чаще жирная и с расширенными порами — приоритет: себорегуляция, а не сушащие пилинги.</span></div></li>
+              <li><span class="dot" style="background:var(--teal)"></span><div><b>Скулы</b><span>зона первой реакции на купероз и обезвоживание — щадящие протоколы, укрепление сосудистой стенки.</span></div></li>
+              <li><span class="dot" style="background:var(--ink-soft)"></span><div><b>Подбородок и овал</b><span>плотность и тонус — здесь чаще всего работают аппаратные методы и микротоки.</span></div></li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="protocols">
+          <div class="section-head reveal">
+            <span class="section-num">03</span>
+            <h2>Протоколы</h2>
+          </div>
+          <p class="lede reveal">Собираются по результатам разбора — редко по одному, обычно связкой из двух-трёх на курс.</p>
+          <div class="protocols-grid reveal">
+            <article class="protocol">
+              <div class="protocol-top"><span class="protocol-code">PR-01</span><span class="protocol-price">от 4 500 ₽</span></div>
+              <h3>Аппаратная чистка + УЗ-кавитация</h3>
+              <p>Комбинированная и жирная кожа, расширенные поры, застойные комедоны.</p>
+              <div class="protocol-meta"><span>60 мин</span><span>без реабилитации</span></div>
+            </article>
+            <article class="protocol">
+              <div class="protocol-top"><span class="protocol-code">PR-02</span><span class="protocol-price">от 7 000 ₽</span></div>
+              <h3>Биоревитализация</h3>
+              <p>Стабилизированная гиалуроновая кислота — восстановление барьера и увлажнение.</p>
+              <div class="protocol-meta"><span>40 мин</span><span>покраснение до суток</span></div>
+            </article>
+            <article class="protocol">
+              <div class="protocol-top"><span class="protocol-code">PR-03</span><span class="protocol-price">от 3 800 ₽</span></div>
+              <h3>Энзимный пилинг</h3>
+              <p>Мягкое обновление без травмы — подходит чувствительной и куперозной коже.</p>
+              <div class="protocol-meta"><span>45 мин</span><span>без реабилитации</span></div>
+            </article>
+            <article class="protocol">
+              <div class="protocol-top"><span class="protocol-code">PR-04</span><span class="protocol-price">от 3 200 ₽</span></div>
+              <h3>Микротоковая терапия</h3>
+              <p>Тонус, отёчность, поддержка сосудистой стенки при куперозе.</p>
+              <div class="protocol-meta"><span>50 мин</span><span>без реабилитации</span></div>
+            </article>
+            <article class="protocol">
+              <div class="protocol-top"><span class="protocol-code">PR-05</span><span class="protocol-price">от 5 500 ₽</span></div>
+              <h3>RF-лифтинг</h3>
+              <p>Плотность и овал лица — курсом от 6 процедур, эффект накопительный.</p>
+              <div class="protocol-meta"><span>60 мин</span><span>без реабилитации</span></div>
+            </article>
+          </div>
+        </section>
+
+        <div class="mid-cta reveal">
+          <p>Не уверены, какой протокол подойдёт именно вам? Это и выясняет разбор.</p>
+          <a class="btn btn-primary" href="#contact"><span>Записаться на разбор — 2 500 ₽</span></a>
+        </div>
+
+        <section id="process">
+          <div class="section-head reveal">
+            <span class="section-num">04</span>
+            <h2>Как строится работа</h2>
+          </div>
+          <ol class="process-list reveal">
+            <li class="process-item"><span class="num">01</span><div><h3>Разбор</h3><p>Дерматоскопия, фототип, анамнез и зоны внимания — 45–60 минут на первом приёме.</p></div></li>
+            <li class="process-item"><span class="num">02</span><div><h3>Протокол</h3><p>Собираю схему и порядок процедур под то, что показал разбор, а не под прайс-лист.</p></div></li>
+            <li class="process-item"><span class="num">03</span><div><h3>Курс</h3><p>Провожу процедуры по протоколу, фиксирую динамику и при необходимости корректирую план.</p></div></li>
+            <li class="process-item"><span class="num">04</span><div><h3>Поддержка</h3><p>Домашний уход и график поддерживающих визитов, чтобы результат не откатился за месяц.</p></div></li>
+          </ol>
+        </section>
+
+        <section id="about">
+          <div class="section-head reveal">
+            <span class="section-num">05</span>
+            <h2>Обо мне</h2>
+          </div>
+          <div class="about-body">
+            <div class="reveal">
+              <blockquote>Моя работа — не «сделать красиво», а понять, почему кожа ведёт себя именно так, и вернуть ей ресурс.</blockquote>
+            </div>
+            <div class="reveal">
+              <div class="avatar-badge">
+                <div class="avatar-mono">АК</div>
+                <div class="who"><b>Алина Ковалёва</b><span>врач-косметолог, приём лично</span></div>
+              </div>
+              <p class="lede" style="margin-bottom:0">Стаж 9 лет. Специализация — аппаратная и инъекционная косметология с опорой на диагностику, а не на тренды.</p>
+              <ul class="credentials">
+                <li><b>Образование —</b> диплом врача-дерматокосметолога</li>
+                <li><b>Повышение квалификации —</b> аппаратные методики, инъекционная косметология</li>
+                <li><b>Формат —</b> индивидуальный приём, без потока</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="reviews">
+          <div class="section-head reveal">
+            <span class="section-num">06</span>
+            <h2>Отзывы</h2>
+          </div>
+          <p class="lede reveal">Так будет выглядеть блок с отзывами на реальном сайте — ниже пример вёрстки, а не настоящие клиенты.</p>
+          <div class="reviews-grid reveal">
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">И.</div><div><b>Ирина</b><span>курс биоревитализации</span></div></div>
+              <p>«Впервые мне объяснили не «что делаем», а почему именно это — и почему не то, что я просила сама».</p>
+            </article>
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">М.</div><div><b>Мария</b><span>протокол PR-03 + PR-04</span></div></div>
+              <p>«После разбора стало понятно, почему кожа реагировала на прошлые процедуры раздражением».</p>
+            </article>
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">Е.</div><div><b>Елена</b><span>курс RF-лифтинга</span></div></div>
+              <p>«Записи хватало на конкретный план на несколько месяцев вперёд, а не «приходите ещё разок»».</p>
+            </article>
+            <span class="review-sample-note">Пример карточек — на вашем сайте здесь будут отзывы ваших реальных клиентов.</span>
+          </div>
+        </section>
+
+        <section id="faq">
+          <div class="section-head reveal">
+            <span class="section-num">07</span>
+            <h2>Вопросы</h2>
+          </div>
+          <div class="reveal">
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Больно ли делать разбор кожи?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Нет. Дерматоскопия и осмотр не травматичны и занимают часть первого приёма — дискомфорта не больше, чем от обычного осмотра у врача.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Сколько нужно процедур, чтобы увидеть результат?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Зависит от протокола: биоревитализация и энзимные пилинги дают заметный эффект уже после 2–3 процедур, RF-лифтинг и коррекция плотности — курсом от 6.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Есть ли противопоказания?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Список зависит от конкретного протокола и обсуждается на разборе — часть методик не подходит при активном воспалении, беременности или приёме определённых препаратов.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>У меня чувствительная кожа и купероз — это ограничение?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Нет, но это меняет протокол: приоритет — укрепление сосудистой стенки и щадящие методики без агрессивных пилингов и травмирующих чисток.</p></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact">
+          <div class="section-head reveal">
+            <span class="section-num">08</span>
+            <h2>Записаться на разбор</h2>
+          </div>
+          <div class="contact-body">
+            <div class="reveal">
+              <p class="lede" style="margin-bottom:0">Оставьте контакт — подберу время на разбор и коротко отвечу на вопросы по протоколу, если они уже есть.</p>
+              <p class="contact-price">Разбор — <b>2 500 ₽</b>, при записи на курс — засчитывается в стоимость.</p>
+              <div class="location">
+                <svg class="location-map" viewBox="0 0 64 64" role="img" aria-label="Пример расположения">
+                  <path d="M4 50 L20 44 L26 50 L40 40 L60 46" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+                  <path d="M12 20 L30 16 L46 24" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+                  <circle cx="34" cy="26" r="6" fill="none" stroke="var(--teal)" stroke-width="1.5"/>
+                  <path d="M34 32 L34 40" stroke="var(--teal)" stroke-width="1.5"/>
+                  <circle cx="34" cy="26" r="2" fill="var(--amber)"/>
+                </svg>
+                <span><b>м. Динамо, 5 минут пешком</b>точный адрес — после записи</span>
+              </div>
+              <div class="contact-alt">
+                <a class="btn btn-ghost" href="https://t.me/kovaleva_kosmetolog" target="_blank" rel="noopener">Написать в Telegram</a>
+                <span>отвечаю быстрее, чем через форму</span>
+              </div>
+            </div>
+            <form class="reveal" id="demoForm">
+              <div class="field"><label for="f-name">Имя</label><input id="f-name" name="name" type="text" placeholder="Как к вам обращаться" required></div>
+              <div class="field"><label for="f-phone">Телефон или Telegram</label><input id="f-phone" name="phone" type="text" placeholder="+7 999 000-00-00 / @username" required></div>
+              <button class="btn btn-primary" type="submit"><span>Записаться</span></button>
+              <p class="form-note" id="formNote"></p>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>Это демонстрационный проект — я сделала его, чтобы показать подход и возможности, а не реального специалиста.</span>
+    <span class="links">
+      <a href="/">← На главную Vireflow</a>
+      <a href="/#contact">Обсудить свой сайт →</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+    }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  // faq accordion
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', function(){
+      var open = item.getAttribute('data-open') === 'true';
+      document.querySelectorAll('.faq-item').forEach(function(other){
+        other.setAttribute('data-open','false');
+        other.querySelector('.faq-q').setAttribute('aria-expanded','false');
+      });
+      item.setAttribute('data-open', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+
+  // scroll-spy rail nav
+  var railLinks = document.querySelectorAll('.rail a');
+  var sections = Array.prototype.map.call(railLinks, function(a){ return document.getElementById(a.dataset.target); });
+  if('IntersectionObserver' in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          railLinks.forEach(function(a){ a.classList.toggle('active', a.dataset.target === e.target.id); });
+        }
+      });
+    }, { rootMargin:'-40% 0px -50% 0px' });
+    sections.forEach(function(s){ if(s) spy.observe(s); });
+  }
+
+  // demo form
+  var form = document.getElementById('demoForm');
+  var note = document.getElementById('formNote');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    note.textContent = 'Демо-форма: в реальном проекте заявка ушла бы вам в Telegram/почту/CRM сразу после отправки.';
+    note.classList.add('ok');
+  });
+})();
+</script>
+</body>
+</html>

@@ -64,6 +64,7 @@
   <a class="nav-logo" href="#">{{ about.name }}</a>
   <div class="nav-links">
     <a href="#benefits">Услуги</a>
+    <a href="#portfolio">Примеры</a>
     <a href="#process">Процесс</a>
     <a href="#prices">Цены</a>
     <a href="#faq">FAQ</a>
@@ -164,6 +165,32 @@
           {% endfor %}
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- PORTFOLIO -->
+<section id="portfolio">
+  <div class="container">
+    <div class="section-label">Примеры возможностей</div>
+    <div class="section-title">Так может выглядеть сайт под вашу нишу</div>
+    <p class="section-sub">Готовых проектов клиентов пока не выкладываю — вместо этого собрала концепт-макет, чтобы показать вёрстку и подход. Разные ниши — разный визуальный язык, не один шаблон с другими цветами.</p>
+    <div class="portfolio-grid">
+      <a class="portfolio-card" href="/case-cosmetolog.html" target="_blank" rel="noopener">
+        <div class="portfolio-preview">
+          <div class="portfolio-preview-bar"><span></span><span></span><span></span></div>
+          <div class="portfolio-preview-body">
+            <div class="portfolio-mock-line" style="width:70%"></div>
+            <div class="portfolio-mock-line" style="width:45%"></div>
+            <div class="portfolio-mock-tag"></div>
+          </div>
+        </div>
+        <div class="portfolio-card-body">
+          <div class="portfolio-card-title">Эстетическая косметология</div>
+          <p class="portfolio-card-text">Диагностика кожи, протоколы, запись — концепт-кейс с анимациями и авторской вёрсткой</p>
+          <span class="portfolio-card-link">Смотреть демо →</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -593,7 +620,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
 <script>
 // REVEAL ON SCROLL + BRIGHTNESS EFFECT
 (function() {
-  var revealSelector = '.pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step, .neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .section-title, .section-sub, .section-label';
+  var revealSelector = '.pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step, .neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .portfolio-card, .section-title, .section-sub, .section-label';
 
   function initReveal() {
     var elements = document.querySelectorAll(revealSelector);

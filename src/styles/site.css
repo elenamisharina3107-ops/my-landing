@@ -77,6 +77,21 @@ section { padding: 72px 40px; }
 .include-title { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
 .include-text { font-size: 12px; color: #8B8B9E; line-height: 1.5; }
 
+/* PORTFOLIO */
+.portfolio-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 20px; }
+.portfolio-card { background: #13131E; border: 1px solid #1a2545; border-radius: 14px; overflow: hidden; text-decoration: none; color: inherit; display: block; transition: border-color 0.2s, transform 0.2s; }
+.portfolio-card:hover { border-color: #4a9eff; transform: translateY(-2px); }
+.portfolio-preview { background: #ECE8E2; padding: 14px 16px 18px; }
+.portfolio-preview-bar { display: flex; gap: 5px; margin-bottom: 12px; }
+.portfolio-preview-bar span { width: 8px; height: 8px; border-radius: 50%; background: #C9C0AE; display: inline-block; }
+.portfolio-preview-body { background: #fff; border-radius: 6px; padding: 16px; }
+.portfolio-mock-line { height: 8px; background: #C9C0AE; border-radius: 4px; margin-bottom: 8px; }
+.portfolio-mock-tag { height: 22px; width: 40%; background: #B8863C; border-radius: 4px; margin-top: 10px; }
+.portfolio-card-body { padding: 18px 20px 20px; }
+.portfolio-card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+.portfolio-card-text { font-size: 13px; color: #8B8B9E; line-height: 1.6; margin-bottom: 14px; }
+.portfolio-card-link { font-size: 13px; font-weight: 600; color: #4a9eff; }
+
 /* NEURO */
 .neuro-flow { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 32px 0; flex-wrap: wrap; }
 .neuro-node { background: #13131E; border: 1px solid #1a2545; border-radius: 12px; padding: 14px 22px; font-size: 14px; font-weight: 600; color: #4a9eff; }
@@ -273,14 +288,14 @@ footer { padding: 24px 40px; border-top: 1px solid #1a2545; display: flex; justi
 
 /* Появление при скролле (reveal) */
 .pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step,
-.neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap,
+.neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .portfolio-card,
 .section-title, .section-sub, .section-label {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 0.15s ease-out, border-color 0.2s;
 }
 .pain-card.visible, .benefit-item.visible, .price-card.visible, .faq-item.visible, .include-item.visible, .process-step.visible,
-.neuro-card.visible, .neuro-flow.visible, .guarantee-box.visible, .guarantee-note.visible, .about-wrap.visible,
+.neuro-card.visible, .neuro-flow.visible, .guarantee-box.visible, .guarantee-note.visible, .about-wrap.visible, .portfolio-card.visible,
 .section-title.visible, .section-sub.visible, .section-label.visible {
   opacity: 1;
   transform: translateY(0);
