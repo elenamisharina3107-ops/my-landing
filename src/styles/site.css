@@ -1,5 +1,5 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { scroll-behavior: smooth; scroll-padding-top: 150px; }
+html { scroll-behavior: smooth; scroll-padding-top: 90px; }
 body { font-family: 'Inter', sans-serif; background: #080d1a; color: #F0F0F5; font-size: 16px; line-height: 1.6; }
 
 /* NAV */
@@ -8,6 +8,7 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
 .nav-links { display: flex; gap: 24px; }
 .nav-links a { font-size: 14px; color: #8B8B9E; text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: #F0F0F5; }
+.nav-links a[aria-current="page"] { color: #4a9eff; font-weight: 600; }
 .nav-cta { background: #4a9eff; color: #fff; border: none; border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; }
 
 /* HERO */
@@ -46,20 +47,6 @@ section { padding: 72px 40px; }
 .section-label { font-size: 11px; color: #4a9eff; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; margin-bottom: 12px; }
 .section-title { font-size: 36px; font-weight: 700; margin-bottom: 12px; }
 .section-sub { font-size: 16px; color: #8B8B9E; line-height: 1.7; max-width: 540px; margin-bottom: 40px; }
-
-/* TAB SWITCHER — «ИИ-менеджеры» / «Сайты» */
-.tab-switcher-wrap { background: #0f1428; border-bottom: 1px solid #1a2545; padding: 18px 40px; position: sticky; top: 69px; z-index: 90; }
-.tab-switcher { display: flex; gap: 10px; flex-wrap: wrap; }
-.tab-btn { font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 600; color: #8B8B9E; background: transparent; border: 1px solid #1a2545; border-radius: 10px; padding: 10px 20px; cursor: pointer; transition: background 0.2s, color 0.2s, border-color 0.2s; }
-.tab-btn:hover { border-color: #4a9eff; color: #F0F0F5; }
-.tab-btn[aria-selected="true"] { background: #4a9eff; border-color: #4a9eff; color: #fff; }
-.tab-content { display: none; }
-body[data-tab="ai"] .tab-content.tab-ai { display: block; }
-body[data-tab="sites"] .tab-content.tab-sites { display: block; }
-@media (max-width: 768px) {
-  .tab-switcher-wrap { padding: 14px 20px; }
-  .tab-btn { flex: 1; padding: 10px 12px; font-size: 13px; }
-}
 
 /* PAIN */
 .pain-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }

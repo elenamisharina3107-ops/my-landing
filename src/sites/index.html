@@ -14,42 +14,18 @@
 <meta name="yandex-verification" content="0bf562cc96aec78b" />
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>{{ seo.title }}</title>
+<title>Сайты под заявки — {{ about.name }}</title>
 <meta property="og:type" content="website">
-<meta property="og:title" content="Цифровые системы для масштабирования бизнеса">
-<meta property="og:description" content="{{ seo.description }}">
-<meta property="og:url" content="https://vireflow.ru/">
+<meta property="og:title" content="Сайты под заявки — {{ about.name }}">
+<meta property="og:description" content="Лендинг, корпоративный сайт или сайт с ИИ-менеджером. Запуск за 7-14 дней, цены от 9 000 ₽.">
+<meta property="og:url" content="https://vireflow.ru/sites/">
 <meta property="og:image" content="https://vireflow.ru{{ seo.ogImage }}">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:locale" content="ru_RU">
-<meta name="description" content="{{ seo.description }}">
-<link rel="canonical" href="https://vireflow.ru/">
+<meta name="description" content="Лендинг, корпоративный сайт или сайт с ИИ-менеджером. Запуск за 7-14 дней, цены от 9 000 ₽.">
+<link rel="canonical" href="https://vireflow.ru/sites/">
 <meta name="robots" content="index, follow">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "ProfessionalService",
-  "name": "Елена Мишарина — Vireflow",
-  "url": "https://vireflow.ru/",
-  "description": "Создание лидогенерирующих сайтов, Telegram Mini Apps, чат-ботов и AI-агентов для бизнеса.",
-  "sameAs": [
-    "https://t.me/el_misharina",
-    "https://vk.com/elenamisharina"
-  ]
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {% for item in collections.faq %}
-    {"@type":"Question","name":{{ item.data.question | dump | safe }},"acceptedAnswer":{"@type":"Answer","text":{{ item.templateContent | striptags | trim | dump | safe }}}}{% if not loop.last %},{% endif %}
-    {% endfor %}
-  ]
-}
-</script>
 <link rel="icon" href="/uploads/favicon.svg?v=2" type="image/svg+xml">
 <link rel="icon" href="/uploads/favicon-96.png?v=2" sizes="96x96" type="image/png">
 <link rel="apple-touch-icon" href="/uploads/apple-touch-icon.png">
@@ -61,14 +37,14 @@
 <body>
 
 <nav>
-  <a class="nav-logo" href="#">{{ about.name }}</a>
+  <a class="nav-logo" href="/">{{ about.name }}</a>
   <div class="nav-links">
-    <a href="#benefits" aria-current="page">ИИ-менеджеры</a>
-    <a href="/sites/">Сайты</a>
+    <a href="/">ИИ-менеджеры</a>
+    <a href="#process" aria-current="page">Сайты</a>
     <a href="#faq">FAQ</a>
     <a href="/blog/">Блог</a>
   </div>
-  <a class="nav-cta" href="#contact">Обсудить автоматизацию</a>
+  <a class="nav-cta" href="#contact">Получить сайт</a>
 </nav>
 
 <!-- HERO -->
@@ -80,7 +56,7 @@
       <p class="hero-sub">{{ hero.subtitle }}</p>
       <div class="hero-btns">
         <a class="btn-primary" href="#contact">{{ hero.primaryButtonText }}</a>
-        <a class="btn-ghost" href="#ai-prices">{{ hero.ghostButtonText }}</a>
+        <a class="btn-ghost" href="#prices">Узнать стоимость сайта</a>
       </div>
       <div class="hero-stats">
         {% for stat in hero.stats %}
@@ -127,43 +103,69 @@
   </div>
 </section>
 
-<!-- BENEFITS -->
-<section id="benefits">
+<!-- PROCESS + INCLUDES -->
+<section class="section-alt" id="process">
   <div class="container">
-    <div class="section-label">{{ benefits.label }}</div>
-    <div class="section-title">{{ benefits.title }}</div>
-    <p class="section-sub">{{ benefits.subtitle }}</p>
-    <div class="benefits-grid">
-      {% for item in benefits.items %}
-      <div class="benefit-item"><div class="benefit-icon">{{ item.icon }}</div><div><div class="benefit-title">{{ item.title }}</div>{% if item.text %}<p class="benefit-text">{{ item.text }}</p>{% endif %}</div></div>
-      {% endfor %}
+    <div class="two-col">
+      <div>
+        <div class="section-label">{{ process.label }}</div>
+        <div class="section-title">{{ process.title }}</div>
+        <div class="process-steps">
+          {% for step in process.steps %}
+          <div class="process-step"><div class="step-num">{{ loop.index }}</div><div><div class="step-title">{{ step.title }}</div><p class="step-text">{{ step.text }}</p></div></div>
+          {% endfor %}
+        </div>
+      </div>
+      <div>
+        <div class="section-label">{{ process.includesLabel }}</div>
+        <div class="section-title">{{ process.includesTitle }}</div>
+        <div class="includes-list">
+          {% for inc in process.includes %}
+          <div class="include-item"><div class="include-check">✦</div><div><div class="include-title">{{ inc.title }}</div><p class="include-text">{{ inc.text }}</p></div></div>
+          {% endfor %}
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- NEURO -->
-<section id="neuro">
+<!-- PORTFOLIO -->
+<section id="portfolio">
   <div class="container">
-    <div class="section-label">{{ neuro.label }}</div>
-    <div class="section-title">{{ neuro.title }}</div>
-    <p class="section-sub">{{ neuro.subtitle }}</p>
-    <div class="neuro-flow">
-      {% for node in neuro.flow %}
-      <div class="neuro-node{% if node.active %} active{% endif %}">{{ node.text }}</div>
-      {% if not loop.last %}<div class="neuro-arrow">→</div>{% endif %}
-      {% endfor %}
-    </div>
-    <div class="neuro-cards">
-      {% for card in neuro.cards %}
-      <div class="neuro-card"><div class="neuro-card-icon">{{ card.icon }}</div><div class="neuro-card-title">{{ card.title }}</div><p class="neuro-card-text">{{ card.text }}</p></div>
-      {% endfor %}
-    </div>
-    <div class="section-label" style="margin-top:56px;">{{ neuro.processLabel }}</div>
-    <div class="section-title">{{ neuro.processTitle }}</div>
-    <div class="process-steps">
-      {% for step in neuro.steps %}
-      <div class="process-step"><div class="step-num">{{ loop.index }}</div><div><div class="step-title">{{ step.title }}</div><p class="step-text">{{ step.text }}</p></div></div>
-      {% endfor %}
+    <div class="section-label">Примеры возможностей</div>
+    <div class="section-title">Так может выглядеть сайт под вашу нишу</div>
+    <p class="section-sub">Готовых проектов клиентов пока не выкладываю — вместо этого собрала концепт-макет, чтобы показать вёрстку и подход. Разные ниши — разный визуальный язык, не один шаблон с другими цветами.</p>
+    <div class="portfolio-grid">
+      <a class="portfolio-card" href="/case-cosmetolog.html" target="_blank" rel="noopener">
+        <div class="portfolio-preview">
+          <div class="portfolio-preview-bar"><span></span><span></span><span></span></div>
+          <div class="portfolio-preview-body">
+            <div class="portfolio-mock-line" style="width:70%"></div>
+            <div class="portfolio-mock-line" style="width:45%"></div>
+            <div class="portfolio-mock-tag"></div>
+          </div>
+        </div>
+        <div class="portfolio-card-body">
+          <div class="portfolio-card-title">Эстетическая косметология</div>
+          <p class="portfolio-card-text">Диагностика кожи, протоколы, запись — концепт-кейс с анимациями и авторской вёрсткой</p>
+          <span class="portfolio-card-link">Смотреть демо →</span>
+        </div>
+      </a>
+      <a class="portfolio-card" href="/case-fitness.html" target="_blank" rel="noopener">
+        <div class="portfolio-preview dark">
+          <div class="portfolio-preview-bar"><span></span><span></span><span></span></div>
+          <div class="portfolio-preview-body">
+            <div class="portfolio-mock-line" style="width:60%"></div>
+            <div class="portfolio-mock-line" style="width:80%"></div>
+            <div class="portfolio-mock-tag"></div>
+          </div>
+        </div>
+        <div class="portfolio-card-body">
+          <div class="portfolio-card-title">Силовой тренинг</div>
+          <p class="portfolio-card-text">Периодизация, лог тренировок, запись — на контрасте: тёмная тема, другой шрифт, другая логика</p>
+          <span class="portfolio-card-link">Смотреть демо →</span>
+        </div>
+      </a>
     </div>
   </div>
 </section>
@@ -204,14 +206,14 @@
   </div>
 </section>
 
-<!-- AI PRICES -->
-<section id="ai-prices">
+<!-- PRICES -->
+<section class="section-alt" id="prices">
   <div class="container">
-    <div class="section-label">{{ aiPrices.label }}</div>
-    <div class="section-title">{{ aiPrices.title }}</div>
-    <p class="section-sub">{{ aiPrices.intro }}</p>
+    <div class="section-label">{{ prices.label }}</div>
+    <div class="section-title">{{ prices.title }}</div>
+    <p class="section-sub">{{ prices.intro }}</p>
     <div class="prices-grid">
-      {% for tariff in aiPrices.items %}
+      {% for tariff in prices.items %}
       <div class="price-card{% if tariff.featured %} featured{% endif %}">
         {% if tariff.badge %}<div class="price-badge">{{ tariff.badge }}</div>{% endif %}
         <div class="price-name">{{ tariff.name }}</div>
@@ -221,11 +223,11 @@
         {% for feature in tariff.features %}
         <div class="price-feature"><span class="price-check">✦</span> {{ feature }}</div>
         {% endfor %}
-        <a class="price-btn{% if tariff.featured %} featured-btn{% endif %}" href="#contact" onclick="selectTariff('{{ tariff.name }} — {{ tariff.price }}')">Обсудить автоматизацию</a>
+        <div style="font-size: 12px; color: #8B8B9E; margin-top: 12px; padding-top: 12px; border-top: 1px solid #1a2545;">{{ tariff.monthlyNote }}</div>
+        <a class="price-btn{% if tariff.featured %} featured-btn{% endif %}" href="#contact" onclick="selectTariff('{{ tariff.name }} — {{ tariff.price }}')">{{ tariff.buttonText }}</a>
       </div>
       {% endfor %}
     </div>
-    <div style="margin-top:20px; font-size:13px; color:#8B8B9E; line-height:1.6; max-width:640px;">{{ aiPrices.note }}</div>
   </div>
 </section>
 
@@ -372,9 +374,6 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
   }).catch(function () {});
 
   // Основной канал — Google Таблица через Apps Script.
-  // mode:"no-cors" обязателен: ответ Apps Script идёт через редирект без CORS-заголовков,
-  // поэтому прочитать res нельзя. Запрос при этом доходит и пишется в таблицу,
-  // так что резолв промиса считаем успехом.
   fetch("https://script.google.com/macros/s/AKfycbwuaWa3x0EywWH3_WSDOVT-rvRJktaUTIzvIWv2_YqD_vY8S5od4X7qdMuKK3YDU-tV5A/exec", {
     method: "POST",
     mode: "no-cors",
@@ -632,6 +631,5 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
-
 </body>
 </html>
