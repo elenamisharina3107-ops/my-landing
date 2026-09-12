@@ -28,7 +28,7 @@ seo_fields: &seo_fields
 
 collections:
   - name: singletons
-    label: "Блоки главной страницы"
+    label: "Блоки сайта (главная + /sites/)"
     files:
       - name: hero
         label: "Первый экран — страница «ИИ-менеджеры» (/)"
@@ -65,8 +65,23 @@ collections:
               - { name: label, label: "Подпись", widget: string }
 
       - name: pain
-        label: "Блок «Узнаёшь себя?»"
+        label: "Блок «Узнаёшь себя?» — страница «Сайты» (/sites/)"
         file: src/_data/pain.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - name: cards
+            label: "Карточки"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок карточки", widget: string }
+              - { name: text, label: "Текст", widget: text }
+
+      - name: painAi
+        label: "Блок «Узнаёшь себя?» — страница «ИИ-менеджеры» (/)"
+        file: src/_data/painAi.json
         fields:
           - { name: label, label: "Надпись-метка", widget: string }
           - { name: title, label: "Заголовок", widget: string }
