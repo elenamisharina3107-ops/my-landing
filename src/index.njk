@@ -70,7 +70,7 @@
     <a href="#faq">FAQ</a>
     <a href="/blog/">Блог</a>
   </div>
-  <a class="nav-cta" href="#contact">Получить сайт</a>
+  <a class="nav-cta" href="#contact">Обсудить автоматизацию</a>
 </nav>
 
 <!-- HERO -->
@@ -78,7 +78,7 @@
   <div class="hero container" style="padding: 0;">
     <div>
       <div class="hero-badge"><div class="hero-badge-dot"></div>{{ hero.badge }}</div>
-      <h1>{{ hero.titleBefore }}<span>{{ hero.titleAccent }}</span></h1>
+      <h1>{{ hero.titleBefore }}<span>{{ hero.titleAccent }}</span>{{ hero.titleAfter }}</h1>
       <p class="hero-sub">{{ hero.subtitle }}</p>
       <div class="hero-btns">
         <a class="btn-primary" href="#contact">{{ hero.primaryButtonText }}</a>
@@ -290,6 +290,30 @@
   </div>
 </section>
 
+<!-- AI PRICES -->
+<section id="ai-prices">
+  <div class="container">
+    <div class="section-label">{{ aiPrices.label }}</div>
+    <div class="section-title">{{ aiPrices.title }}</div>
+    <div class="prices-grid">
+      {% for tariff in aiPrices.items %}
+      <div class="price-card{% if tariff.featured %} featured{% endif %}">
+        {% if tariff.badge %}<div class="price-badge">{{ tariff.badge }}</div>{% endif %}
+        <div class="price-name">{{ tariff.name }}</div>
+        <div class="price-new">{{ tariff.price }}</div>
+        <div class="price-period">{{ tariff.period }}</div>
+        <div class="price-divider"></div>
+        {% for feature in tariff.features %}
+        <div class="price-feature"><span class="price-check">✦</span> {{ feature }}</div>
+        {% endfor %}
+        <a class="price-btn{% if tariff.featured %} featured-btn{% endif %}" href="#contact" onclick="selectTariff('{{ tariff.name }} — {{ tariff.price }}')">Обсудить автоматизацию</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div style="margin-top:20px; font-size:13px; color:#8B8B9E; line-height:1.6; max-width:640px;">{{ aiPrices.note }}</div>
+  </div>
+</section>
+
 <!-- FAQ -->
 <section id="faq">
   <div class="container">
@@ -472,6 +496,8 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
 </script>
 <noscript><div><img src="https://mc.yandex.ru/watch/111617209" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
 <!-- /Yandex.Metrika counter -->
+
+<button id="scroll-top-btn" aria-label="Наверх">↑</button>
 
 <!-- ALYONA CHAT WIDGET -->
 <div id="alyona-widget">
@@ -682,5 +708,20 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
 })();
 </script>
 
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
+<script>
+  const lenis = window.lenis = new Lenis();
+  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
+  requestAnimationFrame(raf);
+
+  const toTopBtn = document.getElementById('scroll-top-btn');
+  window.addEventListener('scroll', () => {
+    toTopBtn.classList.toggle('is-visible', window.scrollY > 400);
+  });
+  toTopBtn.addEventListener('click', () => {
+    if (window.lenis) window.lenis.scrollTo(0);
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+</script>
 </body>
 </html>
