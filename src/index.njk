@@ -193,13 +193,13 @@
 <!-- GUARANTEE -->
 <section>
   <div class="container">
-    <div class="section-label">{{ guarantee.label }}</div>
-    <div class="section-title">{{ guarantee.title }}</div>
+    <div class="section-label">{{ guaranteeAi.label }}</div>
+    <div class="section-title">{{ guaranteeAi.title }}</div>
     <div class="guarantee-box">
-      {% for item in guarantee.items %}
+      {% for item in guaranteeAi.items %}
       <div><div class="guarantee-icon">{{ item.icon }}</div><div class="guarantee-title">{{ item.title }}</div><p class="guarantee-text">{{ item.text }}</p></div>
       {% endfor %}
-      <div class="guarantee-note">{{ guarantee.note }}</div>
+      <div class="guarantee-note">{{ guaranteeAi.note }}</div>
     </div>
   </div>
 </section>
@@ -244,8 +244,8 @@
 
 <!-- CTA -->
 <section class="cta-section" id="contact">
-  <div class="cta-title">{{ contact.title }}</div>
-  <p class="cta-sub">{{ contact.subtitle }}</p>
+  <div class="cta-title">{{ contactAi.title }}</div>
+  <p class="cta-sub">{{ contactAi.subtitle }}</p>
   <div class="cta-form">
     <div id="form-success" style="display:none; background:#0f1428; border:1px solid #1a2545; border-radius:12px; padding:20px; margin-bottom:16px; color:#4a9eff; font-size:15px; line-height:1.6;">✅ Заявка отправлена! Свяжусь с вами в ближайшее время.</div>
     <div id="selected-tariff" style="display:none; background:#0f1428; border:1px solid #4a9eff; border-radius:12px; padding:14px 18px; margin-bottom:12px; color:#4a9eff; font-size:14px; text-align:left;">
@@ -278,9 +278,9 @@
   </div>
   <div class="cta-divider"><div class="cta-divider-line"></div><span class="cta-divider-text">или напишите напрямую</span><div class="cta-divider-line"></div></div>
   <div class="cta-socials">
-    <a class="social-link" href="{{ contact.telegram }}" target="_blank">✈️ Telegram</a>
-    <a class="social-link" href="{{ contact.vk }}" target="_blank">💬 VK</a>
-    <a class="social-link" href="mailto:{{ contact.email }}">✉️ {{ contact.email }}</a>
+    <a class="social-link" href="{{ contactAi.telegram }}" target="_blank">✈️ Telegram</a>
+    <a class="social-link" href="{{ contactAi.vk }}" target="_blank">💬 VK</a>
+    <a class="social-link" href="mailto:{{ contactAi.email }}">✉️ {{ contactAi.email }}</a>
   </div>
 </section>
 

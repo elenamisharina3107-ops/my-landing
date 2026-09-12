@@ -168,8 +168,23 @@ collections:
             field: { name: tag, label: "Тег", widget: string }
 
       - name: guarantee
-        label: "Блок «Гарантия»"
+        label: "Блок «Гарантия» — страница «Сайты» (/sites/)"
         file: src/_data/guarantee.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - name: items
+            label: "Пункты гарантии"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Заголовок", widget: string }
+              - { name: text, label: "Текст", widget: text }
+          - { name: note, label: "Пояснение внизу блока", widget: text }
+
+      - name: guaranteeAi
+        label: "Блок «Гарантия» — страница «ИИ-менеджеры» (/)"
+        file: src/_data/guaranteeAi.json
         fields:
           - { name: label, label: "Надпись-метка", widget: string }
           - { name: title, label: "Заголовок", widget: string }
@@ -206,8 +221,18 @@ collections:
               - { name: badge, label: "Текст плашки сверху", widget: string, required: false, hint: "Показывается только если «Выделить как популярный» включено" }
 
       - name: contact
-        label: "Блок «Получить сайт» (контакты)"
+        label: "Блок «Форма связи» — страница «Сайты» (/sites/)"
         file: src/_data/contact.json
+        fields:
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: string }
+          - { name: telegram, label: "Ссылка на Telegram", widget: string }
+          - { name: vk, label: "Ссылка на VK", widget: string }
+          - { name: email, label: "Почта", widget: string }
+
+      - name: contactAi
+        label: "Блок «Форма связи» — страница «ИИ-менеджеры» (/)"
+        file: src/_data/contactAi.json
         fields:
           - { name: title, label: "Заголовок", widget: string }
           - { name: subtitle, label: "Подзаголовок", widget: string }
