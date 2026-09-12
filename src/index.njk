@@ -16,7 +16,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>{{ seo.title }}</title>
 <meta property="og:type" content="website">
-<meta property="og:title" content="Цифровые системы для масштабирования бизнеса">
+<meta property="og:title" content="{{ seo.title }}">
 <meta property="og:description" content="{{ seo.description }}">
 <meta property="og:url" content="https://vireflow.ru/">
 <meta property="og:image" content="https://vireflow.ru{{ seo.ogImage }}">
@@ -32,7 +32,7 @@
   "@type": "ProfessionalService",
   "name": "Елена Мишарина — Vireflow",
   "url": "https://vireflow.ru/",
-  "description": "Создание лидогенерирующих сайтов, Telegram Mini Apps, чат-ботов и AI-агентов для бизнеса.",
+  "description": "Настраиваю ИИ-менеджеров, которые отвечают клиентам в мессенджерах и на сайте, ведут заявки и не дают им теряться.",
   "sameAs": [
     "https://t.me/el_misharina",
     "https://vk.com/elenamisharina"
@@ -79,7 +79,7 @@
       <h1>{{ hero.titleBefore }}<span>{{ hero.titleAccent }}</span>{{ hero.titleAfter }}</h1>
       <p class="hero-sub">{{ hero.subtitle }}</p>
       <div class="hero-btns">
-        <a class="btn-primary" href="#contact">{{ hero.aiButtonText }}</a>
+        <a class="btn-primary" href="#contact">{{ hero.primaryButtonText }}</a>
         <a class="btn-ghost" href="#ai-prices">{{ hero.ghostButtonText }}</a>
       </div>
       <div class="hero-stats">
@@ -273,7 +273,7 @@
         <span>Хочу получать полезные материалы и предложения по email/Telegram</span>
       </label>
 
-      <button class="cta-btn" type="submit">{{ hero.aiButtonText }}</button>
+      <button class="cta-btn" type="submit">{{ hero.primaryButtonText }}</button>
     </form>
   </div>
   <div class="cta-divider"><div class="cta-divider-line"></div><span class="cta-divider-text">или напишите напрямую</span><div class="cta-divider-line"></div></div>

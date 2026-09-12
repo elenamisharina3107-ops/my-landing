@@ -51,15 +51,15 @@
 <section style="padding: 80px 40px 72px; background: #080d1a;">
   <div class="hero container" style="padding: 0;">
     <div>
-      <div class="hero-badge"><div class="hero-badge-dot"></div>{{ hero.badge }}</div>
-      <h1>{{ hero.titleBefore }}<span>{{ hero.titleAccent }}</span>{{ hero.titleAfter }}</h1>
-      <p class="hero-sub">{{ hero.subtitle }}</p>
+      <div class="hero-badge"><div class="hero-badge-dot"></div>{{ heroSites.badge }}</div>
+      <h1>{{ heroSites.titleBefore }}<span>{{ heroSites.titleAccent }}</span>{{ heroSites.titleAfter }}</h1>
+      <p class="hero-sub">{{ heroSites.subtitle }}</p>
       <div class="hero-btns">
-        <a class="btn-primary" href="#contact">{{ hero.primaryButtonText }}</a>
-        <a class="btn-ghost" href="#prices">Узнать стоимость сайта</a>
+        <a class="btn-primary" href="#contact">{{ heroSites.primaryButtonText }}</a>
+        <a class="btn-ghost" href="#prices">{{ heroSites.ghostButtonText }}</a>
       </div>
       <div class="hero-stats">
-        {% for stat in hero.stats %}
+        {% for stat in heroSites.stats %}
         <div><div class="stat-num">{{ stat.num }}</div><div class="stat-label">{{ stat.label }}</div></div>
         {% endfor %}
       </div>
@@ -275,7 +275,7 @@
         <span>Хочу получать полезные материалы и предложения по email/Telegram</span>
       </label>
 
-      <button class="cta-btn" type="submit">{{ hero.primaryButtonText }}</button>
+      <button class="cta-btn" type="submit">{{ heroSites.primaryButtonText }}</button>
     </form>
   </div>
   <div class="cta-divider"><div class="cta-divider-line"></div><span class="cta-divider-text">или напишите напрямую</span><div class="cta-divider-line"></div></div>

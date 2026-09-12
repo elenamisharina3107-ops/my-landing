@@ -31,16 +31,32 @@ collections:
     label: "Блоки главной страницы"
     files:
       - name: hero
-        label: "Первый экран"
+        label: "Первый экран — страница «ИИ-менеджеры» (/)"
         file: src/_data/hero.json
         fields:
           - { name: badge, label: "Плашка над заголовком", widget: string }
           - { name: titleBefore, label: "Заголовок (начало)", widget: string }
           - { name: titleAccent, label: "Заголовок (выделенное слово)", widget: string, hint: "Показывается синим цветом" }
           - { name: subtitle, label: "Подзаголовок", widget: text }
-          - { name: aiButtonText, label: "Главная кнопка на странице «ИИ-менеджеры» (/)", widget: string }
-          - { name: primaryButtonText, label: "Главная кнопка на странице «Сайты» (/sites/)", widget: string }
-          - { name: ghostButtonText, label: "Текст второй кнопки (обе страницы)", widget: string }
+          - { name: primaryButtonText, label: "Текст главной кнопки", widget: string }
+          - { name: ghostButtonText, label: "Текст второй кнопки", widget: string }
+          - name: stats
+            label: "Цифры под кнопками"
+            widget: list
+            fields:
+              - { name: num, label: "Число/слово", widget: string }
+              - { name: label, label: "Подпись", widget: string }
+
+      - name: heroSites
+        label: "Первый экран — страница «Сайты» (/sites/)"
+        file: src/_data/heroSites.json
+        fields:
+          - { name: badge, label: "Плашка над заголовком", widget: string }
+          - { name: titleBefore, label: "Заголовок (начало)", widget: string }
+          - { name: titleAccent, label: "Заголовок (выделенное слово)", widget: string, hint: "Показывается синим цветом" }
+          - { name: subtitle, label: "Подзаголовок", widget: text }
+          - { name: primaryButtonText, label: "Текст главной кнопки", widget: string }
+          - { name: ghostButtonText, label: "Текст второй кнопки", widget: string }
           - name: stats
             label: "Цифры под кнопками"
             widget: list
