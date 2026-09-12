@@ -137,7 +137,7 @@
     <p class="section-sub">{{ benefits.subtitle }}</p>
     <div class="benefits-grid">
       {% for item in benefits.items %}
-      <div class="benefit-item"><div class="benefit-icon">{{ item.icon }}</div><div><div class="benefit-title">{{ item.title }}</div><p class="benefit-text">{{ item.text }}</p></div></div>
+      <div class="benefit-item"><div class="benefit-icon">{{ item.icon }}</div><div><div class="benefit-title">{{ item.title }}</div>{% if item.text %}<p class="benefit-text">{{ item.text }}</p>{% endif %}</div></div>
       {% endfor %}
     </div>
   </div>
