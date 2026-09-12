@@ -708,19 +708,13 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
 })();
 </script>
 
-<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.13/dist/lenis.min.js"></script>
 <script>
-  const lenis = window.lenis = new Lenis();
-  function raf(time) { lenis.raf(time); requestAnimationFrame(raf); }
-  requestAnimationFrame(raf);
-
   const toTopBtn = document.getElementById('scroll-top-btn');
   window.addEventListener('scroll', () => {
     toTopBtn.classList.toggle('is-visible', window.scrollY > 400);
   });
   toTopBtn.addEventListener('click', () => {
-    if (window.lenis) window.lenis.scrollTo(0);
-    else window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   });
 </script>
 </body>
