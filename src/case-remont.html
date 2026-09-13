@@ -1,0 +1,664 @@
+---
+permalink: /case-remont.html
+---
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Горин Ремонт — демо-кейс Vireflow</title>
+<meta name="description" content="Демо-кейс: сайт для ремонта квартир с калькулятором сметы. Пример вёрстки и подхода Vireflow.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/uploads/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/uploads/favicon-96.png?v=2" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/uploads/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --ink:#181D1B;
+    --ink-soft:#5B615D;
+    --paper:#E9E7E1;
+    --surface:#DFDCD3;
+    --surface-raise:#D2CEC2;
+    --line:#C3BFB1;
+    --orange:#D65A1F;
+    --orange-soft:#E88245;
+    --blue:#2E4B6E;
+    --blue-soft:#4A6C93;
+    --on-orange:#FFFFFF;
+    --shadow: 0 18px 40px -22px rgba(24,29,27,0.35);
+    --sans:'Archivo', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono:'Space Mono', 'SF Mono', Consolas, monospace;
+    color-scheme: light;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    background-image:
+      linear-gradient(var(--line) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line) 1px, transparent 1px);
+    background-size:34px 34px;
+    background-position:-1px -1px;
+  }
+
+  .wrap{ max-width:1280px; margin-inline:auto; padding-inline:clamp(1.25rem,4vw,3rem); }
+
+  h1,h2,h3{ font-family:var(--sans); font-weight:800; margin:0; text-wrap:balance; letter-spacing:-0.01em; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  img{ max-width:100%; }
+  .eyebrow{
+    font-family:var(--mono); font-size:0.72rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--orange); display:inline-flex; align-items:center; gap:0.6em;
+  }
+  .eyebrow::before{ content:''; width:1.4em; height:2px; background:currentColor; display:inline-block; }
+  .data{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{ opacity:1; transform:none; transition:opacity .7s ease, transform .7s ease; }
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{ opacity:0; transform:translateY(18px); }
+    .reveal.is-visible{ opacity:1; transform:none; }
+  }
+
+  /* ---------- demo banner ---------- */
+  .demo-banner{
+    background:var(--ink); color:var(--paper);
+    font-family:var(--mono); font-size:0.78rem; letter-spacing:0.02em;
+    padding-block:0.6rem;
+  }
+  .demo-banner .wrap{ display:flex; flex-wrap:wrap; gap:0.4rem 1.4rem; align-items:center; justify-content:space-between; }
+  .demo-banner .links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+  .demo-banner a{ color:var(--orange-soft); text-decoration:underline; text-underline-offset:0.2em; white-space:nowrap; }
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px) saturate(1.1);
+    border-bottom:2px solid var(--ink);
+  }
+  .nav .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-block:0.9rem; }
+  .logo{ font-family:var(--sans); font-weight:800; font-size:0.95rem; letter-spacing:0.02em; text-transform:uppercase; text-decoration:none; }
+  .logo span{ color:var(--orange); }
+  .navlinks{ display:flex; gap:1.6rem; list-style:none; margin:0; padding:0; }
+  .navlinks a{ text-decoration:none; font-size:0.9rem; font-weight:600; color:var(--ink-soft); position:relative; padding-block:0.2rem; }
+  .navlinks a::after{ content:''; position:absolute; left:0; right:100%; bottom:-2px; height:2px; background:var(--orange); transition:right .25s ease; }
+  .navlinks a:hover{ color:var(--ink); }
+  .navlinks a:hover::after{ right:0; }
+  @media (max-width:780px){ .navlinks{ display:none; } }
+
+  .btn{
+    font-family:var(--sans); font-weight:700; font-size:0.9rem; border-radius:2px; border:2px solid transparent;
+    padding:0.75rem 1.3rem; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem;
+    transition:transform .2s ease, box-shadow .2s ease; text-transform:uppercase; letter-spacing:0.02em;
+  }
+  .btn:focus-visible{ outline:2px solid var(--blue); outline-offset:2px; }
+  .btn-primary{ background:var(--orange); color:var(--on-orange); border-color:var(--orange); position:relative; overflow:hidden; }
+  .btn-primary span{ position:relative; z-index:1; }
+  .btn-primary::before{ content:''; position:absolute; inset:0; background:var(--orange-soft); transform:translateX(-100%); transition:transform .3s ease; }
+  .btn-primary:hover::before{ transform:translateX(0); }
+  .btn-primary:hover{ box-shadow:var(--shadow); transform:translateY(-1px); }
+  .btn-ghost{ border-color:var(--ink); color:var(--ink); background:transparent; }
+  .btn-ghost:hover{ border-color:var(--blue); color:var(--blue); }
+
+  /* ---------- hero ---------- */
+  .hero{ padding-block:clamp(2.5rem,7vw,5rem) clamp(2rem,5vw,3.5rem); position:relative; overflow:clip; }
+  .hero-grid{ display:grid; grid-template-columns:1.05fr 0.95fr; gap:clamp(2rem,5vw,4rem); align-items:start; }
+  @media (max-width:940px){ .hero-grid{ grid-template-columns:1fr; } }
+  .hero h1{ font-size:clamp(2.2rem,4.4vw,3.7rem); line-height:1.05; margin-block:0.9rem 1.2rem; }
+  .hero h1 em{ font-style:normal; color:var(--orange); }
+  .hero-sub{ max-width:46ch; color:var(--ink-soft); font-size:1.05rem; }
+  .hero-cta{ display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.8rem; align-items:center; }
+  .hero-note{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); margin-top:1.2rem; }
+  .hero-note b{ color:var(--ink); font-weight:700; }
+
+  /* ---------- calculator ---------- */
+  .calc-card{
+    background:var(--ink); color:var(--paper);
+    padding:1.6rem 1.7rem 1.8rem;
+    box-shadow:var(--shadow);
+    position:relative;
+  }
+  .calc-card::before{
+    content:'СМЕТА'; position:absolute; top:-0.7em; left:1.5rem; background:var(--orange); color:#fff;
+    font-family:var(--mono); font-size:0.68rem; letter-spacing:0.1em; padding:0.3em 0.7em;
+  }
+  .calc-row{ margin-bottom:1.3rem; }
+  .calc-row label{ display:flex; justify-content:space-between; font-family:var(--mono); font-size:0.78rem; color:var(--paper); opacity:0.85; margin-bottom:0.5rem; }
+  .calc-row label b{ color:var(--orange-soft); font-weight:700; }
+  .calc-row input[type="range"]{
+    width:100%; appearance:none; height:3px; background:rgba(233,231,225,0.3); outline:none; border-radius:2px;
+  }
+  .calc-row input[type="range"]::-webkit-slider-thumb{
+    appearance:none; width:18px; height:18px; border-radius:50%; background:var(--orange); cursor:pointer; border:3px solid var(--paper);
+  }
+  .calc-row input[type="range"]::-moz-range-thumb{
+    width:14px; height:14px; border-radius:50%; background:var(--orange); cursor:pointer; border:3px solid var(--paper);
+  }
+  .calc-options{ display:flex; gap:0.5rem; flex-wrap:wrap; }
+  .calc-opt{
+    flex:1; min-width:100px; text-align:center; font-family:var(--mono); font-size:0.76rem;
+    background:transparent; border:1px solid rgba(233,231,225,0.35); color:var(--paper);
+    padding:0.55rem 0.4rem; cursor:pointer; transition:background .2s ease, border-color .2s ease;
+  }
+  .calc-opt.active{ background:var(--orange); border-color:var(--orange); color:#fff; font-weight:700; }
+  .calc-check{ display:flex; align-items:center; gap:0.6rem; font-family:var(--mono); font-size:0.78rem; margin-bottom:1.3rem; cursor:pointer; }
+  .calc-check input{ width:16px; height:16px; accent-color:var(--orange); }
+  .calc-result{ border-top:1px solid rgba(233,231,225,0.3); padding-top:1.2rem; display:flex; justify-content:space-between; align-items:baseline; }
+  .calc-result span{ font-family:var(--mono); font-size:0.78rem; opacity:0.8; }
+  .calc-result .sum{ font-family:var(--sans); font-weight:800; font-size:1.9rem; color:var(--orange-soft); }
+  .calc-fine{ font-family:var(--mono); font-size:0.68rem; opacity:0.6; margin-top:0.5rem; }
+
+  /* ---------- section shell ---------- */
+  section{ padding-block:clamp(2.4rem,5vw,4rem); border-top:2px solid var(--ink); }
+  .section-head{ display:grid; grid-template-columns:auto 1fr; gap:1.2rem; align-items:baseline; margin-bottom:1.8rem; }
+  .section-num{ font-family:var(--mono); color:var(--orange); font-size:0.85rem; font-weight:700; }
+  .section-head h2{ font-size:clamp(1.5rem,2.5vw,2.1rem); text-transform:uppercase; }
+  .lede{ max-width:64ch; color:var(--ink-soft); margin-bottom:1.6rem; }
+
+  /* ---------- layout: rail + content ---------- */
+  .layout{ display:grid; grid-template-columns:200px 1fr; gap:clamp(1.5rem,4vw,3.5rem); align-items:start; }
+  @media (max-width:940px){ .layout{ grid-template-columns:1fr; } }
+  .rail{ position:sticky; top:72px; list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.9rem; }
+  @media (max-width:940px){
+    .rail{ position:static; flex-direction:row; overflow-x:auto; gap:1.2rem; padding-bottom:0.6rem; border-bottom:2px solid var(--ink); }
+  }
+  .rail a{ text-decoration:none; font-family:var(--mono); font-size:0.82rem; color:var(--ink-soft); display:flex; gap:0.6rem; white-space:nowrap; }
+  .rail a b{ font-weight:700; color:var(--line); }
+  .rail a.active{ color:var(--ink); font-weight:700; }
+  .rail a.active b{ color:var(--orange); }
+
+  .content > section:first-child{ border-top:none; padding-top:0; }
+
+  /* ---------- packages ---------- */
+  .packages-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1px; background:var(--ink); border:2px solid var(--ink); }
+  .package{ background:var(--paper); padding:1.5rem 1.4rem; display:flex; flex-direction:column; gap:0.8rem; transition:background .25s ease; }
+  .package:hover{ background:var(--surface); }
+  .package-top{ display:flex; justify-content:space-between; align-items:baseline; gap:0.6rem; }
+  .package-code{ font-family:var(--mono); font-size:0.72rem; color:var(--blue); letter-spacing:0.06em; }
+  .package-price{ font-family:var(--mono); font-size:0.85rem; color:var(--ink); font-weight:700; }
+  .package h3{ font-weight:700; font-size:1.05rem; text-transform:none; }
+  .package p{ color:var(--ink-soft); font-size:0.9rem; flex:1; }
+  .package-meta{ font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:0.7rem; }
+  .package.featured{ background:var(--ink); color:var(--paper); }
+  .package.featured p{ color:rgba(233,231,225,0.75); }
+  .package.featured .package-price{ color:var(--orange-soft); }
+  .package.featured .package-meta{ color:rgba(233,231,225,0.6); border-color:rgba(233,231,225,0.25); }
+
+  /* ---------- mid-page CTA ---------- */
+  .mid-cta{ background:var(--ink); color:var(--paper); margin-block:clamp(2rem,4vw,3rem); padding:clamp(1.6rem,4vw,2.4rem); display:flex; flex-wrap:wrap; gap:1.2rem; justify-content:space-between; align-items:center; }
+  .mid-cta p{ font-family:var(--sans); font-weight:700; font-size:clamp(1.1rem,2.1vw,1.4rem); max-width:32ch; color:var(--paper); text-transform:uppercase; }
+  .mid-cta .btn-primary{ flex-shrink:0; }
+
+  /* ---------- floor plan diagram ---------- */
+  .plan-body{ display:grid; grid-template-columns:1fr 1fr; gap:2.5rem; align-items:center; }
+  @media (max-width:780px){ .plan-body{ grid-template-columns:1fr; } }
+  .plan-svg{ width:100%; max-width:360px; }
+  .plan-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:1.1rem; }
+  .plan-list li{ display:grid; grid-template-columns:1.4rem 1fr; gap:0.8rem; }
+  .plan-list .dot{ width:10px; height:10px; margin-top:0.4rem; flex-shrink:0; }
+  .plan-list b{ font-weight:700; display:block; font-size:0.95rem; }
+  .plan-list span{ color:var(--ink-soft); font-size:0.88rem; }
+
+  /* ---------- process timeline ---------- */
+  .process-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  .process-item{ display:grid; grid-template-columns:3.6rem 1fr; gap:1.4rem; padding-block:1.3rem; border-top:1px solid var(--line); position:relative; }
+  .process-item:first-child{ border-top:none; }
+  .process-item .num{ font-family:var(--mono); font-weight:700; font-size:1.6rem; color:var(--line); }
+  .process-item h3{ font-weight:700; font-size:1.02rem; margin-bottom:0.35rem; text-transform:none; }
+  .process-item p{ color:var(--ink-soft); font-size:0.92rem; max-width:56ch; }
+
+  /* ---------- about ---------- */
+  .about-body{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:2.5rem; }
+  @media (max-width:780px){ .about-body{ grid-template-columns:1fr; } }
+  blockquote{ margin:0; font-family:var(--sans); font-weight:700; font-size:clamp(1.2rem,2vw,1.5rem); line-height:1.4; border-left:3px solid var(--orange); padding-left:1.2rem; }
+  .credentials{ list-style:none; margin:1.4rem 0 0; padding:0; font-size:0.9rem; color:var(--ink-soft); display:flex; flex-direction:column; gap:0.5rem; }
+  .credentials li{ display:flex; gap:0.6rem; }
+  .credentials b{ color:var(--ink); font-weight:700; }
+  .avatar-badge{ display:flex; align-items:center; gap:1rem; margin-bottom:1.4rem; }
+  .avatar-mono{
+    width:64px; height:64px; flex-shrink:0;
+    background:var(--ink); color:var(--orange-soft);
+    display:flex; align-items:center; justify-content:center;
+    font-family:var(--mono); font-weight:700; font-size:1.3rem;
+  }
+  .avatar-badge .who b{ display:block; font-size:0.98rem; }
+  .avatar-badge .who span{ font-size:0.82rem; color:var(--ink-soft); }
+  .before-after{ display:grid; grid-template-columns:1fr 1fr; gap:1px; background:var(--ink); border:2px solid var(--ink); margin-bottom:1.6rem; }
+  .ba-panel{ background:var(--surface); aspect-ratio:4/3; position:relative; overflow:hidden; }
+  .ba-panel svg{ width:100%; height:100%; }
+  .ba-tag{ position:absolute; top:0.7rem; left:0.7rem; background:var(--ink); color:var(--paper); font-family:var(--mono); font-size:0.68rem; padding:0.25em 0.6em; letter-spacing:0.08em; }
+  .ba-panel.after .ba-tag{ background:var(--orange); }
+
+  /* ---------- reviews ---------- */
+  .reviews-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.3rem; }
+  .review-card{ background:var(--surface); border:1px solid var(--line); padding:1.3rem; display:flex; flex-direction:column; gap:0.9rem; }
+  .review-head{ display:flex; align-items:center; gap:0.7rem; }
+  .review-avatar{ width:36px; height:36px; background:var(--ink); color:var(--orange-soft); font-family:var(--mono); font-size:0.78rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .review-head b{ font-size:0.92rem; }
+  .review-head span{ font-size:0.76rem; color:var(--ink-soft); display:block; }
+  .review-card p{ color:var(--ink); font-size:0.98rem; line-height:1.5; }
+  .review-sample-note{ font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); grid-column:1/-1; padding-top:0.4rem; }
+
+  /* ---------- faq ---------- */
+  .faq-item{ border-top:1px solid var(--line); }
+  .faq-item:last-child{ border-bottom:1px solid var(--line); }
+  .faq-q{ width:100%; text-align:left; background:none; border:0; padding:1.1rem 0; font-family:var(--sans); font-weight:700; font-size:1rem; color:var(--ink); display:flex; justify-content:space-between; align-items:center; cursor:pointer; gap:1rem; }
+  .faq-q .plus{ font-family:var(--mono); font-weight:700; color:var(--orange); transition:transform .25s ease; flex-shrink:0; }
+  .faq-item[data-open="true"] .plus{ transform:rotate(45deg); }
+  .faq-a{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s ease; }
+  .faq-item[data-open="true"] .faq-a{ grid-template-rows:1fr; }
+  .faq-a-inner{ overflow:hidden; }
+  .faq-a p{ color:var(--ink-soft); padding-bottom:1.2rem; max-width:64ch; font-size:0.94rem; }
+
+  /* ---------- contact ---------- */
+  .contact-body{ display:grid; grid-template-columns:1fr 1fr; gap:3rem; }
+  @media (max-width:780px){ .contact-body{ grid-template-columns:1fr; } }
+  .contact-price{ font-family:var(--mono); font-size:0.85rem; background:var(--surface); border:1px solid var(--line); padding:0.9rem 1rem; margin-block:1.1rem; }
+  .contact-price b{ color:var(--orange); }
+  .contact-alt{ display:flex; align-items:center; gap:0.9rem; margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--line); }
+  .contact-alt span{ font-size:0.88rem; color:var(--ink-soft); }
+  .field{ display:flex; flex-direction:column; gap:0.4rem; margin-bottom:1.1rem; }
+  .field label{ font-size:0.8rem; color:var(--ink-soft); }
+  .field input{ font-family:var(--sans); font-size:0.95rem; padding:0.7rem 0.8rem; border:1px solid var(--ink); background:var(--surface); color:var(--ink); border-radius:2px; }
+  .field input:focus-visible{ outline:2px solid var(--blue); outline-offset:1px; }
+  .form-note{ font-size:0.82rem; color:var(--ink-soft); margin-top:0.8rem; min-height:1.4em; }
+  .form-note.ok{ color:var(--blue); }
+  .location{ display:flex; align-items:center; gap:1rem; margin-top:1.6rem; }
+  .location-map{ width:64px; height:64px; flex-shrink:0; }
+  .location span{ font-size:0.88rem; color:var(--ink-soft); }
+  .location b{ color:var(--ink); display:block; font-size:0.94rem; }
+
+  footer{ border-top:2px solid var(--ink); padding-block:2.2rem; }
+  .footer-row{ display:flex; flex-wrap:wrap; gap:1rem 1.4rem; justify-content:space-between; align-items:center; font-size:0.85rem; color:var(--ink-soft); }
+  .footer-row .links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+  .footer-row a{ color:var(--blue); text-decoration:underline; text-underline-offset:0.2em; white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <div class="wrap">
+    <span>🧱 Демо-кейс — я собрала эту страницу, чтобы показать возможности вёрстки. Это не реальный человек и не реальный бизнес.</span>
+    <span class="links">
+      <a href="/">← На главную Vireflow</a>
+      <a href="/#contact">Обсудить свой сайт →</a>
+    </span>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#hero">ГОРИН <span>РЕМОНТ</span></a>
+    <ul class="navlinks">
+      <li><a href="#calc">Смета</a></li>
+      <li><a href="#packages">Пакеты</a></li>
+      <li><a href="#about">Обо мне</a></li>
+      <li><a href="#reviews">Отзывы</a></li>
+      <li><a href="#faq">Вопросы</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#contact"><span>Смета за 5 минут</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow reveal">Ремонт квартир · бригада 4 человека</span>
+        <h1 class="reveal" style="transition-delay:.08s">Смету считаем <em>до</em> начала работ. Не после.</h1>
+        <p class="hero-sub reveal" style="transition-delay:.16s">Фиксированная смета по факту замера — без «докупим потом» и доплат на середине ремонта. Ниже можно прикинуть порядок цифр по своей квартире прямо сейчас.</p>
+        <div class="hero-cta reveal" style="transition-delay:.24s">
+          <a class="btn btn-primary" href="#calc"><span>Рассчитать смету</span></a>
+          <a class="btn btn-ghost" href="#packages">Смотреть пакеты</a>
+        </div>
+        <p class="hero-note reveal" style="transition-delay:.3s">Замер и точная смета — <b>бесплатно</b>. Договор и гарантия <b>18 месяцев</b> на все виды работ.</p>
+      </div>
+      <div class="calc-card reveal" id="calc" style="transition-delay:.2s">
+        <div class="calc-row">
+          <label>Площадь <b><span id="areaVal">45</span> м²</b></label>
+          <input type="range" id="areaRange" min="20" max="120" step="1" value="45">
+        </div>
+        <div class="calc-row">
+          <label>Тип ремонта</label>
+          <div class="calc-options" id="typeOptions">
+            <button type="button" class="calc-opt active" data-rate="9500" data-label="Косметический">Космети&shy;ческий</button>
+            <button type="button" class="calc-opt" data-rate="16500" data-label="Капитальный">Капи&shy;тальный</button>
+            <button type="button" class="calc-opt" data-rate="24000" data-label="Под ключ + дизайн">Под ключ</button>
+          </div>
+        </div>
+        <label class="calc-check">
+          <input type="checkbox" id="bathroomCheck">
+          Санузел «под ключ» (плитка, сантехника)
+        </label>
+        <div class="calc-result">
+          <span>Ориентир по смете</span>
+          <span class="sum data" id="calcSum">427 500 ₽</span>
+        </div>
+        <p class="calc-fine">Прикидка по средним ценам бригады. Точная цифра — после бесплатного замера, фиксируется в договоре.</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="layout">
+      <nav class="rail" aria-label="Оглавление">
+        <a href="#problem" data-target="problem"><b>01</b>Почему цена «плывёт»</a>
+        <a href="#packages" data-target="packages"><b>02</b>Пакеты и цены</a>
+        <a href="#plan" data-target="plan"><b>03</b>Что входит в замер</a>
+        <a href="#process" data-target="process"><b>04</b>Этапы работ</a>
+        <a href="#about" data-target="about"><b>05</b>Обо мне</a>
+        <a href="#reviews" data-target="reviews"><b>06</b>Отзывы</a>
+        <a href="#faq" data-target="faq"><b>07</b>Вопросы</a>
+        <a href="#contact" data-target="contact"><b>08</b>Заявка</a>
+      </nav>
+
+      <div class="content">
+        <section id="problem">
+          <div class="section-head reveal">
+            <span class="section-num">01</span>
+            <h2>Почему цена «плывёт»</h2>
+          </div>
+          <p class="lede reveal">Чаще всего ремонт дорожает не из-за материалов, а из-за того, что смету считали «на глаз» до замера — а потом на месте вылезают неровные стены, старая проводка без схемы, санузел без гидроизоляции. Каждая находка — это доплата, о которой заранее не предупредили.</p>
+          <p class="lede reveal">Я считаю смету после замера и фиксирую её в договоре — если что-то всплывает по ходу работ, это моя проблема, а не ваша доплата.</p>
+        </section>
+
+        <section id="packages">
+          <div class="section-head reveal">
+            <span class="section-num">02</span>
+            <h2>Пакеты и цены</h2>
+          </div>
+          <p class="lede reveal">Три формата — от освежить квартиру до сдачи «под ключ» с дизайн-проектом. Цена всегда за м², без скрытых наценок за «сложность».</p>
+          <div class="packages-grid reveal">
+            <article class="package">
+              <div class="package-top"><span class="package-code">РЕМ-01</span><span class="package-price">от 9 500 ₽/м²</span></div>
+              <h3>Косметический</h3>
+              <p>Штукатурка, шпаклёвка, покраска, ламинат, замена сантехники без переноса труб.</p>
+              <div class="package-meta"><span>2–3 недели</span><span>без демонтажа стен</span></div>
+            </article>
+            <article class="package featured">
+              <div class="package-top"><span class="package-code">РЕМ-02</span><span class="package-price">от 16 500 ₽/м²</span></div>
+              <h3>Капитальный</h3>
+              <p>Электрика и сантехника с нуля, стяжка пола, выравнивание стен, перепланировка по проекту.</p>
+              <div class="package-meta"><span>5–7 недель</span><span>гарантия 18 мес</span></div>
+            </article>
+            <article class="package">
+              <div class="package-top"><span class="package-code">РЕМ-03</span><span class="package-price">от 24 000 ₽/м²</span></div>
+              <h3>Под ключ + дизайн</h3>
+              <p>Дизайн-проект, капитальный ремонт, мебель и техника — заезжаете с чемоданом.</p>
+              <div class="package-meta"><span>8–10 недель</span><span>с дизайнером</span></div>
+            </article>
+          </div>
+        </section>
+
+        <div class="mid-cta reveal">
+          <p>Не уверены, какой пакет подойдёт вашей квартире? Это и покажет бесплатный замер.</p>
+          <a class="btn btn-primary" href="#contact"><span>Записаться на замер</span></a>
+        </div>
+
+        <section id="plan">
+          <div class="section-head reveal">
+            <span class="section-num">03</span>
+            <h2>Что входит в замер</h2>
+          </div>
+          <p class="lede reveal">Прихожу с рулеткой и лазерным дальномером, проверяю не только площадь, но и то, что обычно всплывает потом как «доплата» у других бригад.</p>
+          <div class="plan-body">
+            <svg class="plan-svg reveal" viewBox="0 0 320 260" role="img" aria-label="Схема квартиры для замера">
+              <rect x="20" y="20" width="280" height="220" fill="none" stroke="var(--ink)" stroke-width="2"/>
+              <line x1="20" y1="130" x2="180" y2="130" stroke="var(--ink)" stroke-width="1.5"/>
+              <line x1="180" y1="20" x2="180" y2="240" stroke="var(--ink)" stroke-width="1.5"/>
+              <line x1="180" y1="170" x2="300" y2="170" stroke="var(--ink)" stroke-width="1.5"/>
+              <circle cx="60" cy="70" r="7" fill="var(--orange)"/>
+              <circle cx="130" cy="190" r="7" fill="var(--blue)"/>
+              <circle cx="240" cy="100" r="7" fill="var(--blue)"/>
+              <circle cx="240" cy="205" r="7" fill="var(--orange)"/>
+              <path d="M20 20 L300 240 M300 20 L20 240" stroke="var(--line)" stroke-width="1" stroke-dasharray="4 4"/>
+            </svg>
+            <ul class="plan-list reveal">
+              <li><span class="dot" style="background:var(--orange)"></span><div><b>Стены и углы</b><span>отклонение от вертикали и плоскости — от этого зависит расход штукатурки и итоговая цена.</span></div></li>
+              <li><span class="dot" style="background:var(--blue)"></span><div><b>Электрика и сантехника</b><span>состояние проводки и труб, точки подключения — чтобы не вскрывать стены второй раз.</span></div></li>
+              <li><span class="dot" style="background:var(--orange)"></span><div><b>Санузел</b><span>гидроизоляция и уклон пола — частая причина протечек и переделок после «сэкономленного» ремонта.</span></div></li>
+            </ul>
+          </div>
+        </section>
+
+        <section id="process">
+          <div class="section-head reveal">
+            <span class="section-num">04</span>
+            <h2>Этапы работ</h2>
+          </div>
+          <ol class="process-list reveal">
+            <li class="process-item"><span class="num">01</span><div><h3>Замер</h3><p>Приезжаю с рулеткой и дальномером, фиксирую состояние стен, проводки и труб — 40–60 минут.</p></div></li>
+            <li class="process-item"><span class="num">02</span><div><h3>Смета и договор</h3><p>Присылаю точную смету по пакету, фиксируем её в договоре — цена не меняется по ходу работ.</p></div></li>
+            <li class="process-item"><span class="num">03</span><div><h3>Демонтаж и черновые работы</h3><p>Электрика, сантехника, стяжка, штукатурка — с фотоотчётом на каждом этапе в общем чате.</p></div></li>
+            <li class="process-item"><span class="num">04</span><div><h3>Отделка и сдача</h3><p>Финишная отделка, уборка, приёмка объекта вместе с вами по чек-листу.</p></div></li>
+          </ol>
+        </section>
+
+        <section id="about">
+          <div class="section-head reveal">
+            <span class="section-num">05</span>
+            <h2>Обо мне</h2>
+          </div>
+          <div class="about-body">
+            <div class="reveal">
+              <div class="before-after">
+                <div class="ba-panel">
+                  <span class="ba-tag">до</span>
+                  <svg viewBox="0 0 200 150"><rect width="200" height="150" fill="var(--surface)"/><rect x="20" y="20" width="160" height="110" fill="none" stroke="var(--line)" stroke-width="2" stroke-dasharray="6 5"/><line x1="20" y1="60" x2="180" y2="60" stroke="var(--line)" stroke-width="1"/><line x1="90" y1="20" x2="90" y2="130" stroke="var(--line)" stroke-width="1"/></svg>
+                </div>
+                <div class="ba-panel after">
+                  <span class="ba-tag">после</span>
+                  <svg viewBox="0 0 200 150"><rect width="200" height="150" fill="var(--paper)"/><rect x="20" y="20" width="160" height="110" fill="none" stroke="var(--ink)" stroke-width="2"/><rect x="30" y="30" width="60" height="40" fill="var(--orange-soft)" opacity="0.5"/><rect x="100" y="80" width="70" height="40" fill="var(--blue-soft)" opacity="0.5"/></svg>
+                </div>
+              </div>
+              <blockquote>Моя работа — не «побыстрее сдать», а чтобы вам не пришлось звонить мне через полгода из-за трещины на потолке.</blockquote>
+            </div>
+            <div class="reveal">
+              <div class="avatar-badge">
+                <div class="avatar-mono">ДГ</div>
+                <div class="who"><b>Дмитрий Горин</b><span>прораб, бригада 4 человека</span></div>
+              </div>
+              <p class="lede" style="margin-bottom:0">В ремонте 11 лет. Своя бригада — не субподрядчики, поэтому отвечаю за качество каждого этапа сам.</p>
+              <ul class="credentials">
+                <li><b>Опыт —</b> 11 лет, более 140 объектов</li>
+                <li><b>Гарантия —</b> 18 месяцев на все виды работ по договору</li>
+                <li><b>Формат —</b> фиксированная смета, фотоотчёты по этапам</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="reviews">
+          <div class="section-head reveal">
+            <span class="section-num">06</span>
+            <h2>Отзывы</h2>
+          </div>
+          <p class="lede reveal">Так будет выглядеть блок с отзывами на реальном сайте — ниже пример вёрстки, а не настоящие клиенты.</p>
+          <div class="reviews-grid reveal">
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">С.</div><div><b>Сергей</b><span>капитальный, 62 м²</span></div></div>
+              <p>«Смета не изменилась ни разу за полтора месяца работ — впервые за три ремонта в моей жизни».</p>
+            </article>
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">О.</div><div><b>Ольга</b><span>под ключ + дизайн</span></div></div>
+              <p>«Присылали фото после каждого этапа, не пришлось ездить проверять каждую неделю».</p>
+            </article>
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">А.</div><div><b>Андрей</b><span>косметический, 38 м²</span></div></div>
+              <p>«На замере сразу сказали про старую проводку — не всплыло сюрпризом на середине ремонта».</p>
+            </article>
+            <span class="review-sample-note">Пример карточек — на вашем сайте здесь будут отзывы ваших реальных клиентов.</span>
+          </div>
+        </section>
+
+        <section id="faq">
+          <div class="section-head reveal">
+            <span class="section-num">07</span>
+            <h2>Вопросы</h2>
+          </div>
+          <div class="reveal">
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Замер правда бесплатный?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Да, независимо от того, будете вы заказывать ремонт у меня или нет. Приезжаю с инструментами и даю точную смету по итогу.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Смета может измениться по ходу ремонта?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Нет, если состав работ не меняется. Смета фиксируется в договоре после замера — риски скрытых дефектов беру на себя.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Материалы покупаете вы или я?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Обсуждаем на замере — можно закупить самостоятельно по моему списку, либо я закупаю сам по согласованным брендам и чекам.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Что если я живу в квартире во время ремонта?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Возможно для косметического ремонта — обсуждаем график по комнатам. Для капитального и «под ключ» рекомендую временно съехать.</p></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact">
+          <div class="section-head reveal">
+            <span class="section-num">08</span>
+            <h2>Записаться на замер</h2>
+          </div>
+          <div class="contact-body">
+            <div class="reveal">
+              <p class="lede" style="margin-bottom:0">Оставьте контакт — согласую время замера и коротко отвечу на вопросы по пакету, если они уже есть.</p>
+              <p class="contact-price">Замер — <b>бесплатно</b>, точная смета — сразу после него.</p>
+              <div class="location">
+                <svg class="location-map" viewBox="0 0 64 64" role="img" aria-label="Пример расположения">
+                  <rect x="6" y="6" width="52" height="52" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+                  <circle cx="32" cy="30" r="7" fill="none" stroke="var(--blue)" stroke-width="1.5"/>
+                  <path d="M32 37 L32 46" stroke="var(--blue)" stroke-width="1.5"/>
+                  <circle cx="32" cy="30" r="2" fill="var(--orange)"/>
+                </svg>
+                <span><b>Работаю по всему городу</b>выезд на замер — в течение 1–2 дней</span>
+              </div>
+              <div class="contact-alt">
+                <a class="btn btn-ghost" href="https://t.me/gorin_remont" target="_blank" rel="noopener">Написать в Telegram</a>
+                <span>отвечаю быстрее, чем через форму</span>
+              </div>
+            </div>
+            <form class="reveal" id="demoForm">
+              <div class="field"><label for="f-name">Имя</label><input id="f-name" name="name" type="text" placeholder="Как к вам обращаться" required></div>
+              <div class="field"><label for="f-phone">Телефон или Telegram</label><input id="f-phone" name="phone" type="text" placeholder="+7 999 000-00-00 / @username" required></div>
+              <button class="btn btn-primary" type="submit"><span>Записаться на замер</span></button>
+              <p class="form-note" id="formNote"></p>
+            </form>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>Это демонстрационный проект — я сделала его, чтобы показать подход и возможности, а не реальную бригаду.</span>
+    <span class="links">
+      <a href="/">← На главную Vireflow</a>
+      <a href="/#contact">Обсудить свой сайт →</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+    }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  // faq accordion
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', function(){
+      var open = item.getAttribute('data-open') === 'true';
+      document.querySelectorAll('.faq-item').forEach(function(other){
+        other.setAttribute('data-open','false');
+        other.querySelector('.faq-q').setAttribute('aria-expanded','false');
+      });
+      item.setAttribute('data-open', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+
+  // scroll-spy rail nav
+  var railLinks = document.querySelectorAll('.rail a');
+  var sections = Array.prototype.map.call(railLinks, function(a){ return document.getElementById(a.dataset.target); });
+  if('IntersectionObserver' in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          railLinks.forEach(function(a){ a.classList.toggle('active', a.dataset.target === e.target.id); });
+        }
+      });
+    }, { rootMargin:'-40% 0px -50% 0px' });
+    sections.forEach(function(s){ if(s) spy.observe(s); });
+  }
+
+  // calculator
+  var areaRange = document.getElementById('areaRange');
+  var areaVal = document.getElementById('areaVal');
+  var typeOptions = document.getElementById('typeOptions');
+  var bathroomCheck = document.getElementById('bathroomCheck');
+  var calcSum = document.getElementById('calcSum');
+  var currentRate = 9500;
+
+  function formatSum(n){
+    return Math.round(n / 500) * 500 + ' ₽';
+  }
+  function recalc(){
+    var area = parseInt(areaRange.value, 10);
+    areaVal.textContent = area;
+    var total = area * currentRate;
+    if(bathroomCheck.checked){ total += 65000; }
+    calcSum.textContent = formatSum(total).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  }
+  areaRange.addEventListener('input', recalc);
+  bathroomCheck.addEventListener('change', recalc);
+  typeOptions.querySelectorAll('.calc-opt').forEach(function(btn){
+    btn.addEventListener('click', function(){
+      typeOptions.querySelectorAll('.calc-opt').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentRate = parseInt(btn.dataset.rate, 10);
+      recalc();
+    });
+  });
+  recalc();
+
+  // demo form
+  var form = document.getElementById('demoForm');
+  var note = document.getElementById('formNote');
+  form.addEventListener('submit', function(e){
+    e.preventDefault();
+    note.textContent = 'Демо-форма: в реальном проекте заявка ушла бы вам в Telegram/почту/CRM сразу после отправки.';
+    note.classList.add('ok');
+  });
+})();
+</script>
+</body>
+</html>

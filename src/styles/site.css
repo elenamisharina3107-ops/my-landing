@@ -116,6 +116,8 @@ section { padding: 72px 40px; }
 .portfolio-card-link { font-size: 13px; font-weight: 600; color: #4a9eff; }
 .portfolio-preview.dark { background: #1A1815; }
 .portfolio-preview.dark .portfolio-preview-body { background: #242019; }
+.portfolio-preview.warm { background: #E9E7E1; }
+.portfolio-preview.warm .portfolio-preview-body { background: #fff; }
 
 /* NEURO */
 .neuro-flow { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 32px 0; flex-wrap: wrap; }
