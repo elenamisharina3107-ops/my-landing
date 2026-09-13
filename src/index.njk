@@ -61,7 +61,10 @@
 <body>
 
 <nav>
-  <a class="nav-logo" href="#">{{ about.name }}</a>
+  <a class="nav-logo" href="#" aria-label="Vireflow">
+    <img class="logo-full" src="/uploads/logo-lockup.svg" alt="Vireflow">
+    <img class="logo-mark" src="/uploads/logo-mark.svg" alt="Vireflow">
+  </a>
   <div class="nav-links">
     <a href="#benefits" aria-current="page">ИИ-менеджеры</a>
     <a href="/sites/">Сайты</a>
@@ -94,14 +97,19 @@
         <div class="dot" style="background:#4a9eff"></div>
         <div class="browser-url"></div>
       </div>
-      <div class="browser-screen">
-        <div class="mock-heading"></div>
-        <div class="mock-text" style="width:88%"></div>
-        <div class="mock-text" style="width:72%"></div>
-        <div class="mock-btn"></div>
-        <div class="mock-cards">
-          <div class="mock-card"><div class="mock-icon"></div><div class="mock-line"></div><div class="mock-line" style="width:60%"></div></div>
-          <div class="mock-card"><div class="mock-icon accent"></div><div class="mock-line"></div><div class="mock-line" style="width:60%"></div></div>
+      <div class="browser-screen chat-mock">
+        <div class="chat-mock-header">
+          <div class="chat-mock-avatar">ИИ</div>
+          <div>
+            <div class="chat-mock-name">ИИ-менеджер</div>
+            <div class="chat-mock-status">Онлайн</div>
+          </div>
+        </div>
+        <div class="chat-mock-messages">
+          <div class="chat-bubble client">Здравствуйте! Можно записаться на субботу?</div>
+          <div class="chat-bubble ai">Да, на субботу есть 11:00 и 15:00. Какое время удобно?</div>
+          <div class="chat-bubble client">15:00, пожалуйста</div>
+          <div class="chat-bubble ai">Записала вас на 15:00. Напомню о визите за день</div>
         </div>
       </div>
     </div>

@@ -1,0 +1,18 @@
+<svg viewBox="0 0 640 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Vireflow">
+  <!-- знак: V в треугольнике-шевроне -->
+  <g transform="translate(25,25) scale(1.2)">
+    <path fill-rule="evenodd" fill="#4A9EFF" d="
+      M53.65,13.12
+      L88.35,80.88
+      Q92,88 84,88
+      L16,88
+      Q8,88 11.65,80.88
+      L46.35,13.12
+      Q50,6 53.65,13.12
+      Z
+      M34,42 L50,82 L66,42 L58,42 L50,60 L42,42 Z
+    "/>
+  </g>
+  <!-- вордмарк: Inter ExtraBold 800, писать всегда "Vireflow" -->
+  <text x="205" y="107" font-family="Inter, -apple-system, 'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="72" fill="#F0F0F5">Vireflow</text>
+</svg>

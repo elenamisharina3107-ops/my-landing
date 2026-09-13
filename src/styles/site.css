@@ -4,7 +4,9 @@ body { font-family: 'Inter', sans-serif; background: #080d1a; color: #F0F0F5; fo
 
 /* NAV */
 nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 100; }
-.nav-logo { font-size: 16px; font-weight: 700; color: #F0F0F5; text-decoration: none; }
+.nav-logo { display: flex; align-items: center; text-decoration: none; }
+.nav-logo img { height: 28px; width: auto; display: block; }
+.nav-logo .logo-mark { display: none; }
 .nav-links { display: flex; gap: 24px; }
 .nav-links a { font-size: 14px; color: #8B8B9E; text-decoration: none; transition: color 0.2s; }
 .nav-links a:hover { color: #F0F0F5; }
@@ -39,6 +41,27 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
 .mock-icon { width: 22px; height: 22px; background: #2A1F4E; border-radius: 5px; margin-bottom: 8px; }
 .mock-icon.accent { background: #4a9eff; }
 .mock-line { height: 5px; background: #1a2545; border-radius: 3px; margin-bottom: 5px; }
+
+/* HERO SITE MOCKUP (mini-лендинг внутри рамки браузера) */
+.site-mock-heading { font-size: 16px; font-weight: 700; color: #F0F0F5; margin-bottom: 8px; line-height: 1.3; }
+.site-mock-sub { font-size: 12px; color: #8B8B9E; line-height: 1.5; margin-bottom: 16px; max-width: 92%; }
+.site-mock-btn { display: inline-block; background: #4a9eff; color: #fff; font-size: 13px; font-weight: 600; border-radius: 8px; padding: 9px 20px; }
+.site-mock-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-top: 18px; }
+.site-mock-card { background: #13131E; border: 1px solid #1a2545; border-radius: 8px; padding: 12px; }
+.site-mock-card-title { font-size: 12.5px; font-weight: 600; color: #F0F0F5; margin-bottom: 4px; }
+.site-mock-card-text { font-size: 11px; color: #8B8B9E; line-height: 1.4; }
+
+/* HERO CHAT MOCKUP */
+.chat-mock { display: flex; flex-direction: column; gap: 14px; }
+.chat-mock-header { display: flex; align-items: center; gap: 10px; padding-bottom: 14px; border-bottom: 1px solid #1a2545; }
+.chat-mock-avatar { width: 34px; height: 34px; border-radius: 50%; background: #4a9eff; color: #fff; font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+.chat-mock-name { font-size: 14px; font-weight: 600; color: #F0F0F5; }
+.chat-mock-status { font-size: 12px; color: #8B8B9E; display: flex; align-items: center; gap: 5px; margin-top: 2px; }
+.chat-mock-status::before { content: ""; width: 6px; height: 6px; background: #34D399; border-radius: 50%; display: inline-block; }
+.chat-mock-messages { display: flex; flex-direction: column; gap: 10px; }
+.chat-bubble { max-width: 82%; padding: 10px 14px; border-radius: 14px; font-size: 14px; line-height: 1.45; }
+.chat-bubble.client { align-self: flex-start; background: #13131E; border: 1px solid #1a2545; color: #F0F0F5; border-bottom-left-radius: 4px; }
+.chat-bubble.ai { align-self: flex-end; background: #4a9eff; color: #fff; border-bottom-right-radius: 4px; }
 
 /* SECTIONS */
 section { padding: 72px 40px; }
@@ -85,17 +108,14 @@ section { padding: 72px 40px; }
 .portfolio-preview { background: #ECE8E2; padding: 14px 16px 18px; }
 .portfolio-preview-bar { display: flex; gap: 5px; margin-bottom: 12px; }
 .portfolio-preview-bar span { width: 8px; height: 8px; border-radius: 50%; background: #C9C0AE; display: inline-block; }
-.portfolio-preview-body { background: #fff; border-radius: 6px; padding: 16px; }
-.portfolio-mock-line { height: 8px; background: #C9C0AE; border-radius: 4px; margin-bottom: 8px; }
-.portfolio-mock-tag { height: 22px; width: 40%; background: #B8863C; border-radius: 4px; margin-top: 10px; }
+.portfolio-preview-body { background: #fff; border-radius: 6px; aspect-ratio: 21 / 10; overflow: hidden; }
+.portfolio-preview-img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: top; }
 .portfolio-card-body { padding: 18px 20px 20px; }
 .portfolio-card-title { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
 .portfolio-card-text { font-size: 13px; color: #8B8B9E; line-height: 1.6; margin-bottom: 14px; }
 .portfolio-card-link { font-size: 13px; font-weight: 600; color: #4a9eff; }
 .portfolio-preview.dark { background: #1A1815; }
 .portfolio-preview.dark .portfolio-preview-body { background: #242019; }
-.portfolio-preview.dark .portfolio-mock-line { background: #3A342B; }
-.portfolio-preview.dark .portfolio-mock-tag { background: #E13A2E; }
 
 /* NEURO */
 .neuro-flow { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 32px 0; flex-wrap: wrap; }
@@ -191,6 +211,11 @@ footer { padding: 24px 40px; border-top: 1px solid #1a2545; display: flex; justi
   .section-title { font-size: 26px; }
   .cta-title { font-size: 28px; }
   footer { flex-direction: column; gap: 8px; text-align: center; }
+}
+
+@media (max-width: 480px) {
+  .nav-logo .logo-full { display: none; }
+  .nav-logo .logo-mark { display: block; height: 24px; }
 }
 
 /* ALYONA CHAT WIDGET */

@@ -37,7 +37,10 @@
 <body>
 
 <nav>
-  <a class="nav-logo" href="/">{{ about.name }}</a>
+  <a class="nav-logo" href="/" aria-label="Vireflow">
+    <img class="logo-full" src="/uploads/logo-lockup.svg" alt="Vireflow">
+    <img class="logo-mark" src="/uploads/logo-mark.svg" alt="Vireflow">
+  </a>
   <div class="nav-links">
     <a href="/">ИИ-менеджеры</a>
     <a href="#process" aria-current="page">Сайты</a>
@@ -70,14 +73,19 @@
         <div class="dot" style="background:#4a9eff"></div>
         <div class="browser-url"></div>
       </div>
-      <div class="browser-screen">
-        <div class="mock-heading"></div>
-        <div class="mock-text" style="width:88%"></div>
-        <div class="mock-text" style="width:72%"></div>
-        <div class="mock-btn"></div>
-        <div class="mock-cards">
-          <div class="mock-card"><div class="mock-icon"></div><div class="mock-line"></div><div class="mock-line" style="width:60%"></div></div>
-          <div class="mock-card"><div class="mock-icon accent"></div><div class="mock-line"></div><div class="mock-line" style="width:60%"></div></div>
+      <div class="browser-screen site-mock">
+        <div class="site-mock-heading">Сайт, который приводит клиентов</div>
+        <div class="site-mock-sub">Понятная структура: услуга, цена, кнопка записи — без лишних кликов</div>
+        <div class="site-mock-btn">Записаться</div>
+        <div class="site-mock-cards">
+          <div class="site-mock-card">
+            <div class="site-mock-card-title">Услуга</div>
+            <div class="site-mock-card-text">Что входит и сколько стоит</div>
+          </div>
+          <div class="site-mock-card">
+            <div class="site-mock-card-title">Отзывы</div>
+            <div class="site-mock-card-text">Почему вам можно доверять</div>
+          </div>
         </div>
       </div>
     </div>
@@ -139,9 +147,7 @@
         <div class="portfolio-preview">
           <div class="portfolio-preview-bar"><span></span><span></span><span></span></div>
           <div class="portfolio-preview-body">
-            <div class="portfolio-mock-line" style="width:70%"></div>
-            <div class="portfolio-mock-line" style="width:45%"></div>
-            <div class="portfolio-mock-tag"></div>
+            <img class="portfolio-preview-img" src="/uploads/case-cosmetolog-preview.jpg" alt="Превью демо-сайта «Эстетическая косметология»" loading="lazy">
           </div>
         </div>
         <div class="portfolio-card-body">
@@ -154,9 +160,7 @@
         <div class="portfolio-preview dark">
           <div class="portfolio-preview-bar"><span></span><span></span><span></span></div>
           <div class="portfolio-preview-body">
-            <div class="portfolio-mock-line" style="width:60%"></div>
-            <div class="portfolio-mock-line" style="width:80%"></div>
-            <div class="portfolio-mock-tag"></div>
+            <img class="portfolio-preview-img" src="/uploads/case-fitness-preview.jpg" alt="Превью демо-сайта «Силовой тренинг»" loading="lazy">
           </div>
         </div>
         <div class="portfolio-card-body">
