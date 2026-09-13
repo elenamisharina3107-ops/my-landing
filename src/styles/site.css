@@ -12,6 +12,7 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
 .nav-links a:hover { color: #F0F0F5; }
 .nav-links a[aria-current="page"] { color: #4a9eff; font-weight: 600; }
 .nav-cta { background: #4a9eff; color: #fff; border: none; border-radius: 10px; padding: 10px 20px; font-size: 14px; font-weight: 600; cursor: pointer; text-decoration: none; }
+.nav-toggle { display: none; background: none; border: none; color: #F0F0F5; font-size: 24px; line-height: 1; cursor: pointer; padding: 4px 6px; }
 
 /* HERO */
 .hero { padding: 80px 40px 72px; display: grid; grid-template-columns: 1fr 1fr; gap: 48px; align-items: center; max-width: 1200px; margin: 0 auto; }
@@ -203,7 +204,11 @@ footer { padding: 24px 40px; border-top: 1px solid #1a2545; display: flex; justi
 /* RESPONSIVE */
 @media (max-width: 768px) {
   nav { padding: 14px 20px; }
-  .nav-links { display: none; }
+  .nav-toggle { display: block; }
+  .nav-links { display: none; position: absolute; top: 100%; left: 0; right: 0; flex-direction: column; gap: 0; background: #080d1a; border-bottom: 1px solid #1a2545; padding: 4px 20px 12px; }
+  .nav-links a { padding: 12px 0; border-top: 1px solid #1a2545; }
+  .nav-links a:first-child { border-top: none; }
+  nav.menu-open .nav-links { display: flex; }
   section { padding: 48px 20px; }
   .hero { grid-template-columns: 1fr; padding: 48px 20px; gap: 32px; }
   .hero h1 { font-size: 36px; }
