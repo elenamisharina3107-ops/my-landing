@@ -143,6 +143,12 @@ permalink: /case-fitness.html
   .block-card p{ color:var(--ink-soft); font-size:0.88rem; }
   .block-meta{ font-family:var(--mono); font-size:0.74rem; color:var(--blue); display:flex; gap:1rem; flex-wrap:wrap; border-top:1px solid var(--line); padding-top:0.6rem; margin-top:auto; }
 
+  /* ---------- real photos ---------- */
+  .section-photo{ margin:0 0 1.8rem; }
+  .section-photo img{ width:100%; height:320px; object-fit:cover; display:block; border:1px solid var(--line); box-shadow:var(--shadow); }
+  .section-photo--tall img{ height:420px; }
+  @media (max-width:600px){ .section-photo img{ height:220px; } .section-photo--tall img{ height:280px; } }
+
   /* ---------- progress example ---------- */
   .progress-wrap{ margin-top:2rem; display:flex; flex-direction:column; gap:1.1rem; max-width:640px; }
   .progress-row{ display:grid; grid-template-columns:5rem 1fr 4.5rem; align-items:center; gap:1rem; }
@@ -274,6 +280,9 @@ permalink: /case-fitness.html
         <h2>Тренировки без структуры<br>упираются в потолок</h2>
         <p class="lede">Обычно ко мне приходят не за «ещё одной программой из интернета», а после нескольких — где сначала был результат, а потом всё встало. Чаще всего дело не в лени, а в том, что нагрузка росла случайно: без плана по неделям и без ориентира вроде RPE — организм либо не успевает восстановиться, либо топчется на месте.</p>
       </div>
+      <figure class="section-photo reveal">
+        <img src="/uploads/case-fitness-problem.jpg?v=1" alt="Тяжёлая становая тяга без контроля нагрузки" loading="lazy">
+      </figure>
     </div>
   </section>
 
@@ -284,6 +293,9 @@ permalink: /case-fitness.html
         <h2>Как строится программа</h2>
         <p class="lede">Один мезоцикл — 10 недель, 4 фазы. Нагрузка растёт не хаотично, а по плану, с разгрузкой в конце цикла.</p>
       </div>
+      <figure class="section-photo reveal">
+        <img src="/uploads/case-fitness-program.jpg?v=1" alt="Проверка техники приседа во время тренировки по программе" loading="lazy">
+      </figure>
       <div class="phase-list reveal">
         <div class="phase">
           <span class="phase-num mono">01</span>
@@ -320,6 +332,9 @@ permalink: /case-fitness.html
         <h2>Из чего состоит неделя</h2>
         <p class="lede">Обычно 3–4 тренировки в неделю, блоки чередуются по фазе цикла.</p>
       </div>
+      <figure class="section-photo reveal">
+        <img src="/uploads/case-fitness-blocks.jpg?v=1" alt="Оборудование для силовых и метаболических блоков" loading="lazy">
+      </figure>
       <div class="blocks-grid reveal">
         <article class="block-card">
           <div class="block-top"><span class="block-code">БЛ-01</span></div>
@@ -385,6 +400,9 @@ permalink: /case-fitness.html
       </div>
       <div class="about-body">
         <div class="reveal">
+          <figure class="section-photo section-photo--tall">
+            <img src="/uploads/case-fitness-obo-mne.jpg?v=1" alt="Марк Соколов, тренер по силовой подготовке" loading="lazy">
+          </figure>
           <blockquote>Тело не обманешь мотивацией — только цифрами: вес, повторы, дни отдыха.</blockquote>
         </div>
         <div class="reveal">
