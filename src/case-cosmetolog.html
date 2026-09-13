@@ -128,10 +128,12 @@ permalink: /case-cosmetolog.html
   .hero-note{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); margin-top:1rem; }
   .hero-note b{ color:var(--ink); font-weight:500; }
 
-  .ring-stage{ position:relative; aspect-ratio:1/1; max-width:360px; margin-inline:auto; }
+  .ring-stage{ position:relative; width:100%; aspect-ratio:1/1; max-width:360px; margin-inline:auto; }
   .ring{ position:absolute; inset:0; border-radius:50%; border:1px dashed var(--line); }
   .ring.r2{ inset:11%; border-color:var(--teal); opacity:0.55; animation:spin 46s linear infinite; }
   .ring.r3{ inset:22%; border-style:solid; border-color:var(--line); }
+  .ring-photo{ position:absolute; inset:22%; border-radius:50%; overflow:hidden; box-shadow:var(--shadow); }
+  .ring-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
   @keyframes spin{ to{ transform:rotate(360deg); } }
   @media (prefers-reduced-motion: reduce){ .ring.r2{ animation:none; } }
   .ring-dot{ position:absolute; width:9px; height:9px; border-radius:50%; background:var(--amber); top:11%; left:50%; margin-left:-4.5px; }
@@ -315,6 +317,9 @@ permalink: /case-cosmetolog.html
         <div class="ring r1"></div>
         <div class="ring r2"><div class="ring-dot"></div></div>
         <div class="ring r3"></div>
+        <div class="ring-photo">
+          <img src="/uploads/case-cosmetolog-obo-mne.jpg?v=2" alt="Алина Ковалёва, врач-косметолог">
+        </div>
         <div class="diag-card">
           <span class="eyebrow">Пример разбора</span>
           <dl>
