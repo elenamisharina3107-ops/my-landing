@@ -11,9 +11,8 @@ permalink: /blog/stoimost-lendinga.html
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/styles/site.css">
     <style>
-        * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Inter', sans-serif; background: #080d1a; color: #f0f0f5; line-height: 1.6; }
         .article-container { max-width: 750px; margin: 0 auto; padding: 60px 20px; }
         h1 { font-size: 36px; font-weight: 800; margin: 32px 0 16px 0; line-height: 1.2; }
         h2 { font-size: 24px; font-weight: 700; margin: 40px 0 16px 0; }
@@ -34,21 +33,21 @@ permalink: /blog/stoimost-lendinga.html
         .back-link { display: inline-block; margin-top: 48px; }
         .back-link a { color: #4a9eff; text-decoration: none; }
         .back-link a:hover { text-decoration: underline; }
-        nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px; position: sticky; top: 0; z-index: 100; }
-        nav a { color: #4a9eff; text-decoration: none; margin-right: 24px; font-size: 14px; }
-        nav a:hover { color: #f0f0f5; }
-        .nav-home { font-weight: 600; color: #f0f0f5; }
         .warning { color: #FFB347; }
     </style>
 </head>
 <body>
     <nav>
-        <a href="/" class="nav-home">Vireflow</a>
-        <a href="/#services">Услуги</a>
-        <a href="/#process">Процесс</a>
-        <a href="/#prices">Цены</a>
-        <a href="/#FAQ">FAQ</a>
-        <a href="/blog/">Блог</a>
+        <a class="nav-logo" href="/" aria-label="Vireflow">
+            <img class="logo-full" src="/uploads/logo-lockup.svg" alt="Vireflow">
+            <img class="logo-mark" src="/uploads/logo-mark.svg" alt="Vireflow">
+        </a>
+        <div class="nav-links">
+            <a href="/">ИИ-менеджеры</a>
+            <a href="/sites/">Сайты</a>
+            <a href="/blog/" aria-current="page">Блог</a>
+        </div>
+        <a class="nav-cta" href="/#contact">Обсудить автоматизацию</a>
     </nav>
 
     <div class="article-container">
