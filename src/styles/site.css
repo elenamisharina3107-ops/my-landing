@@ -119,6 +119,9 @@ section { padding: 72px 40px; }
 .portfolio-preview.dark .portfolio-preview-body { background: #242019; }
 .portfolio-preview.warm { background: #E9E7E1; }
 .portfolio-preview.warm .portfolio-preview-body { background: #fff; }
+.portfolio-preview.mint { background: #E7F3EF; }
+.portfolio-preview.mint .portfolio-preview-body { background: #fff; }
+.portfolio-preview.mint .portfolio-preview-bar span { background: #CBE3DA; }
 
 /* NEURO */
 .neuro-flow { display: flex; align-items: center; gap: 10px; justify-content: center; margin: 32px 0; flex-wrap: wrap; }

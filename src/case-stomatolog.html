@@ -1,0 +1,831 @@
+---
+permalink: /case-stomatolog.html
+---
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Орлова Стоматология — демо-кейс Vireflow</title>
+<meta name="description" content="Демо-кейс: сайт стоматологии с онлайн-записью — выбор услуги, даты и времени приёма. Пример вёрстки и подхода Vireflow.">
+<meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/uploads/favicon.svg?v=2" type="image/svg+xml">
+<link rel="icon" href="/uploads/favicon-96.png?v=2" sizes="96x96" type="image/png">
+<link rel="apple-touch-icon" href="/uploads/apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Azeret+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ---------- tokens ---------- */
+  :root{
+    --ink:#0F2724;
+    --ink-soft:#4C6864;
+    --paper:#F4FAF8;
+    --surface:#E7F3EF;
+    --surface-raise:#DAEEE6;
+    --line:#CBE3DA;
+    --mint:#159E7C;
+    --mint-soft:#3FC79E;
+    --mint-deep:#0D6E56;
+    --sky:#2F7DE0;
+    --sky-soft:#6FA8ED;
+    --on-mint:#FFFFFF;
+    --shadow: 0 20px 46px -24px rgba(15,39,36,0.28);
+    --radius: 20px;
+    --sans:'Manrope', -apple-system, 'Segoe UI', Helvetica, Arial, sans-serif;
+    --mono:'Azeret Mono', 'SF Mono', Consolas, monospace;
+    color-scheme: light;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){ html{scroll-behavior:auto;} }
+
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{ max-width:1240px; margin-inline:auto; padding-inline:clamp(1.25rem,4vw,3rem); }
+
+  h1,h2,h3{ font-family:var(--sans); font-weight:800; margin:0; text-wrap:balance; letter-spacing:-0.01em; }
+  p{ margin:0; }
+  a{ color:inherit; }
+  img{ max-width:100%; }
+  .eyebrow{
+    font-family:var(--mono); font-style:normal; font-size:0.72rem; letter-spacing:0.1em;
+    text-transform:uppercase; color:var(--mint-deep); display:inline-flex; align-items:center; gap:0.6em;
+  }
+  .eyebrow::before{ content:''; width:1.4em; height:1px; background:currentColor; display:inline-block; }
+  .data{ font-family:var(--mono); font-variant-numeric:tabular-nums; }
+
+  /* ---------- reveal-on-scroll ---------- */
+  .reveal{ opacity:1; transform:none; transition:opacity .7s ease, transform .7s ease; }
+  @media (prefers-reduced-motion: no-preference){
+    .reveal{ opacity:0; transform:translateY(18px); }
+    .reveal.is-visible{ opacity:1; transform:none; }
+  }
+
+  /* ---------- demo banner ---------- */
+  .demo-banner{
+    background:var(--ink); color:var(--paper);
+    font-family:var(--mono); font-size:0.78rem; letter-spacing:0.02em;
+    padding-block:0.6rem;
+  }
+  .demo-banner .wrap{ display:flex; flex-wrap:wrap; gap:0.4rem 1.4rem; align-items:center; justify-content:space-between; }
+  .demo-banner .links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+  .demo-banner a{ color:var(--mint-soft); text-decoration:underline; text-underline-offset:0.2em; white-space:nowrap; }
+
+  /* ---------- nav ---------- */
+  .nav{
+    position:sticky; top:0; z-index:40;
+    background:color-mix(in srgb, var(--paper) 88%, transparent);
+    backdrop-filter:blur(10px) saturate(1.1);
+    border-bottom:1px solid var(--line);
+  }
+  .nav .wrap{ display:flex; align-items:center; justify-content:space-between; gap:1.5rem; padding-block:0.9rem; }
+  .logo{ font-family:var(--sans); font-weight:800; font-size:0.98rem; letter-spacing:-0.01em; text-decoration:none; display:flex; align-items:center; gap:0.5rem; }
+  .logo .dot{ width:9px; height:9px; border-radius:50%; background:var(--mint); flex-shrink:0; }
+  .navlinks{ display:flex; gap:1.6rem; list-style:none; margin:0; padding:0; }
+  .navlinks a{ text-decoration:none; font-size:0.92rem; font-weight:600; color:var(--ink-soft); position:relative; padding-block:0.2rem; }
+  .navlinks a::after{ content:''; position:absolute; left:0; right:100%; bottom:-2px; height:2px; border-radius:2px; background:var(--mint); transition:right .25s ease; }
+  .navlinks a:hover{ color:var(--ink); }
+  .navlinks a:hover::after{ right:0; }
+  @media (max-width:800px){ .navlinks{ display:none; } }
+
+  .btn{
+    font-family:var(--sans); font-weight:700; font-size:0.92rem; border-radius:999px; border:2px solid transparent;
+    padding:0.75rem 1.4rem; cursor:pointer; text-decoration:none; display:inline-flex; align-items:center; gap:0.5rem;
+    transition:transform .2s ease, box-shadow .2s ease, opacity .2s ease;
+  }
+  .btn:focus-visible{ outline:2px solid var(--sky); outline-offset:2px; }
+  .btn-primary{ background:var(--mint); color:var(--on-mint); border-color:var(--mint); }
+  .btn-primary:hover{ box-shadow:var(--shadow); transform:translateY(-1px); background:var(--mint-deep); border-color:var(--mint-deep); }
+  .btn-primary:disabled{ opacity:0.45; cursor:not-allowed; transform:none; box-shadow:none; }
+  .btn-ghost{ border-color:var(--line); color:var(--ink); background:#fff; }
+  .btn-ghost:hover{ border-color:var(--mint); color:var(--mint-deep); }
+
+  /* ---------- hero ---------- */
+  .hero{ padding-block:clamp(2.4rem,6vw,4.6rem) clamp(2rem,5vw,3.5rem); position:relative; overflow:clip; }
+  .hero-grid{ display:grid; grid-template-columns:1.1fr 0.9fr; gap:clamp(2rem,5vw,4rem); align-items:center; }
+  @media (max-width:920px){ .hero-grid{ grid-template-columns:1fr; } }
+  .hero h1{ font-size:clamp(2.2rem,4.4vw,3.6rem); line-height:1.08; margin-block:0.9rem 1.2rem; }
+  .hero h1 em{ font-style:normal; color:var(--mint-deep); }
+  .hero-sub{ max-width:46ch; color:var(--ink-soft); font-size:1.05rem; }
+  .hero-cta{ display:flex; gap:1rem; flex-wrap:wrap; margin-top:1.8rem; align-items:center; }
+  .hero-note{ font-family:var(--mono); font-size:0.78rem; color:var(--ink-soft); margin-top:1.2rem; }
+  .hero-note b{ color:var(--ink); font-weight:600; }
+
+  .hero-visual{ position:relative; }
+  .hero-photo{ border-radius:28px; overflow:hidden; box-shadow:var(--shadow); aspect-ratio:4/5; max-width:360px; margin-inline:auto; position:relative; }
+  .hero-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+  .tooth-bg{ position:absolute; inset:-10% -14% auto auto; width:60%; opacity:0.5; z-index:-1; }
+  .next-slot-card{
+    position:absolute; bottom:-8%; left:-10%; width:min(230px,64vw);
+    background:#fff; border:1px solid var(--line); border-radius:18px; box-shadow:var(--shadow);
+    padding:1rem 1.1rem; font-family:var(--mono); font-size:0.74rem; line-height:1.6;
+  }
+  .next-slot-card .eyebrow{ font-size:0.62rem; margin-bottom:0.5rem; }
+  .next-slot-row{ display:flex; align-items:baseline; justify-content:space-between; gap:0.6rem; margin-bottom:0.3rem; }
+  .next-slot-row b{ font-family:var(--sans); font-weight:700; font-size:0.98rem; color:var(--ink); }
+  .next-slot-pills{ display:flex; gap:0.4rem; flex-wrap:wrap; margin-top:0.5rem; }
+  .next-slot-pill{ background:var(--surface); color:var(--mint-deep); border-radius:999px; padding:0.25em 0.7em; font-size:0.7rem; }
+  @media (max-width:920px){ .next-slot-card{ position:static; width:100%; margin-top:1.4rem; } }
+
+  /* ---------- section shell ---------- */
+  section{ padding-block:clamp(2.4rem,5vw,4rem); border-top:1px solid var(--line); }
+  .section-head{ display:grid; grid-template-columns:auto 1fr; gap:1.2rem; align-items:baseline; margin-bottom:1.8rem; }
+  .section-num{ font-family:var(--mono); color:var(--ink-soft); font-size:0.85rem; }
+  .section-head h2{ font-size:clamp(1.55rem,2.6vw,2.2rem); }
+  .lede{ max-width:64ch; color:var(--ink-soft); margin-bottom:1.6rem; }
+
+  /* ---------- layout: rail + content ---------- */
+  .layout{ display:grid; grid-template-columns:200px 1fr; gap:clamp(1.5rem,4vw,3.5rem); align-items:start; }
+  @media (max-width:920px){ .layout{ grid-template-columns:1fr; } }
+  .rail{ position:sticky; top:76px; list-style:none; margin:0; padding:0; display:flex; flex-direction:column; gap:0.9rem; }
+  @media (max-width:920px){
+    .rail{ position:static; flex-direction:row; overflow-x:auto; gap:1.2rem; padding-bottom:0.6rem; border-bottom:1px solid var(--line); }
+  }
+  .rail a{ text-decoration:none; font-size:0.85rem; color:var(--ink-soft); display:flex; gap:0.6rem; white-space:nowrap; }
+  .rail a b{ font-family:var(--mono); font-weight:400; color:var(--line); }
+  .rail a.active{ color:var(--ink); font-weight:600; }
+  .rail a.active b{ color:var(--mint); }
+
+  .content > section:first-child{ border-top:none; padding-top:0; }
+
+  /* ---------- services ---------- */
+  .services-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1rem; }
+  .service-card{ background:#fff; border:1px solid var(--line); border-radius:18px; padding:1.4rem 1.3rem; display:flex; flex-direction:column; gap:0.7rem; transition:box-shadow .2s ease, transform .2s ease; }
+  .service-card:hover{ box-shadow:var(--shadow); transform:translateY(-2px); }
+  .service-top{ display:flex; justify-content:space-between; align-items:baseline; gap:0.6rem; }
+  .service-price{ font-family:var(--mono); font-size:0.85rem; color:var(--mint-deep); font-weight:600; white-space:nowrap; }
+  .service-card h3{ font-weight:700; font-size:1.03rem; }
+  .service-card p{ color:var(--ink-soft); font-size:0.9rem; flex:1; }
+  .service-meta{ font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); display:flex; justify-content:space-between; border-top:1px solid var(--line); padding-top:0.6rem; }
+  .services-note{ font-size:0.86rem; color:var(--ink-soft); margin-top:1.2rem; }
+
+  /* ---------- mid-page CTA ---------- */
+  .mid-cta{ background:var(--ink); color:var(--paper); margin-block:clamp(2rem,4vw,3rem); border-radius:24px; padding:clamp(1.6rem,4vw,2.4rem); display:flex; flex-wrap:wrap; gap:1.2rem; justify-content:space-between; align-items:center; }
+  .mid-cta p{ font-family:var(--sans); font-weight:700; font-size:clamp(1.1rem,2.1vw,1.4rem); max-width:32ch; color:var(--paper); }
+  .mid-cta .btn-primary{ flex-shrink:0; background:var(--mint-soft); border-color:var(--mint-soft); color:#0F2724; }
+  .mid-cta .btn-primary:hover{ background:#fff; border-color:#fff; }
+
+  /* ---------- real photos ---------- */
+  .section-photo{ margin:0 0 1.8rem; }
+  .section-photo img{ width:100%; height:320px; object-fit:cover; display:block; border-radius:20px; box-shadow:var(--shadow); }
+  .section-photo--tall img{ height:380px; }
+  @media (max-width:600px){ .section-photo img{ height:220px; } .section-photo--tall img{ height:280px; } }
+
+  /* ================= BOOKING WIDGET ================= */
+  .booking-card{ background:#fff; border:1px solid var(--line); border-radius:28px; padding:clamp(1.4rem,3vw,2.2rem); box-shadow:var(--shadow); }
+  .booking-step{ padding-block:1.6rem; border-top:1px solid var(--line); }
+  .booking-step:first-child{ border-top:none; padding-top:0; }
+  .booking-step-head{ display:flex; align-items:center; gap:0.8rem; margin-bottom:1.1rem; }
+  .step-badge{ width:1.9rem; height:1.9rem; border-radius:50%; background:var(--surface); color:var(--mint-deep); font-family:var(--mono); font-weight:600; font-size:0.85rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; transition:background .2s ease, color .2s ease; }
+  .booking-step.done .step-badge{ background:var(--mint); color:#fff; }
+  .booking-step-head h3{ font-size:1.05rem; font-weight:700; }
+  .booking-step-head .picked{ font-family:var(--mono); font-size:0.78rem; color:var(--mint-deep); margin-left:auto; }
+
+  .service-pills{ display:flex; flex-wrap:wrap; gap:0.6rem; }
+  .service-pill{
+    font-family:var(--sans); font-size:0.86rem; font-weight:600; color:var(--ink);
+    background:var(--surface); border:2px solid transparent; border-radius:999px;
+    padding:0.6rem 1.05rem; cursor:pointer; display:flex; align-items:center; gap:0.5rem; transition:all .18s ease;
+  }
+  .service-pill .p{ font-family:var(--mono); font-weight:500; color:var(--ink-soft); font-size:0.78rem; }
+  .service-pill:hover{ background:var(--surface-raise); }
+  .service-pill.active{ background:var(--mint); color:#fff; border-color:var(--mint); }
+  .service-pill.active .p{ color:rgba(255,255,255,0.85); }
+
+  .calendar-weekdays{ display:grid; grid-template-columns:repeat(7,1fr); gap:0.4rem; margin-bottom:0.5rem; }
+  .calendar-weekdays span{ text-align:center; font-family:var(--mono); font-size:0.7rem; color:var(--ink-soft); text-transform:uppercase; }
+  .calendar-grid{ display:grid; grid-template-columns:repeat(7,1fr); gap:0.4rem; }
+  .cal-day{
+    aspect-ratio:1/1; border-radius:12px; border:2px solid transparent; background:var(--surface);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:0.1rem;
+    font-family:var(--sans); font-weight:700; font-size:0.92rem; color:var(--ink); cursor:pointer;
+    transition:all .15s ease; position:relative;
+  }
+  .cal-day .mo{ font-family:var(--mono); font-weight:500; font-size:0.56rem; color:var(--mint-deep); position:absolute; top:0.25rem; }
+  .cal-day:hover:not(.disabled){ background:var(--surface-raise); }
+  .cal-day.selected{ background:var(--mint); color:#fff; border-color:var(--mint); }
+  .cal-day.today:not(.selected){ border-color:var(--mint-soft); }
+  .cal-day.disabled{ opacity:0.32; cursor:not-allowed; color:var(--ink-soft); }
+  .calendar-legend{ display:flex; gap:1.2rem; flex-wrap:wrap; margin-top:0.9rem; font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); }
+  .calendar-legend span{ display:inline-flex; align-items:center; gap:0.4rem; }
+  .legend-dot{ width:9px; height:9px; border-radius:50%; display:inline-block; }
+
+  .slots{ display:flex; flex-wrap:wrap; gap:0.6rem; }
+  .slot-btn{
+    font-family:var(--mono); font-size:0.88rem; font-weight:500; color:var(--ink);
+    background:var(--surface); border:2px solid transparent; border-radius:999px;
+    padding:0.6rem 1.15rem; cursor:pointer; transition:all .18s ease;
+  }
+  .slot-btn:hover{ background:var(--surface-raise); }
+  .slot-btn.selected{ background:var(--sky); color:#fff; border-color:var(--sky); }
+  .slots-empty{ font-size:0.9rem; color:var(--ink-soft); font-style:italic; }
+
+  .booking-fields{ display:grid; grid-template-columns:1fr 1fr; gap:1rem; margin-bottom:1.2rem; }
+  @media (max-width:560px){ .booking-fields{ grid-template-columns:1fr; } }
+  .field{ display:flex; flex-direction:column; gap:0.4rem; }
+  .field label{ font-size:0.8rem; color:var(--ink-soft); }
+  .field input{ font-family:var(--sans); font-size:0.95rem; padding:0.75rem 0.9rem; border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:12px; }
+  .field input:focus-visible{ outline:2px solid var(--sky); outline-offset:1px; }
+
+  .booking-summary{ background:var(--surface); border-radius:16px; padding:1rem 1.1rem; font-size:0.88rem; color:var(--ink-soft); margin-bottom:1.2rem; display:none; }
+  .booking-summary.show{ display:block; }
+  .booking-summary b{ color:var(--ink); }
+
+  .form-note{ font-size:0.86rem; color:var(--ink-soft); margin-top:1rem; min-height:1.4em; }
+  .form-note.ok{ color:var(--mint-deep); font-weight:600; }
+  .form-note.err{ color:#C0392B; }
+
+  /* ---------- process timeline ---------- */
+  .process-list{ list-style:none; margin:0; padding:0; display:flex; flex-direction:column; }
+  .process-item{ display:grid; grid-template-columns:3.2rem 1fr; gap:1.4rem; padding-block:1.3rem; border-top:1px solid var(--line); position:relative; }
+  .process-item:first-child{ border-top:none; }
+  .process-item .num{ font-family:var(--mono); font-weight:600; font-size:1.5rem; color:var(--line); }
+  .process-item h3{ font-family:var(--sans); font-weight:700; font-size:1.05rem; margin-bottom:0.35rem; }
+  .process-item p{ color:var(--ink-soft); font-size:0.92rem; max-width:56ch; }
+
+  /* ---------- about ---------- */
+  .about-body{ display:grid; grid-template-columns:0.9fr 1.1fr; gap:2.5rem; }
+  @media (max-width:780px){ .about-body{ grid-template-columns:1fr; } }
+  blockquote{ margin:0; font-family:var(--sans); font-weight:700; font-size:clamp(1.2rem,2.1vw,1.55rem); line-height:1.4; border-left:3px solid var(--mint); padding-left:1.2rem; }
+  .credentials{ list-style:none; margin:1.4rem 0 0; padding:0; font-size:0.9rem; color:var(--ink-soft); display:flex; flex-direction:column; gap:0.5rem; }
+  .credentials li{ display:flex; gap:0.6rem; }
+  .credentials b{ color:var(--ink); font-weight:700; }
+  .avatar-badge{ display:flex; align-items:center; gap:1rem; margin-bottom:1.4rem; }
+  .avatar-mono{
+    width:60px; height:60px; border-radius:50%; flex-shrink:0;
+    background:var(--surface); border:1px solid var(--line); overflow:hidden;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .avatar-mono img{ width:100%; height:100%; object-fit:cover; }
+  .avatar-badge .who b{ display:block; font-size:0.98rem; }
+  .avatar-badge .who span{ font-size:0.82rem; color:var(--ink-soft); }
+
+  /* ---------- reviews ---------- */
+  .reviews-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr)); gap:1.3rem; }
+  .review-card{ background:#fff; border:1px solid var(--line); border-radius:18px; padding:1.3rem; display:flex; flex-direction:column; gap:0.9rem; }
+  .review-head{ display:flex; align-items:center; gap:0.7rem; }
+  .review-avatar{ width:36px; height:36px; border-radius:50%; background:var(--surface); color:var(--mint-deep); font-family:var(--mono); font-size:0.78rem; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  .review-head b{ font-size:0.92rem; }
+  .review-head span{ font-size:0.76rem; color:var(--ink-soft); display:block; }
+  .review-card p{ color:var(--ink-soft); font-size:0.95rem; line-height:1.5; }
+  .review-sample-note{ font-family:var(--mono); font-size:0.72rem; color:var(--ink-soft); grid-column:1/-1; padding-top:0.4rem; }
+
+  /* ---------- faq ---------- */
+  .faq-item{ border-top:1px solid var(--line); }
+  .faq-item:last-child{ border-bottom:1px solid var(--line); }
+  .faq-q{ width:100%; text-align:left; background:none; border:0; padding:1.1rem 0; font-family:var(--sans); font-weight:700; font-size:1rem; color:var(--ink); display:flex; justify-content:space-between; align-items:center; cursor:pointer; gap:1rem; }
+  .faq-q .plus{ font-family:var(--mono); font-weight:400; color:var(--mint-deep); transition:transform .25s ease; flex-shrink:0; }
+  .faq-item[data-open="true"] .plus{ transform:rotate(45deg); }
+  .faq-a{ display:grid; grid-template-rows:0fr; transition:grid-template-rows .3s ease; }
+  .faq-item[data-open="true"] .faq-a{ grid-template-rows:1fr; }
+  .faq-a-inner{ overflow:hidden; }
+  .faq-a p{ color:var(--ink-soft); padding-bottom:1.2rem; max-width:64ch; font-size:0.94rem; }
+
+  /* ---------- contact ---------- */
+  .contact-body{ display:grid; grid-template-columns:1fr 1fr; gap:3rem; }
+  @media (max-width:780px){ .contact-body{ grid-template-columns:1fr; } }
+  .contact-price{ font-family:var(--mono); font-size:0.85rem; background:var(--surface); border-radius:14px; padding:0.9rem 1rem; margin-block:1.1rem; }
+  .contact-price b{ color:var(--mint-deep); }
+  .contact-alt{ display:flex; align-items:center; gap:0.9rem; margin-top:1.4rem; padding-top:1.2rem; border-top:1px solid var(--line); }
+  .contact-alt span{ font-size:0.88rem; color:var(--ink-soft); }
+  .location{ display:flex; align-items:center; gap:1rem; margin-top:1.6rem; }
+  .location-map{ width:64px; height:64px; flex-shrink:0; }
+  .location span{ font-size:0.88rem; color:var(--ink-soft); }
+  .location b{ color:var(--ink); display:block; font-size:0.94rem; }
+  .hours-list{ list-style:none; margin:1.2rem 0 0; padding:0; font-family:var(--mono); font-size:0.82rem; color:var(--ink-soft); display:flex; flex-direction:column; gap:0.35rem; }
+  .hours-list b{ color:var(--ink); }
+
+  footer{ border-top:1px solid var(--line); padding-block:2.2rem; }
+  .footer-row{ display:flex; flex-wrap:wrap; gap:1rem 1.4rem; justify-content:space-between; align-items:center; font-size:0.85rem; color:var(--ink-soft); }
+  .footer-row .links{ display:flex; gap:1.2rem; flex-wrap:wrap; }
+  .footer-row a{ color:var(--mint-deep); text-decoration:underline; text-underline-offset:0.2em; white-space:nowrap; }
+</style>
+</head>
+<body>
+
+<div class="demo-banner">
+  <div class="wrap">
+    <span>🦷 Демо-кейс — я собрала эту страницу, чтобы показать возможности вёрстки. Это не реальный человек и не реальный бизнес.</span>
+    <span class="links">
+      <a href="/">← На главную Vireflow</a>
+      <a href="/#contact">Обсудить свой сайт →</a>
+    </span>
+  </div>
+</div>
+
+<header class="nav">
+  <div class="wrap">
+    <a class="logo" href="#hero"><span class="dot"></span>ОРЛОВА СТОМАТОЛОГИЯ</a>
+    <ul class="navlinks">
+      <li><a href="#services">Услуги</a></li>
+      <li><a href="#booking">Запись</a></li>
+      <li><a href="#about">Обо мне</a></li>
+      <li><a href="#reviews">Отзывы</a></li>
+      <li><a href="#faq">Вопросы</a></li>
+    </ul>
+    <a class="btn btn-primary" href="#booking"><span>Записаться</span></a>
+  </div>
+</header>
+
+<main>
+  <section class="hero" id="hero">
+    <div class="wrap hero-grid">
+      <div>
+        <span class="eyebrow reveal">Стоматология · приём по записи</span>
+        <h1 class="reveal" style="transition-delay:.08s">Записаться к стоматологу — <em>как забронировать столик.</em></h1>
+        <p class="hero-sub reveal" style="transition-delay:.16s">Выбираете услугу, свободную дату и время в календаре — без звонков и ожидания на линии. Ниже можно прямо сейчас пройти запись в демо-режиме и посмотреть, как это работает.</p>
+        <div class="hero-cta reveal" style="transition-delay:.24s">
+          <a class="btn btn-primary" href="#booking"><span>Выбрать время приёма</span></a>
+          <a class="btn btn-ghost" href="#services">Смотреть услуги и цены</a>
+        </div>
+        <p class="hero-note reveal" style="transition-delay:.3s">Консультация и осмотр — <b>1 500 ₽</b>. Приём — по будням и в субботу, без очереди на ресепшене.</p>
+      </div>
+      <div class="hero-visual reveal" style="transition-delay:.2s">
+        <div class="hero-photo">
+          <img src="/uploads/case-stomatolog-obo-mne.jpg?v=1" alt="Анна Орлова, врач-стоматолог">
+        </div>
+        <div class="next-slot-card">
+          <span class="eyebrow">Пример: свободные окна</span>
+          <div class="next-slot-row"><span>Сегодня</span><b id="teaserToday">—</b></div>
+          <div class="next-slot-row"><span>Завтра</span><b id="teaserTomorrow">—</b></div>
+          <div class="next-slot-pills">
+            <span class="next-slot-pill">Консультация</span>
+            <span class="next-slot-pill">Гигиена</span>
+            <span class="next-slot-pill">+4</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="wrap">
+    <div class="layout">
+      <nav class="rail" aria-label="Оглавление">
+        <a href="#problem" data-target="problem"><b>01</b>Почему тянуть дороже</a>
+        <a href="#services" data-target="services"><b>02</b>Услуги и цены</a>
+        <a href="#booking" data-target="booking"><b>03</b>Онлайн-запись</a>
+        <a href="#process" data-target="process"><b>04</b>Как проходит приём</a>
+        <a href="#about" data-target="about"><b>05</b>Обо мне</a>
+        <a href="#reviews" data-target="reviews"><b>06</b>Отзывы</a>
+        <a href="#faq" data-target="faq"><b>07</b>Вопросы</a>
+        <a href="#contact" data-target="contact"><b>08</b>Контакты</a>
+      </nav>
+
+      <div class="content">
+        <section id="problem">
+          <div class="section-head reveal">
+            <span class="section-num">01</span>
+            <h2>Почему откладывать — выходит дороже</h2>
+          </div>
+          <p class="lede reveal">Чаще всего ко мне приходят не на плановый осмотр, а когда уже болит — а маленький кариес за это время успевает дойти до нерва. Разница в лечении при этом не в комфорте, а в деньгах и количестве визитов: пломба вместо канала и коронки.</p>
+          <p class="lede reveal">Онлайн-запись здесь не для красоты: чем проще дойти до планового осмотра, тем реже приходится лечить то, что можно было просто не запускать.</p>
+          <figure class="section-photo reveal">
+            <img src="/uploads/case-stomatolog-problem.jpg?v=1" alt="Современный стоматологический кабинет" loading="lazy">
+          </figure>
+        </section>
+
+        <section id="services">
+          <div class="section-head reveal">
+            <span class="section-num">02</span>
+            <h2>Услуги и цены</h2>
+          </div>
+          <p class="lede reveal">Основные направления приёма — точная стоимость лечения кариеса, имплантации и протезирования уточняется на осмотре, потому что зависит от конкретного случая.</p>
+          <div class="services-grid reveal">
+            <article class="service-card">
+              <div class="service-top"><h3>Консультация и осмотр</h3><span class="service-price">1 500 ₽</span></div>
+              <p>Осмотр, снимок при необходимости, план лечения и предварительная смета.</p>
+              <div class="service-meta"><span>30 мин</span><span>первый приём</span></div>
+            </article>
+            <article class="service-card">
+              <div class="service-top"><h3>Профессиональная гигиена</h3><span class="service-price">от 4 500 ₽</span></div>
+              <p>Ультразвуковая чистка, Air Flow, полировка — профилактика и подготовка к лечению.</p>
+              <div class="service-meta"><span>60 мин</span><span>раз в 6–12 мес.</span></div>
+            </article>
+            <article class="service-card">
+              <div class="service-top"><h3>Лечение кариеса</h3><span class="service-price">от 6 000 ₽</span></div>
+              <p>Пломба световой полимеризации — точная цена зависит от глубины поражения.</p>
+              <div class="service-meta"><span>45–90 мин</span><span>за один зуб</span></div>
+            </article>
+            <article class="service-card">
+              <div class="service-top"><h3>Удаление зуба</h3><span class="service-price">от 3 500 ₽</span></div>
+              <p>В том числе сложное удаление и зуб мудрости — под местной анестезией.</p>
+              <div class="service-meta"><span>30–60 мин</span><span>с анестезией</span></div>
+            </article>
+            <article class="service-card">
+              <div class="service-top"><h3>Отбеливание</h3><span class="service-price">от 15 000 ₽</span></div>
+              <p>Кабинетное отбеливание за один визит, эффект заметен сразу — обычно на 2–3 тона.</p>
+              <div class="service-meta"><span>90 мин</span><span>за визит</span></div>
+            </article>
+            <article class="service-card">
+              <div class="service-top"><h3>Имплантация</h3><span class="service-price">от 45 000 ₽</span></div>
+              <p>Установка импланта и протезирование — план и сроки обсуждаем после снимка.</p>
+              <div class="service-meta"><span>по этапам</span><span>с протезированием</span></div>
+            </article>
+          </div>
+          <p class="services-note reveal">И другие направления — детская стоматология, брекеты, протезирование и другое, спрашивайте на консультации.</p>
+        </section>
+
+        <div class="mid-cta reveal">
+          <p>Не уверены, какая услуга нужна? На консультации разберёмся и посчитаем смету.</p>
+          <a class="btn btn-primary" href="#booking"><span>Записаться на консультацию</span></a>
+        </div>
+
+        <section id="booking">
+          <div class="section-head reveal">
+            <span class="section-num">03</span>
+            <h2>Онлайн-запись</h2>
+          </div>
+          <p class="lede reveal">Выберите услугу, дату и время — ниже рабочий пример того, как выглядит запись на реальном сайте.</p>
+
+          <form class="booking-card reveal" id="bookingForm">
+            <div class="booking-step" id="stepService" data-step="service">
+              <div class="booking-step-head"><span class="step-badge">1</span><h3>Выберите услугу</h3><span class="picked" id="pickedService"></span></div>
+              <div class="service-pills" id="servicePills">
+                <button type="button" class="service-pill" data-name="Консультация и осмотр" data-price="1 500 ₽">Консультация<span class="p">1 500 ₽</span></button>
+                <button type="button" class="service-pill" data-name="Профессиональная гигиена" data-price="от 4 500 ₽">Гигиена<span class="p">от 4 500 ₽</span></button>
+                <button type="button" class="service-pill" data-name="Лечение кариеса" data-price="от 6 000 ₽">Лечение кариеса<span class="p">от 6 000 ₽</span></button>
+                <button type="button" class="service-pill" data-name="Удаление зуба" data-price="от 3 500 ₽">Удаление<span class="p">от 3 500 ₽</span></button>
+                <button type="button" class="service-pill" data-name="Отбеливание" data-price="от 15 000 ₽">Отбеливание<span class="p">от 15 000 ₽</span></button>
+                <button type="button" class="service-pill" data-name="Имплантация" data-price="от 45 000 ₽">Имплантация<span class="p">от 45 000 ₽</span></button>
+              </div>
+            </div>
+
+            <div class="booking-step" id="stepDate" data-step="date">
+              <div class="booking-step-head"><span class="step-badge">2</span><h3>Выберите дату</h3><span class="picked" id="pickedDate"></span></div>
+              <div class="calendar-weekdays">
+                <span>Пн</span><span>Вт</span><span>Ср</span><span>Чт</span><span>Пт</span><span>Сб</span><span>Вс</span>
+              </div>
+              <div class="calendar-grid" id="calendarGrid"></div>
+              <div class="calendar-legend">
+                <span><span class="legend-dot" style="background:var(--mint-soft)"></span>сегодня</span>
+                <span><span class="legend-dot" style="background:var(--mint)"></span>выбрано</span>
+                <span><span class="legend-dot" style="background:var(--line)"></span>воскресенье — выходной</span>
+              </div>
+            </div>
+
+            <div class="booking-step" id="stepTime" data-step="time">
+              <div class="booking-step-head"><span class="step-badge">3</span><h3>Выберите время</h3><span class="picked" id="pickedTime"></span></div>
+              <div class="slots" id="slotsGrid"><span class="slots-empty">Сначала выберите дату выше.</span></div>
+            </div>
+
+            <div class="booking-step" data-step="contact">
+              <div class="booking-step-head"><span class="step-badge">4</span><h3>Ваши контакты</h3></div>
+              <div class="booking-summary" id="bookingSummary"></div>
+              <div class="booking-fields">
+                <div class="field"><label for="bf-name">Имя</label><input id="bf-name" name="name" type="text" placeholder="Как к вам обращаться" required></div>
+                <div class="field"><label for="bf-phone">Телефон или Telegram</label><input id="bf-phone" name="phone" type="text" placeholder="+7 999 000-00-00 / @username" required></div>
+              </div>
+              <button class="btn btn-primary" type="submit" id="bookSubmit"><span>Записаться</span></button>
+              <p class="form-note" id="formNote"></p>
+            </div>
+          </form>
+        </section>
+
+        <section id="process">
+          <div class="section-head reveal">
+            <span class="section-num">04</span>
+            <h2>Как проходит приём</h2>
+          </div>
+          <figure class="section-photo reveal">
+            <img src="/uploads/case-stomatolog-process.jpg?v=1" alt="Подготовка к консультации: снимок и модель зуба на столе" loading="lazy">
+          </figure>
+          <ol class="process-list reveal">
+            <li class="process-item"><span class="num">01</span><div><h3>Онлайн-запись</h3><p>Выбираете услугу и удобное время в календаре — подтверждение приходит в Telegram или на почту.</p></div></li>
+            <li class="process-item"><span class="num">02</span><div><h3>Осмотр и снимок</h3><p>Смотрю полость рта, при необходимости делаем прицельный или панорамный снимок.</p></div></li>
+            <li class="process-item"><span class="num">03</span><div><h3>План лечения и смета</h3><p>Проговариваем, что и в каком порядке лечим, называю точную стоимость до начала работы.</p></div></li>
+            <li class="process-item"><span class="num">04</span><div><h3>Лечение и контроль</h3><p>Провожу лечение по плану, назначаю контрольный осмотр, если это нужно для этого случая.</p></div></li>
+          </ol>
+        </section>
+
+        <section id="about">
+          <div class="section-head reveal">
+            <span class="section-num">05</span>
+            <h2>Обо мне</h2>
+          </div>
+          <div class="about-body">
+            <div class="reveal">
+              <figure class="section-photo section-photo--tall">
+                <img src="/uploads/case-stomatolog-obo-mne.jpg?v=1" alt="Анна Орлова, врач-стоматолог, на приёме" loading="lazy">
+              </figure>
+              <blockquote>Моя задача — не просто закрыть дырку в зубе, а сделать так, чтобы вы вспоминали о зубах пореже, а не каждые полгода.</blockquote>
+            </div>
+            <div class="reveal">
+              <div class="avatar-badge">
+                <div class="avatar-mono"><img src="/uploads/case-stomatolog-obo-mne.jpg?v=1" alt=""></div>
+                <div class="who"><b>Анна Орлова</b><span>врач-стоматолог терапевт</span></div>
+              </div>
+              <p class="lede" style="margin-bottom:0">Стаж 10 лет. Специализация — терапевтическая и эстетическая стоматология, лечение без лишних визитов «на подумать».</p>
+              <ul class="credentials">
+                <li><b>Образование —</b> диплом врача-стоматолога, ежегодное повышение квалификации</li>
+                <li><b>Формат —</b> приём по записи, без потока пациентов «с улицы»</li>
+                <li><b>Анестезия —</b> подбираю индивидуально, обсуждаем заранее при страхе перед лечением</li>
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <section id="reviews">
+          <div class="section-head reveal">
+            <span class="section-num">06</span>
+            <h2>Отзывы</h2>
+          </div>
+          <p class="lede reveal">Так будет выглядеть блок с отзывами на реальном сайте — ниже пример вёрстки, а не настоящие пациенты.</p>
+          <div class="reviews-grid reveal">
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">Н.</div><div><b>Наталья</b><span>лечение кариеса</span></div></div>
+              <p>«Записалась онлайн вечером, не пришлось звонить и ждать, пока освободится администратор».</p>
+            </article>
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">Д.</div><div><b>Дмитрий</b><span>профессиональная гигиена</span></div></div>
+              <p>«Сразу назвали стоимость и время — никаких сюрпризов на кассе после приёма».</p>
+            </article>
+            <article class="review-card">
+              <div class="review-head"><div class="review-avatar">К.</div><div><b>Ксения</b><span>отбеливание</span></div></div>
+              <p>«Объяснили, что реально получится по результату, а не обещали голливудскую улыбку за один визит».</p>
+            </article>
+            <span class="review-sample-note">Пример карточек — на вашем сайте здесь будут отзывы ваших реальных пациентов.</span>
+          </div>
+        </section>
+
+        <section id="faq">
+          <div class="section-head reveal">
+            <span class="section-num">07</span>
+            <h2>Вопросы</h2>
+          </div>
+          <div class="reveal">
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Больно ли лечить зубы?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Современная анестезия снимает болевые ощущения почти полностью — обсуждаем подходящий вариант заранее, особенно если есть страх перед лечением.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Нужен ли снимок на каждый приём?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Нет, только когда это важно для диагностики — например, при подозрении на глубокий кариес или перед удалением и имплантацией.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Можно ли рассчитать стоимость лечения заранее?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Точную сумму называю после осмотра — ориентир по услугам смотрите в разделе «Услуги и цены» выше.</p></div></div>
+            </div>
+            <div class="faq-item" data-open="false">
+              <button class="faq-q" aria-expanded="false"><span>Что если нужно перенести запись?</span><span class="plus">+</span></button>
+              <div class="faq-a"><div class="faq-a-inner"><p>Напишите в Telegram или по телефону клиники заранее — перенесём на ближайшее свободное время без проблем.</p></div></div>
+            </div>
+          </div>
+        </section>
+
+        <section id="contact">
+          <div class="section-head reveal">
+            <span class="section-num">08</span>
+            <h2>Контакты</h2>
+          </div>
+          <div class="contact-body">
+            <div class="reveal">
+              <p class="lede" style="margin-bottom:0">Проще всего записаться через календарь выше — но можно и написать напрямую, если остались вопросы по лечению.</p>
+              <p class="contact-price">Консультация и осмотр — <b>1 500 ₽</b>, входит в стоимость лечения при записи в тот же день.</p>
+              <ul class="hours-list">
+                <li><b>Пн–Пт</b> 9:00–19:00</li>
+                <li><b>Сб</b> 10:00–15:00</li>
+                <li><b>Вс</b> — выходной</li>
+              </ul>
+              <div class="location">
+                <svg class="location-map" viewBox="0 0 64 64" role="img" aria-label="Пример расположения">
+                  <path d="M4 50 L20 44 L26 50 L40 40 L60 46" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+                  <path d="M12 20 L30 16 L46 24" fill="none" stroke="var(--line)" stroke-width="1.5"/>
+                  <circle cx="34" cy="26" r="6" fill="none" stroke="var(--mint)" stroke-width="1.5"/>
+                  <path d="M34 32 L34 40" stroke="var(--mint)" stroke-width="1.5"/>
+                  <circle cx="34" cy="26" r="2" fill="var(--sky)"/>
+                </svg>
+                <span><b>м. Спортивная, 7 минут пешком</b>точный адрес — после записи</span>
+              </div>
+              <div class="contact-alt">
+                <a class="btn btn-ghost" href="https://t.me/orlova_dental" target="_blank" rel="noopener">Написать в Telegram</a>
+                <span>отвечаю быстрее, чем через форму</span>
+              </div>
+            </div>
+            <div class="reveal">
+              <figure class="section-photo section-photo--tall" style="margin:0;">
+                <img src="/uploads/case-stomatolog-services.jpg?v=1" alt="Подготовка стерильных инструментов перед приёмом" loading="lazy">
+              </figure>
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>Это демонстрационный проект — я сделала его, чтобы показать подход и возможности, а не реальную клинику.</span>
+    <span class="links">
+      <a href="/">← На главную Vireflow</a>
+      <a href="/#contact">Обсудить свой сайт →</a>
+    </span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // scroll reveal
+  var revealEls = document.querySelectorAll('.reveal');
+  if('IntersectionObserver' in window && !reduceMotion){
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('is-visible'); io.unobserve(e.target); } });
+    }, { threshold:0.12, rootMargin:'0px 0px -8% 0px' });
+    revealEls.forEach(function(el){ io.observe(el); });
+  } else {
+    revealEls.forEach(function(el){ el.classList.add('is-visible'); });
+  }
+
+  // faq accordion
+  document.querySelectorAll('.faq-item').forEach(function(item){
+    var btn = item.querySelector('.faq-q');
+    btn.addEventListener('click', function(){
+      var open = item.getAttribute('data-open') === 'true';
+      document.querySelectorAll('.faq-item').forEach(function(other){
+        other.setAttribute('data-open','false');
+        other.querySelector('.faq-q').setAttribute('aria-expanded','false');
+      });
+      item.setAttribute('data-open', open ? 'false' : 'true');
+      btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+  });
+
+  // scroll-spy rail nav
+  var railLinks = document.querySelectorAll('.rail a');
+  var sections = Array.prototype.map.call(railLinks, function(a){ return document.getElementById(a.dataset.target); });
+  if('IntersectionObserver' in window){
+    var spy = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if(e.isIntersecting){
+          railLinks.forEach(function(a){ a.classList.toggle('active', a.dataset.target === e.target.id); });
+        }
+      });
+    }, { rootMargin:'-40% 0px -50% 0px' });
+    sections.forEach(function(s){ if(s) spy.observe(s); });
+  }
+
+  /* ================= BOOKING CALENDAR ================= */
+  var MONTHS = ['янв','фев','мар','апр','мая','июн','июл','авг','сен','окт','ноя','дек'];
+  var MONTHS_GEN = ['января','февраля','марта','апреля','мая','июня','июля','августа','сентября','октября','ноября','декабря'];
+  var WEEKDAY_SLOTS = ['10:00','11:30','14:00','15:30','17:00'];
+  var SATURDAY_SLOTS = ['10:00','11:30','13:00'];
+
+  var state = { service:null, price:null, date:null, dateLabel:null, slot:null };
+
+  var calendarGrid = document.getElementById('calendarGrid');
+  var slotsGrid = document.getElementById('slotsGrid');
+  var pickedService = document.getElementById('pickedService');
+  var pickedDate = document.getElementById('pickedDate');
+  var pickedTime = document.getElementById('pickedTime');
+  var stepService = document.getElementById('stepService');
+  var stepDate = document.getElementById('stepDate');
+  var stepTime = document.getElementById('stepTime');
+  var bookingSummary = document.getElementById('bookingSummary');
+  var teaserToday = document.getElementById('teaserToday');
+  var teaserTomorrow = document.getElementById('teaserTomorrow');
+
+  function slotsFor(date){
+    var dow = date.getDay(); // 0 = Sun
+    if(dow === 0) return [];
+    if(dow === 6) return SATURDAY_SLOTS;
+    return WEEKDAY_SLOTS;
+  }
+
+  function isoOf(d){
+    return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+  }
+
+  function buildCalendar(){
+    var today = new Date(); today.setHours(0,0,0,0);
+    var dow = (today.getDay() + 6) % 7; // Monday = 0
+    var monday = new Date(today); monday.setDate(today.getDate() - dow);
+
+    calendarGrid.innerHTML = '';
+    for(var i = 0; i < 21; i++){
+      var d = new Date(monday); d.setDate(monday.getDate() + i);
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'cal-day';
+      var past = d < today;
+      var closed = d.getDay() === 0;
+      if(past || closed){ btn.classList.add('disabled'); }
+      if(isoOf(d) === isoOf(today)){ btn.classList.add('today'); }
+      btn.dataset.iso = isoOf(d);
+      var monthTag = (d.getDate() === 1 || i === 0) ? '<span class="mo">' + MONTHS[d.getMonth()] + '</span>' : '';
+      btn.innerHTML = monthTag + '<span>' + d.getDate() + '</span>';
+      if(!past && !closed){
+        btn.addEventListener('click', function(){
+          var iso = this.dataset.iso;
+          var parts = iso.split('-').map(Number);
+          var picked = new Date(parts[0], parts[1]-1, parts[2]);
+          selectDate(picked, this);
+        });
+      }
+      calendarGrid.appendChild(btn);
+    }
+
+    // hero teaser: today's and tomorrow's available slot counts
+    var tSlots = slotsFor(today);
+    var tomorrow = new Date(today); tomorrow.setDate(today.getDate()+1);
+    var tmSlots = slotsFor(tomorrow);
+    if(teaserToday) teaserToday.textContent = tSlots.length ? tSlots.length + ' окна' : 'выходной';
+    if(teaserTomorrow) teaserTomorrow.textContent = tmSlots.length ? tmSlots.length + ' окон' : 'выходной';
+  }
+
+  function selectDate(date, btnEl){
+    document.querySelectorAll('.cal-day').forEach(function(b){ b.classList.remove('selected'); });
+    btnEl.classList.add('selected');
+    state.date = date;
+    state.slot = null;
+    var label = date.getDate() + ' ' + MONTHS_GEN[date.getMonth()];
+    state.dateLabel = label;
+    pickedDate.textContent = label;
+    stepDate.classList.add('done');
+    renderSlots(date);
+    updateSummary();
+  }
+
+  function renderSlots(date){
+    var slots = slotsFor(date);
+    slotsGrid.innerHTML = '';
+    pickedTime.textContent = '';
+    stepTime.classList.remove('done');
+    if(!slots.length){
+      var msg = document.createElement('span');
+      msg.className = 'slots-empty';
+      msg.textContent = 'В этот день клиника не работает — выберите другую дату.';
+      slotsGrid.appendChild(msg);
+      return;
+    }
+    slots.forEach(function(t){
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'slot-btn';
+      b.textContent = t;
+      b.addEventListener('click', function(){
+        document.querySelectorAll('.slot-btn').forEach(function(s){ s.classList.remove('selected'); });
+        b.classList.add('selected');
+        state.slot = t;
+        pickedTime.textContent = t;
+        stepTime.classList.add('done');
+        updateSummary();
+      });
+      slotsGrid.appendChild(b);
+    });
+  }
+
+  document.querySelectorAll('.service-pill').forEach(function(pill){
+    pill.addEventListener('click', function(){
+      document.querySelectorAll('.service-pill').forEach(function(p){ p.classList.remove('active'); });
+      pill.classList.add('active');
+      state.service = pill.dataset.name;
+      state.price = pill.dataset.price;
+      pickedService.textContent = pill.dataset.name;
+      stepService.classList.add('done');
+      updateSummary();
+    });
+  });
+
+  function updateSummary(){
+    if(state.service && state.date && state.slot){
+      bookingSummary.classList.add('show');
+      bookingSummary.innerHTML = 'Записываем на <b>' + state.service + '</b> (' + state.price + ') — <b>' + state.dateLabel + '</b> в <b>' + state.slot + '</b>.';
+    } else {
+      bookingSummary.classList.remove('show');
+    }
+  }
+
+  buildCalendar();
+
+  // booking form submit
+  var bookingForm = document.getElementById('bookingForm');
+  var formNote = document.getElementById('formNote');
+  bookingForm.addEventListener('submit', function(e){
+    e.preventDefault();
+    if(!state.service || !state.date || !state.slot){
+      formNote.textContent = 'Заполните все шаги выше: услугу, дату и время приёма.';
+      formNote.classList.remove('ok');
+      formNote.classList.add('err');
+      return;
+    }
+    formNote.classList.remove('err');
+    formNote.classList.add('ok');
+    formNote.textContent = 'Демо-запись: «' + state.service + '» — ' + state.dateLabel + ', ' + state.slot + '. В реальном проекте запись ушла бы вам в Telegram/почту/CRM сразу после отправки.';
+  });
+})();
+</script>
+</body>
+</html>
+</content>
