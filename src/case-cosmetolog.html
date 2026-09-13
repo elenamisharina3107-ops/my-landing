@@ -170,6 +170,7 @@ permalink: /case-cosmetolog.html
 
   /* ---------- protocol cards ---------- */
   .protocols-grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:1px; background:var(--line); border:1px solid var(--line); }
+  .protocol:last-child{ grid-column:1/-1; }
   .protocol{ background:var(--paper); padding:1.4rem 1.3rem; display:flex; flex-direction:column; gap:0.7rem; transition:background .25s ease; }
   .protocol:hover{ background:var(--surface); }
   .protocol-top{ display:flex; justify-content:space-between; align-items:baseline; gap:0.6rem; }
