@@ -44,6 +44,10 @@ module.exports = function (eleventyConfig) {
   eleventyConfig.addPassthroughCopy("src/robots.txt");
   eleventyConfig.addPassthroughCopy("src/sitemap.xml");
 
+  // .htaccess (редирект www/http → https://vireflow.ru) — тоже dot-файл,
+  // Eleventy его сам не подхватит.
+  eleventyConfig.addPassthroughCopy("src/.htaccess");
+
   // Панель Sveltia CMS — статические файлы, Eleventy их не трогает.
   eleventyConfig.addPassthroughCopy({ "src/admin": "admin" });
   eleventyConfig.ignores.add("src/admin/**");

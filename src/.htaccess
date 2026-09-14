@@ -1,0 +1,8 @@
+# Канонический адрес сайта: https://vireflow.ru (без www, без http).
+# Без этого www.vireflow.ru и http://vireflow.ru отдают тот же контент
+# напрямую (200), что поисковики считают дублями одного сайта.
+RewriteEngine On
+
+RewriteCond %{HTTPS} off [OR]
+RewriteCond %{HTTP_HOST} ^www\.vireflow\.ru$ [NC]
+RewriteRule ^ https://vireflow.ru%{REQUEST_URI} [R=301,L]
