@@ -121,7 +121,7 @@
 <section class="section-alt" id="services">
   <div class="container">
     <div class="section-label">{{ painAi.label }}</div>
-    <div class="section-title">{{ painAi.title }}</div>
+    <h2 class="section-title">{{ painAi.title }}</h2>
     <p class="section-sub">{{ painAi.subtitle }}</p>
     <div class="pain-grid">
       {% for card in painAi.cards %}
@@ -139,7 +139,7 @@
 <section id="benefits">
   <div class="container">
     <div class="section-label">{{ benefits.label }}</div>
-    <div class="section-title">{{ benefits.title }}</div>
+    <h2 class="section-title">{{ benefits.title }}</h2>
     <p class="section-sub">{{ benefits.subtitle }}</p>
     <div class="benefits-grid">
       {% for item in benefits.items %}
@@ -153,7 +153,7 @@
 <section id="neuro">
   <div class="container">
     <div class="section-label">{{ neuro.label }}</div>
-    <div class="section-title">{{ neuro.title }}</div>
+    <h2 class="section-title">{{ neuro.title }}</h2>
     <p class="section-sub">{{ neuro.subtitle }}</p>
     <div class="neuro-flow">
       {% for node in neuro.flow %}
@@ -167,7 +167,7 @@
       {% endfor %}
     </div>
     <div class="section-label" style="margin-top:56px;">{{ neuro.processLabel }}</div>
-    <div class="section-title">{{ neuro.processTitle }}</div>
+    <h2 class="section-title">{{ neuro.processTitle }}</h2>
     <div class="process-steps">
       {% for step in neuro.steps %}
       <div class="process-step"><div class="step-num">{{ loop.index }}</div><div><div class="step-title">{{ step.title }}</div><p class="step-text">{{ step.text }}</p></div></div>
@@ -202,7 +202,7 @@
 <section>
   <div class="container">
     <div class="section-label">{{ guaranteeAi.label }}</div>
-    <div class="section-title">{{ guaranteeAi.title }}</div>
+    <h2 class="section-title">{{ guaranteeAi.title }}</h2>
     <div class="guarantee-box">
       {% for item in guaranteeAi.items %}
       <div><div class="guarantee-icon">{{ item.icon }}</div><div class="guarantee-title">{{ item.title }}</div><p class="guarantee-text">{{ item.text }}</p></div>
@@ -216,7 +216,7 @@
 <section id="ai-prices">
   <div class="container">
     <div class="section-label">{{ aiPrices.label }}</div>
-    <div class="section-title">{{ aiPrices.title }}</div>
+    <h2 class="section-title">{{ aiPrices.title }}</h2>
     <p class="section-sub">{{ aiPrices.intro }}</p>
     <div class="prices-grid">
       {% for tariff in aiPrices.items %}
@@ -241,10 +241,10 @@
 <section id="faq">
   <div class="container">
     <div class="section-label">Вопросы и ответы</div>
-    <div class="section-title">Часто спрашивают</div>
+    <h2 class="section-title">Часто спрашивают</h2>
     <div class="faq-list">
       {% for item in collections.faqAi %}
-      <div class="faq-item{% if loop.first %} open{% endif %}"><div class="faq-q">{{ item.data.question }} <span class="faq-toggle">+</span></div><div class="faq-a">{{ item.templateContent | safe }}</div></div>
+      <div class="faq-item{% if loop.first %} open{% endif %}"><h3 class="faq-q">{{ item.data.question }} <span class="faq-toggle">+</span></h3><div class="faq-a">{{ item.templateContent | safe }}</div></div>
       {% endfor %}
     </div>
   </div>
