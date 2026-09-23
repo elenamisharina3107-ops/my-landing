@@ -245,6 +245,11 @@ collections:
         file: src/_data/footer.json
         fields:
           - { name: copy, label: "Строка копирайта", widget: string }
+          - { name: legalName, label: "ИП / ФИО полностью", widget: string, hint: "Например «ИП Мишарина Елена Николаевна»" }
+          - { name: inn, label: "ИНН", widget: string }
+          - { name: ogrnip, label: "ОГРНИП", widget: string }
+          - { name: city, label: "Город", widget: string }
+          - { name: email, label: "Email для связи", widget: string }
 
       - name: seo
         label: "SEO (текст для поисковиков)"
