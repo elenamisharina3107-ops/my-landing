@@ -199,7 +199,7 @@ section { padding: 72px 40px; }
 .social-link:hover { background: #231545; }
 
 /* FOOTER */
-footer { padding: 24px 40px; border-top: 1px solid #1a2545; display: flex; justify-content: space-between; align-items: center; }
+footer { padding: 24px 104px; border-top: 1px solid #1a2545; display: flex; justify-content: space-between; align-items: center; }
 .footer-copy { font-size: 13px; color: #8B8B9E; }
 .footer-info { display: flex; flex-direction: column; gap: 4px; }
 .footer-legal { font-size: 12px; color: #6B6B80; }
@@ -222,7 +222,7 @@ footer { padding: 24px 40px; border-top: 1px solid #1a2545; display: flex; justi
   .benefits-grid, .two-col, .about-wrap, .guarantee-box { grid-template-columns: 1fr; }
   .section-title { font-size: 26px; }
   .cta-title { font-size: 28px; }
-  footer { flex-direction: column; gap: 12px; text-align: center; }
+  footer { flex-direction: column; gap: 12px; text-align: center; padding: 24px 20px 100px; }
 }
 
 @media (max-width: 480px) {
