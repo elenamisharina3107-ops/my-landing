@@ -244,7 +244,7 @@ collections:
         label: "Подвал сайта"
         file: src/_data/footer.json
         fields:
-          - { name: copy, label: "Строка копирайта", widget: string }
+          - { name: copy, label: "Строка копирайта", widget: string, hint: "Без © и года — «© 2025–текущий год» сайт подставляет сам" }
           - { name: legalName, label: "ИП / ФИО полностью", widget: string, hint: "Например «ИП Мишарина Елена Николаевна»" }
           - { name: inn, label: "ИНН", widget: string }
           - { name: ogrnip, label: "ОГРНИП", widget: string }

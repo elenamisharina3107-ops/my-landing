@@ -32,6 +32,10 @@ module.exports = function (eleventyConfig) {
   // отдельном .md-файле (те 11ty рендерит сам, без этого фильтра).
   eleventyConfig.addFilter("markdownify", (value) => md.render(value || ""));
 
+  // Текущий год для копирайта («© 2025–{{ currentYear }}») — считается
+  // при каждой сборке, вручную менять не нужно.
+  eleventyConfig.addGlobalData("currentYear", () => new Date().getFullYear());
+
   // Копировать без обработки
   eleventyConfig.addPassthroughCopy({ "src/styles": "styles" });
 

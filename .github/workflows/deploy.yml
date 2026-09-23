@@ -3,6 +3,9 @@ name: Сборка и деплой на Beget
 on:
   push:
     branches: [main]
+  # 1 января пересобрать сайт, чтобы год в копирайте обновился сам.
+  schedule:
+    - cron: "0 3 1 1 *"
 
 jobs:
   build-and-deploy:
