@@ -6,3 +6,12 @@ RewriteEngine On
 RewriteCond %{HTTPS} off [OR]
 RewriteCond %{HTTP_HOST} ^www\.vireflow\.ru$ [NC]
 RewriteRule ^ https://vireflow.ru%{REQUEST_URI} [R=301,L]
+
+# Страницы — всегда сверять с сервером, чтобы после обновления сайта
+# посетители сразу видели новую версию, а не копию из кэша браузера.
+# Стили подключены с ?v=N, картинки меняются редко — их можно кэшировать.
+<IfModule mod_headers.c>
+  <FilesMatch "\.(html|xml|txt)$">
+    Header set Cache-Control "no-cache"
+  </FilesMatch>
+</IfModule>
