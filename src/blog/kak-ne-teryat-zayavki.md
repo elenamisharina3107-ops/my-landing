@@ -1,7 +1,6 @@
 ---
 layout: article.njk
 tags: blog
-draft: true
 permalink: /blog/kak-ne-teryat-zayavki.html
 title: "Как не терять заявки из мессенджеров: 6 простых шагов"
 seoTitle: "Как не терять заявки из мессенджеров и соцсетей: 6 простых шагов для бизнеса"

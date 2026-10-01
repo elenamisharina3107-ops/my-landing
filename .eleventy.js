@@ -89,6 +89,18 @@ module.exports = function (eleventyConfig) {
     if (data.draft && !process.env.BUILD_DRAFTS) return false;
   });
 
+  // Ссылка на статью-черновик (ещё не на сайте) превращается в обычный текст,
+  // чтобы не вести на несуществующую страницу. Когда статья выйдет — снова ссылка.
+  eleventyConfig.addTransform("unlink-drafts", function (content) {
+    if (process.env.BUILD_DRAFTS || !(this.page.outputPath || "").endsWith(".html")) return content;
+    const fs = require("node:fs");
+    return content.replace(/<a href="\/blog\/([a-z0-9-]+)\.html"[^>]*>(.*?)<\/a>/g, (whole, slug, text) => {
+      const src = path.join("src", "blog", `${slug}.md`);
+      if (!fs.existsSync(src)) return whole;
+      return /^draft:\s*true\s*$/m.test(fs.readFileSync(src, "utf8")) ? text : whole;
+    });
+  });
+
   // Коллекция «Блог» — статьи с тегом blog, новые сверху.
   // Из неё собираются список статей (/blog/), «Читайте также» и sitemap.xml.
   eleventyConfig.addCollection("blog", (collectionApi) => {

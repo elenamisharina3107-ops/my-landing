@@ -1,7 +1,6 @@
 ---
 layout: article.njk
 tags: blog
-draft: true
 permalink: /blog/skolko-stoit-ii-menedzher.html
 title: "Сколько стоит ИИ-менеджер для бизнеса в 2026 году"
 seoTitle: "Сколько стоит ИИ-менеджер для бизнеса в 2026 году: цены и из чего они складываются"
