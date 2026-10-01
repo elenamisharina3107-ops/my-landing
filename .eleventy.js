@@ -46,7 +46,7 @@ module.exports = function (eleventyConfig) {
   // robots.txt / sitemap.xml — не .njk/.md/.html, Eleventy их не подхватит
   // сам, нужно явно указать.
   eleventyConfig.addPassthroughCopy("src/robots.txt");
-  eleventyConfig.addPassthroughCopy("src/sitemap.xml");
+  // sitemap.xml собирается из src/sitemap.njk (статьи блога добавляются сами).
 
   // .htaccess (редирект www/http → https://vireflow.ru) — тоже dot-файл,
   // Eleventy его сам не подхватит.
@@ -82,6 +82,23 @@ module.exports = function (eleventyConfig) {
       .getFilteredByTag("ai")
       .sort((a, b) => (a.data.order || 0) - (b.data.order || 0));
   });
+
+  // Черновики: страница с `draft: true` не собирается и на сайт не попадает.
+  // Посмотреть черновики локально: BUILD_DRAFTS=1 npm run build
+  eleventyConfig.addPreprocessor("drafts", "*", (data) => {
+    if (data.draft && !process.env.BUILD_DRAFTS) return false;
+  });
+
+  // Коллекция «Блог» — статьи с тегом blog, новые сверху.
+  // Из неё собираются список статей (/blog/), «Читайте также» и sitemap.xml.
+  eleventyConfig.addCollection("blog", (collectionApi) => {
+    return collectionApi.getFilteredByTag("blog").sort((a, b) => b.date - a.date);
+  });
+
+  // Дата по-русски: «4 августа 2026»
+  const RU_MONTHS = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
+  eleventyConfig.addFilter("ruDate", (d) => `${d.getDate()} ${RU_MONTHS[d.getMonth()]} ${d.getFullYear()}`);
+  eleventyConfig.addFilter("isoDate", (d) => d.toISOString().slice(0, 10));
 
   // Шорткод {% image src, alt, sizes %}
   // Любая картинка при сборке → webp + jpeg-фолбэк, ширины 640/1280/2000.
