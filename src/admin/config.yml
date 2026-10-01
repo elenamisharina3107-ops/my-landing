@@ -203,6 +203,8 @@ collections:
         fields:
           - { name: label, label: "Надпись-метка", widget: string }
           - { name: title, label: "Заголовок раздела", widget: string }
+          - { name: intro, label: "Текст под заголовком", widget: text, required: false }
+          - { name: subscriptionLinkText, label: "Ссылка на подписку под тарифами", widget: string, required: false, hint: "Ведёт к тарифам ИИ-менеджера на главной. Пусто — ссылки не будет" }
           - name: items
             label: "Тарифы"
             widget: list
@@ -215,10 +217,49 @@ collections:
                 label: "Что входит (список строк)"
                 widget: list
                 field: { name: feature, label: "Пункт", widget: string }
-              - { name: monthlyNote, label: "Строка про ежемесячные расходы", widget: string }
+              - { name: monthlyNote, label: "Строка про ежемесячные расходы", widget: string, required: false, hint: "Оставьте пустым — строка не покажется" }
               - { name: buttonText, label: "Текст кнопки", widget: string }
               - { name: featured, label: "Выделить как популярный", widget: boolean, default: false }
               - { name: badge, label: "Текст плашки сверху", widget: string, required: false, hint: "Показывается только если «Выделить как популярный» включено" }
+
+      - name: products
+        label: "Блок «Если задача шире» (продукты) — главная"
+        file: src/_data/products.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: text }
+          - name: items
+            label: "Карточки"
+            widget: list
+            fields:
+              - { name: icon, label: "Иконка (эмодзи)", widget: string }
+              - { name: title, label: "Название", widget: string }
+              - { name: text, label: "Описание", widget: text }
+              - { name: price, label: "Цена", widget: string, hint: "Например «от 5 000 ₽/мес» или «по задаче»" }
+              - { name: link, label: "Ссылка", widget: string, hint: "#ai-prices, #contact, /sites/ или полный адрес" }
+              - { name: linkText, label: "Текст ссылки", widget: string }
+
+      - name: showcase
+        label: "Блок «Посмотрите вживую» (демо) — главная"
+        file: src/_data/showcase.json
+        fields:
+          - { name: label, label: "Надпись-метка", widget: string }
+          - { name: title, label: "Заголовок", widget: string }
+          - { name: subtitle, label: "Подзаголовок", widget: text }
+          - { name: chatTitle, label: "Карточка чата: заголовок", widget: string }
+          - { name: chatText, label: "Карточка чата: текст", widget: text }
+          - { name: chatButtonText, label: "Карточка чата: текст кнопки", widget: string }
+          - name: items
+            label: "Карточки демо"
+            widget: list
+            fields:
+              - { name: title, label: "Заголовок", widget: string }
+              - { name: text, label: "Описание", widget: text }
+              - { name: image, label: "Картинка-превью", widget: image }
+              - { name: imageAlt, label: "Описание картинки", widget: string }
+              - { name: link, label: "Ссылка на демо", widget: string }
+              - { name: theme, label: "Цвет рамки превью", widget: select, options: ["warm", "mint", "dark"], required: false }
 
       - name: contact
         label: "Блок «Форма связи» — страница «Сайты» (/sites/)"
@@ -226,6 +267,7 @@ collections:
         fields:
           - { name: title, label: "Заголовок", widget: string }
           - { name: subtitle, label: "Подзаголовок", widget: string }
+          - { name: quizText, label: "Ссылка на квиз под подзаголовком", widget: string, required: false, hint: "Пусто — ссылки не будет" }
           - { name: telegram, label: "Ссылка на Telegram", widget: string }
           - { name: vk, label: "Ссылка на VK", widget: string }
           - { name: email, label: "Почта", widget: string }
@@ -236,6 +278,7 @@ collections:
         fields:
           - { name: title, label: "Заголовок", widget: string }
           - { name: subtitle, label: "Подзаголовок", widget: string }
+          - { name: quizText, label: "Ссылка на квиз под подзаголовком", widget: string, required: false, hint: "Пусто — ссылки не будет" }
           - { name: telegram, label: "Ссылка на Telegram", widget: string }
           - { name: vk, label: "Ссылка на VK", widget: string }
           - { name: email, label: "Почта", widget: string }

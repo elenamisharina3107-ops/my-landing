@@ -32,7 +32,7 @@
   "@type": "ProfessionalService",
   "name": "Елена Мишарина — Vireflow",
   "url": "https://vireflow.ru/",
-  "description": "Настраиваю ИИ-менеджеров, которые отвечают клиентам в мессенджерах и на сайте, ведут заявки и не дают им теряться.",
+  "description": "Решаю задачу, когда заявки теряются, а отвечать клиентам некогда: ИИ-менеджеры, ИИ-агенты, программы для бизнеса и сайты под заявки.",
   "sameAs": [
     "https://t.me/el_misharina",
     "https://vk.ru/club240645038"
@@ -56,7 +56,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/styles/site.css?v=2">
+<link rel="stylesheet" href="/styles/site.css?v=3">
 </head>
 <body>
 
@@ -176,6 +176,65 @@
   </div>
 </section>
 
+<!-- SHOWCASE -->
+<section class="section-alt" id="showcase">
+  <div class="container">
+    <div class="section-label">{{ showcase.label }}</div>
+    <h2 class="section-title">{{ showcase.title }}</h2>
+    <p class="section-sub">{{ showcase.subtitle }}</p>
+    <div class="portfolio-grid showcase-grid">
+      <button class="portfolio-card showcase-chat-card" type="button" onclick="document.getElementById('alyona-toggle').click()">
+        <div class="portfolio-preview dark">
+          <div class="portfolio-preview-bar"><span></span><span></span><span></span></div>
+          <div class="portfolio-preview-body showcase-chat-preview">
+            <div class="chat-bubble client">Сколько это стоит?</div>
+            <div class="chat-bubble ai">От 5 000 ₽ в месяц. Где вам пишут клиенты?</div>
+          </div>
+        </div>
+        <div class="portfolio-card-body">
+          <div class="portfolio-card-title">{{ showcase.chatTitle }}</div>
+          <p class="portfolio-card-text">{{ showcase.chatText }}</p>
+          <span class="portfolio-card-link">{{ showcase.chatButtonText }}</span>
+        </div>
+      </button>
+      {% for item in showcase.items %}
+      <a class="portfolio-card" href="{{ item.link }}" target="_blank" rel="noopener">
+        <div class="portfolio-preview {{ item.theme }}">
+          <div class="portfolio-preview-bar"><span></span><span></span><span></span></div>
+          <div class="portfolio-preview-body">
+            <img class="portfolio-preview-img" src="{{ item.image }}" alt="{{ item.imageAlt }}" loading="lazy">
+          </div>
+        </div>
+        <div class="portfolio-card-body">
+          <div class="portfolio-card-title">{{ item.title }}</div>
+          <p class="portfolio-card-text">{{ item.text }}</p>
+          <span class="portfolio-card-link">Смотреть демо →</span>
+        </div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<!-- PRODUCTS -->
+<section id="products">
+  <div class="container">
+    <div class="section-label">{{ products.label }}</div>
+    <h2 class="section-title">{{ products.title }}</h2>
+    <p class="section-sub">{{ products.subtitle }}</p>
+    <div class="products-grid">
+      {% for item in products.items %}
+      <a class="product-card" href="{{ item.link }}"{% if item.link.startsWith('http') %} target="_blank" rel="noopener"{% endif %}>
+        <div class="product-icon">{{ item.icon }}</div>
+        <div class="product-title">{{ item.title }}</div>
+        <p class="product-text">{{ item.text }}</p>
+        <div class="product-footer"><span class="product-price">{{ item.price }}</span><span class="product-link">{{ item.linkText }}</span></div>
+      </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
 <!-- ABOUT -->
 <section class="section-alt">
   <div class="container">
@@ -234,6 +293,9 @@
       {% endfor %}
     </div>
     <div style="margin-top:20px; font-size:13px; color:#8B8B9E; line-height:1.6; max-width:640px;">{{ aiPrices.note }}</div>
+    {% if aiPrices.buyoutNote %}
+    <div class="price-alt-note">{{ aiPrices.buyoutNote }} <a href="/sites/#prices">{{ aiPrices.buyoutLinkText }}</a></div>
+    {% endif %}
   </div>
 </section>
 
@@ -254,6 +316,7 @@
 <section class="cta-section" id="contact">
   <div class="cta-title">{{ contactAi.title }}</div>
   <p class="cta-sub">{{ contactAi.subtitle }}</p>
+  {% if contactAi.quizText %}<a class="cta-quiz-link" href="/quiz.html">{{ contactAi.quizText }}</a>{% endif %}
   <div class="cta-form">
     <div id="form-success" style="display:none; background:#0f1428; border:1px solid #1a2545; border-radius:12px; padding:20px; margin-bottom:16px; color:#4a9eff; font-size:15px; line-height:1.6;">✅ Заявка отправлена! Свяжусь с вами в ближайшее время.</div>
     <div id="selected-tariff" style="display:none; background:#0f1428; border:1px solid #4a9eff; border-radius:12px; padding:14px 18px; margin-bottom:12px; color:#4a9eff; font-size:14px; text-align:left;">
@@ -432,7 +495,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
     <div class="alyona-header">
       <div class="alyona-avatar">🤖</div>
       <div class="alyona-header-text">
-        <div class="alyona-header-name">Алёна, ассистент</div>
+        <div class="alyona-header-name">Алёна, ИИ-менеджер</div>
         <div class="alyona-header-status">на связи</div>
       </div>
     </div>
@@ -445,7 +508,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
     </div>
   </div>
   <div class="alyona-teaser" id="alyona-teaser">
-  Здесь можно спросить всё, что интересует — отвечаю быстро 👋
+  Я ИИ-менеджер — так же буду отвечать вашим клиентам. Спросите что угодно 👋
   <div class="alyona-teaser-close" id="alyona-teaser-close">✕</div>
 </div> <button id="alyona-toggle" aria-label="Открыть чат с Алёной">
     <svg class="alyona-icon-chat" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path></svg>
@@ -588,7 +651,7 @@ document.getElementById("contact-form").addEventListener("submit", function(e) {
 <script>
 // REVEAL ON SCROLL + BRIGHTNESS EFFECT
 (function() {
-  var revealSelector = '.pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step, .neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .portfolio-card, .section-title, .section-sub, .section-label';
+  var revealSelector = '.pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step, .neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .portfolio-card, .product-card, .section-title, .section-sub, .section-label';
 
   function initReveal() {
     var elements = document.querySelectorAll(revealSelector);

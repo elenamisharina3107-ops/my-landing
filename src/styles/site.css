@@ -27,7 +27,7 @@ nav { background: #080d1a; border-bottom: 1px solid #1a2545; padding: 16px 40px;
 .btn-ghost { background: transparent; color: #4a9eff; border: 1px solid #1a2545; border-radius: 12px; padding: 14px 28px; font-size: 15px; cursor: pointer; text-decoration: none; display: inline-block; transition: background 0.2s; }
 .btn-ghost:hover { background: #0f1428; }
 .hero-stats { display: flex; gap: 32px; margin-top: 36px; }
-.stat-num { font-size: 26px; font-weight: 800; color: #4a9eff; }
+.stat-num { font-size: 26px; font-weight: 800; color: #4a9eff; white-space: nowrap; }
 .stat-label { font-size: 12px; color: #8B8B9E; margin-top: 2px; }
 .hero-visual { background: #13131E; border: 1px solid #1a2545; border-radius: 16px; padding: 24px; }
 .browser-bar { display: flex; gap: 6px; margin-bottom: 16px; }
@@ -230,6 +230,42 @@ footer { padding: 24px 104px; border-top: 1px solid #1a2545; display: flex; just
   .nav-logo .logo-mark { display: block; height: 24px; }
 }
 
+/* PRODUCTS — «Если задача шире» */
+.products-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.product-card { background: #13131E; border: 1px solid #1a2545; border-radius: 14px; padding: 22px; text-decoration: none; color: inherit; display: flex; flex-direction: column; transition: border-color 0.2s, transform 0.2s; }
+.product-card:hover { border-color: #4a9eff; transform: translateY(-2px); }
+.product-icon { font-size: 26px; margin-bottom: 12px; }
+.product-title { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: #F0F0F5; }
+.product-text { font-size: 13px; color: #8B8B9E; line-height: 1.6; flex: 1; margin-bottom: 16px; }
+.product-footer { display: flex; justify-content: space-between; align-items: center; gap: 8px; padding-top: 14px; border-top: 1px solid #1a2545; font-size: 13px; }
+.product-price { color: #F0F0F5; font-weight: 600; }
+.product-link { color: #4a9eff; font-weight: 600; white-space: nowrap; }
+
+/* SHOWCASE — карточка с живым ИИ-менеджером */
+.showcase-chat-card { font: inherit; text-align: left; cursor: pointer; padding: 0; width: 100%; }
+.showcase-grid { grid-template-columns: repeat(3, 1fr); }
+.portfolio-preview-body.showcase-chat-preview { display: flex; flex-direction: column; justify-content: center; gap: 6px; padding: 10px 12px; }
+.showcase-chat-preview .chat-bubble { font-size: 11px; line-height: 1.35; padding: 6px 10px; max-width: 90%; }
+
+/* Альтернативная модель оплаты и ссылка на квиз */
+.price-alt-note { margin-top: 16px; padding: 16px 20px; max-width: 640px; background: #0f1428; border: 1px solid #1a2545; border-radius: 12px; font-size: 14px; color: #C9C9D6; line-height: 1.6; }
+.price-alt-note a { color: #4a9eff; font-weight: 600; text-decoration: none; white-space: nowrap; }
+.price-alt-note a:hover { text-decoration: underline; }
+.cta-quiz-link { display: inline-block; margin: -24px 0 32px; font-size: 14px; color: #4a9eff; text-decoration: none; font-weight: 500; }
+.cta-quiz-link:hover { text-decoration: underline; }
+
+@media (max-width: 1024px) {
+  .products-grid { grid-template-columns: repeat(2, 1fr); }
+  .showcase-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 768px) {
+  .products-grid, .showcase-grid { grid-template-columns: 1fr; }
+  .hero-stats { flex-wrap: wrap; gap: 20px 28px; }
+  .stat-num { font-size: 22px; }
+  .cta-quiz-link { margin: -16px 20px 28px; }
+  .price-alt-note a { white-space: normal; }
+}
+
 /* ALYONA CHAT WIDGET */
 #alyona-widget { position: fixed; bottom: 24px; right: 24px; z-index: 9999; font-family: 'Inter', sans-serif; }
 #alyona-toggle { width: 60px; height: 60px; border-radius: 50%; background: #4a9eff; border: none; cursor: pointer; box-shadow: 0 8px 24px rgba(124,58,237,0.45); display: flex; align-items: center; justify-content: center; transition: transform 0.2s, box-shadow 0.2s; }
@@ -330,14 +366,14 @@ footer { padding: 24px 104px; border-top: 1px solid #1a2545; display: flex; just
 
 /* Появление при скролле (reveal) */
 .pain-card, .benefit-item, .price-card, .faq-item, .include-item, .process-step,
-.neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .portfolio-card,
+.neuro-card, .neuro-flow, .guarantee-box, .guarantee-note, .about-wrap, .portfolio-card, .product-card,
 .section-title, .section-sub, .section-label {
   opacity: 0;
   transform: translateY(24px);
   transition: opacity 0.8s ease-out, transform 0.8s ease-out, filter 0.15s ease-out, border-color 0.2s;
 }
 .pain-card.visible, .benefit-item.visible, .price-card.visible, .faq-item.visible, .include-item.visible, .process-step.visible,
-.neuro-card.visible, .neuro-flow.visible, .guarantee-box.visible, .guarantee-note.visible, .about-wrap.visible, .portfolio-card.visible,
+.neuro-card.visible, .neuro-flow.visible, .guarantee-box.visible, .guarantee-note.visible, .about-wrap.visible, .portfolio-card.visible, .product-card.visible,
 .section-title.visible, .section-sub.visible, .section-label.visible {
   opacity: 1;
   transform: translateY(0);
